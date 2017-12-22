@@ -9,11 +9,7 @@ import org.jooby.Results
 import org.jooby.mvc.GET
 import org.jooby.mvc.POST
 import org.jooby.mvc.Path
-import org.jooby.pac4j.Auth
-import org.jooby.pac4j.AuthSessionStore
-import org.jooby.pac4j.AuthStore
 import org.ort.school.app.repo.UserRepo
-import org.pac4j.core.profile.CommonProfile
 import javax.validation.Valid
 import javax.validation.Validator
 import javax.validation.constraints.AssertTrue
@@ -38,7 +34,7 @@ class Main @Inject constructor(private val validator: Validator, private val use
 
     @POST
     @Path("/init")
-    fun createFirstUser(userInfo: FirstUserInfo): Result {
+    fun createFirstUser(userInfo: FirstUserInfo, request: Request): Result {
         val validate = validator.validate(userInfo)
         if (validate.size > 0) {
             val map = validate.associate { it -> it.propertyPath.toString() to it.message }
