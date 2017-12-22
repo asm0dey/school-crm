@@ -131,6 +131,11 @@
             <artifactId>jooby-assets</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.jooby</groupId>
+            <artifactId>jooby-csl</artifactId>
+        </dependency>
+
         <!--webjars-->
 
         <dependency>
