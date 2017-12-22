@@ -15,8 +15,12 @@ import org.ort.school.app.repo.UserRepo
 import org.ort.school.app.routes.Login
 import org.ort.school.app.routes.Main
 import org.ort.school.app.routes.Private
+import org.ort.school.app.routes.User
 import org.ort.school.app.service.DBAuth
 import org.pac4j.core.profile.CommonProfile
+import org.jooby.csl.XSS
+
+
 
 
 /**
@@ -28,12 +32,13 @@ class App : Kooby({
     unsecureControllers()
 
     use(Auth().form("*", DBAuth::class.java).logout("/logout", "/"))
+    use(User::class)
     use(Private::class)
 })
 
 
 private fun Kooby.unsecureControllers() {
-    get("*") { req, resp, chain ->
+    use("*") { req, resp, chain ->
         val loggedIn = req.session().get(Auth.ID).toOptional().isPresent
         req.set("loggedIn", loggedIn)
         if (loggedIn) {
@@ -61,6 +66,7 @@ private fun Kooby.modules() {
     use(Ftl("/", ".ftl"))
     use(Hbv())
     assets("/webjars/**", "/META-INF/resources/webjars/{0}")
+    use(XSS())
 }
 
 

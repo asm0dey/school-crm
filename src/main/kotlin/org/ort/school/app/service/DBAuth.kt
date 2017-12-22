@@ -41,7 +41,8 @@ class DBAuth @Inject constructor(val ctx: DSLContext) : Authenticator<UsernamePa
         profile.addAttribute("email", userInfo.email)
         profile.addAttribute("first_name", userInfo.firstname)
         profile.addAttribute("family_name", userInfo.lastname)
-        profile.addAttribute("display_name", listOf(userInfo.lastname, userInfo.firstname, userInfo.patronymic).joinToString(" "))
+        profile.addAttribute("display_name", listOf(userInfo.lastname, userInfo.firstname, userInfo.patronymic).filterNotNull().joinToString(" "))
+        profile.addAttribute("patronymic", userInfo.patronymic)
         profile.addRoles(roles)
         credentials.userProfile = profile
 
