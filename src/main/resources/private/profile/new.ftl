@@ -1,6 +1,5 @@
 <#-- @ftlvariable name="editorEnabled" type="boolean" -->
 <#-- @ftlvariable name="profile" type="org.pac4j.core.profile.CommonProfile" -->
-<#-- @ftlvariable name="data" type="org.ort.school.app.repo.UserDTO" -->
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
 <head>
@@ -41,43 +40,38 @@
 <div class="container">
     <h1>Редактирование пользователя</h1>
     <div class="row">
-        <form action="/private/user/${data.username}/update" class="col s12" method="post">
+        <form action="/private/user/new" class="col s12" method="post">
             <div class="row">
                 <div class="input-field col s4">
-                    <input id="lastname" type="text" class="validate" name="lastname"
-                           <#if data.lastname??>value="${data.lastname}"</#if>>
-                    <label for="lastname">Фамилия</label>
+                    <input id="lastname" type="text" class="validate" name="lastname" required>
+                    <label for="lastname">Фамилия<span style="color: crimson">*</span> </label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="firstname" type="text" class="validate" name="firstname"
-                           <#if data.firstName??>value="${data.firstName}"</#if>>
-                    <label for="firstname">Имя</label>
+                    <input id="firstname" type="text" class="validate" name="firstname" required>
+                    <label for="firstname">Имя<span style="color: crimson">*</span></label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="patronymic" type="text" class="validate" name="patronymic"
-                           <#if data.patronymic??>value="${data.patronymic}"</#if>>
+                    <input id="patronymic" type="text" class="validate" name="patronymic">
                     <label for="patronymic">Отчество</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s4">
-                    <input id="password" type="password" class="validate" name="password">
-                    <label for="password">Пароль</label>
+                    <input id="password" type="password" class="validate" name="password" required>
+                    <label for="password">Пароль<span style="color: crimson">*</span></label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="passwordConfirm" type="password" class="validate" name="passwordConfirm">
-                    <label for="passwordConfirm">Пароль</label>
+                    <input id="passwordConfirm" type="password" class="validate" name="passwordConfirm" required>
+                    <label for="passwordConfirm">Повторите пароль<span style="color: crimson">*</span></label>
                 </div>
                 <div class="input-field col s4">
                     <select id="role" name="role">
-                        <option value="no" disabled>Выберите роль</option>
+                        <option value="no" disabled selected>Выберите роль</option>
                         <option value="admin"
-                                <#if profile.roles?seq_contains('author')>disabled</#if>
-                                <#if data.role == 'admin'>selected</#if>>
+                                <#if profile.roles?seq_contains('author')>disabled</#if>>
                             Администратор
                         </option>
-                        <option value="author"
-                            <#if !editorEnabled></#if>disabled<#if data.role == 'author'>selected</#if>>
+                        <option value="author" <#if !editorEnabled>disabled</#if>>
                             Редактор
                         </option>
                     </select>

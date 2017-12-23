@@ -64,17 +64,17 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
             val qStart = tx
                     .update(USER)
                     .set(USER.USERNAME, username)
-            if (!userInfoUpdateDTO.password.isNullOrBlank()){
+            if (!userInfoUpdateDTO.password.isNullOrBlank()) {
                 qStart.set(USER.PASSWORD, BCrypt.hashpw(userInfoUpdateDTO.password, BCrypt.gensalt()))
             }
-            if (!userInfoUpdateDTO.firstname.isNullOrBlank()){
-                qStart.set(USER.PASSWORD, userInfoUpdateDTO.firstname)
+            if (!userInfoUpdateDTO.firstname.isNullOrBlank()) {
+                qStart.set(USER.FIRSTNAME, userInfoUpdateDTO.firstname)
             }
-            if (!userInfoUpdateDTO.lastname.isNullOrBlank()){
-                qStart.set(USER.PASSWORD, userInfoUpdateDTO.lastname)
+            if (!userInfoUpdateDTO.lastname.isNullOrBlank()) {
+                qStart.set(USER.LASTNAME, userInfoUpdateDTO.lastname)
             }
-            if (!userInfoUpdateDTO.patronymic.isNullOrBlank()){
-                qStart.set(USER.PASSWORD, userInfoUpdateDTO.patronymic)
+            if (!userInfoUpdateDTO.patronymic.isNullOrBlank()) {
+                qStart.set(USER.PATRONYMIC, userInfoUpdateDTO.patronymic)
             }
             qStart
                     .where(USER.USERNAME.eq(username))
@@ -93,6 +93,18 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                     )
         }
 
+    }
+
+    fun userBy(username: String): UserDTO {
+        return ctx
+                .select(USER.USERNAME, USER.FIRSTNAME, USER.LASTNAME, USER.PATRONYMIC, USER_ROLE.ROLE)
+                .from(USER, USER_ROLE)
+                .where(
+                        USER.ID.eq(USER_ROLE.USER_ID),
+                        USER.USERNAME.eq(username)
+                )
+                .fetchOneInto(UserDTO::class.java)
+                .copy(password = null)
     }
 }
 
