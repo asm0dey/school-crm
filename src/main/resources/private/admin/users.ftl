@@ -20,3 +20,4 @@
     </#list>
     </tbody>
 </table>
+<a href="/private/user/new" class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>Создать нового</a>
