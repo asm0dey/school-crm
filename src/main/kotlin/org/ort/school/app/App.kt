@@ -2,6 +2,7 @@ package org.ort.school.app
 
 import com.google.inject.TypeLiteral
 import org.jooby.Kooby
+import org.jooby.RequestLogger
 import org.jooby.caffeine.CaffeineCache
 import org.jooby.flyway.Flywaydb
 import org.jooby.ftl.Ftl
@@ -38,6 +39,7 @@ class App : Kooby({
 
 
 private fun Kooby.unsecureControllers() {
+    use("*", RequestLogger())
     use("*") { req, resp, chain ->
         val loggedIn = req.session().get(Auth.ID).toOptional().isPresent
         req.set("loggedIn", loggedIn)

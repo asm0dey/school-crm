@@ -5,7 +5,7 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.mindrot.jbcrypt.BCrypt
 import org.ort.school.app.routes.FirstUserInfo
-import org.ort.school.app.routes.UserInfoUpdateDTO
+import org.ort.school.app.routes.UserInfoDTO
 import org.ort.school.crm.jooq.model.Tables.*
 import org.pac4j.core.credentials.password.JBCryptPasswordEncoder
 
@@ -58,30 +58,30 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                 .fetchOne(0, Int::class.java)
     }
 
-    fun updateUser(username: String, userInfoUpdateDTO: UserInfoUpdateDTO) {
+    fun updateUser(username: String, userInfoDTO: UserInfoDTO) {
         ctx.transactionResult { conf ->
             val tx = DSL.using(conf)
             val qStart = tx
                     .update(USER)
                     .set(USER.USERNAME, username)
-            if (!userInfoUpdateDTO.password.isNullOrBlank()) {
-                qStart.set(USER.PASSWORD, BCrypt.hashpw(userInfoUpdateDTO.password, BCrypt.gensalt()))
+            if (!userInfoDTO.password.isNullOrBlank()) {
+                qStart.set(USER.PASSWORD, BCrypt.hashpw(userInfoDTO.password, BCrypt.gensalt()))
             }
-            if (!userInfoUpdateDTO.firstname.isNullOrBlank()) {
-                qStart.set(USER.FIRSTNAME, userInfoUpdateDTO.firstname)
+            if (!userInfoDTO.firstname.isNullOrBlank()) {
+                qStart.set(USER.FIRSTNAME, userInfoDTO.firstname)
             }
-            if (!userInfoUpdateDTO.lastname.isNullOrBlank()) {
-                qStart.set(USER.LASTNAME, userInfoUpdateDTO.lastname)
+            if (!userInfoDTO.lastname.isNullOrBlank()) {
+                qStart.set(USER.LASTNAME, userInfoDTO.lastname)
             }
-            if (!userInfoUpdateDTO.patronymic.isNullOrBlank()) {
-                qStart.set(USER.PATRONYMIC, userInfoUpdateDTO.patronymic)
+            if (!userInfoDTO.patronymic.isNullOrBlank()) {
+                qStart.set(USER.PATRONYMIC, userInfoDTO.patronymic)
             }
             qStart
                     .where(USER.USERNAME.eq(username))
                     .execute()
             tx
                     .update(USER_ROLE)
-                    .set(USER_ROLE.ROLE, userInfoUpdateDTO.role)
+                    .set(USER_ROLE.ROLE, userInfoDTO.role)
                     .where(
                             USER_ROLE.USER_ID.eq(
                                     tx
@@ -105,6 +105,30 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                 )
                 .fetchOneInto(UserDTO::class.java)
                 .copy(password = null)
+    }
+
+    fun countUsersBy(username: String): Long = ctx
+            .selectCount()
+            .from(USER)
+            .where(USER.USERNAME.eq(username))
+            .fetchOneInto(Long::class.java)
+
+    fun createUser(userInfo: UserInfoDTO) {
+        ctx.transactionResult { configuration ->
+            val tx = DSL.using(configuration)
+            val record = tx.newRecord(USER)
+            record.from(userInfo)
+            record.password = BCrypt.hashpw(record.password,BCrypt.gensalt())
+            val userRecord = tx
+                    .insertInto(USER)
+                    .set(record)
+                    .returning()
+                    .fetchOne()
+            tx
+                    .insertInto(USER_ROLE, USER_ROLE.USER_ID, USER_ROLE.ROLE)
+                    .values(userRecord.id, userInfo.role)
+                    .execute()
+        }
     }
 }
 

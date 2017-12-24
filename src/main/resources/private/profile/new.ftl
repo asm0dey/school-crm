@@ -38,34 +38,44 @@
 
 </nav>
 <div class="container">
-    <h1>Редактирование пользователя</h1>
+    <h1>Создание пользователя</h1>
     <div class="row">
-        <form action="/private/user/new" class="col s12" method="post">
+        <form action="/private/user/new" class="col s12" method="post" enctype="application/x-www-form-urlencoded">
             <div class="row">
                 <div class="input-field col s4">
-                    <input id="lastname" type="text" class="validate" name="lastname" required>
-                    <label for="lastname">Фамилия<span style="color: crimson">*</span> </label>
+                    <input id="lastname" type="text" class="validate <#if errors?? && errors['lastname']??>invalid</#if>" name="lastname" required>
+                    <label for="lastname" <#if errors?? && errors['lastname']??>data-error="${errors['lastname']}"</#if>>
+                        Фамилия
+                    </label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="firstname" type="text" class="validate" name="firstname" required>
-                    <label for="firstname">Имя<span style="color: crimson">*</span></label>
+                    <input id="firstname" type="text" class="validate <#if errors?? && errors['firstname']??>invalid</#if>" name="firstname" required>
+                    <label for="firstname" <#if errors?? && errors['firstname']??>data-error="${errors['firstname']}" </#if>>
+                        Имя
+                    </label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="patronymic" type="text" class="validate" name="patronymic">
-                    <label for="patronymic">Отчество</label>
+                    <input id="patronymic" type="text" class="validate <#if errors?? && errors['patronymic']??>invalid</#if>" name="patronymic">
+                    <label for="patronymic"<#if errors?? && errors['patronymic']??> data-error="${errors['patronymic']}"</#if>>
+                        Отчество
+                    </label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s4">
-                    <input id="password" type="password" class="validate" name="password" required>
-                    <label for="password">Пароль<span style="color: crimson">*</span></label>
+                    <input id="username" type="text" class="validate <#if errors?? && errors['username']??>invalid</#if>" name="username" minlength="6" required>
+                    <label for="username" <#if errors?? && errors['username']??>data-error="${errors['username']}"</#if>>
+                        Имя пользователя
+                    </label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="passwordConfirm" type="password" class="validate" name="passwordConfirm" required>
-                    <label for="passwordConfirm">Повторите пароль<span style="color: crimson">*</span></label>
+                    <input id="email" type="email" class="validate <#if errors?? && errors['email']??>invalid</#if>" name="email" required>
+                    <label for="email" <#if errors?? && errors['email']??>data-error="${errors['email']}"</#if>>
+                        Email
+                    </label>
                 </div>
                 <div class="input-field col s4">
-                    <select id="role" name="role">
+                    <select id="role" name="role" required class="validate <#if errors?? && errors['role']??>invalid</#if>">
                         <option value="no" disabled selected>Выберите роль</option>
                         <option value="admin"
                                 <#if profile.roles?seq_contains('author')>disabled</#if>>
@@ -75,12 +85,29 @@
                             Редактор
                         </option>
                     </select>
-                    <label for="role">Роль</label>
+                    <label for="role" <#if errors?? && errors['role']??>data-error="${errors['role']}"</#if>>
+                        Роль
+                    </label>
                 </div>
 
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Обновить
+                <div class="input-field col s6">
+                    <input id="password" type="password" class="validate <#if errors?? && errors['password']??>invalid</#if>" name="password" minlength="6" required>
+                    <label for="password" <#if errors?? && errors['password']??>data-error="${errors['password']}"</#if>>
+                        Пароль
+                    </label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="passwordConfirm" type="password" class="validate <#if errors?? && errors['validPassword']??>invalid</#if>" name="passwordConfirm" minlength="6"
+                           required>
+                    <label for="passwordConfirm" <#if errors?? && errors['validPassword']??>data-error="${errors['validPassword']}"</#if>>
+                        Повторите пароль
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">Создать
                     <i class="material-icons right">send</i>
                 </button>
             </div>
@@ -93,6 +120,7 @@
     $(document).ready(function () {
         $(".dropdown-button").dropdown();
         $('select').material_select();
+        Materialize.updateTextFields();
     })
 </script>
 </body>
