@@ -6,7 +6,7 @@
     <title>School CRM</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="/webjars/materializecss/0.100.2/css/materialize.min.css">
 
