@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="session" type="org.jooby.Session" -->
 <#-- @ftlvariable name="degrees" type="java.util.List<kotlin.Pair<java.lang.Integer, java.lang.String>>" -->
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
@@ -97,6 +98,7 @@
                     <label for="classno">Класс<span style="color: crimson">*</span></label>
                 </div>
             </div>
+            <input type="hidden" value="${csrf}" name="csrf">
             <div class="row">
                 <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
                     <i class="material-icons right">send</i>

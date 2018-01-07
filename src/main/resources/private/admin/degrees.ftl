@@ -32,6 +32,7 @@
                       <label for="degreeLetter">Буква класса</label>
                   </div>
               </div>
+              <input type="hidden" value="${csrf}" name="csrf">
               <div class="row">
                   <div class="col s4 valign-wrapper input-field">
                       <button class="btn waves-effect waves-light" type="submit">Создать
@@ -41,11 +42,6 @@
               </div>
           </form>
       </div>
-  <#--<div class="modal-footer">
-      <button class="btn waves-effect waves-light" type="submit">Создать
-          <i class="material-icons right">send</i>
-      </button>
-  </div>-->
   </div>
     <div class="row">
         <ul class="collapsible " data-collapsible="accordion">
@@ -81,35 +77,3 @@
             </#list>
         </ul>
     </div>
-<#--<div class="row">
-    <h3>Добавление класса</h3>
-    <div class="row">
-        <form action="/private/degree/create" class="col s12" method="post">
-            <div class="row">
-                <div class="input-field inline col s4">
-                    <select name="degreeNo" id="degreeNo" class="validate" required>
-                        <option value="no" selected disabled>Выберите номер класса</option>
-                        <#list allowedDegrees as degree>
-                            <option value="${degree}">${degree}</option>
-                        </#list>
-                    </select>
-                    <label for="degreeNo">Номер класса</label>
-                </div>
-                <div class="input-field inline col s4">
-                    <select name="degreeLetter" id="degreeLetter" class="validate" required>
-                        <option value="no" selected disabled>Выберите букву класса</option>
-                        <#list allowedLetters as letter>
-                            <option value="${letter}">${letter}</option>
-                        </#list>
-                    </select>
-                    <label for="degreeLetter">Буква класса</label>
-                </div>
-                <div class="col s4 valign-wrapper input-field">
-                    <button class="btn waves-effect waves-light" type="submit">Создать
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>-->

@@ -1,26 +1,21 @@
 package org.ort.school.app
 
 import com.google.inject.TypeLiteral
-import jdk.nashorn.internal.runtime.regexp.joni.Config.log
-import org.jooby.Kooby
-import org.jooby.RequestLogger
-import org.jooby.Results
+import org.jooby.*
 import org.jooby.csl.XSS
 import org.jooby.flyway.Flywaydb
 import org.jooby.ftl.Ftl
+import org.jooby.handlers.CsrfHandler
 import org.jooby.hbv.Hbv
-import org.jooby.internal.pac4j.AuthFilter
 import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Auth
 import org.jooby.pac4j.AuthSessionStore
-import org.jooby.run
 import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.app.routes.*
 import org.ort.school.app.service.*
 import org.pac4j.core.profile.CommonProfile
-import org.pac4j.http.client.indirect.FormClient
 
 
 /**
@@ -31,7 +26,7 @@ class App : Kooby({
     repositoriies()
     services()
     unsecureControllers()
-    err { req, rsp, err ->
+    err { _, rsp, err ->
         val require = require(CommonProfile::class.java)
         rsp.send(
                 Results
@@ -45,7 +40,7 @@ class App : Kooby({
                         })
         )
     }
-    use(Auth().form("/private/**", DBAuth::class.java).)
+    use(Auth().form("/private/**", DBAuth::class.java))
     secureControllers()
 })
 
@@ -66,6 +61,7 @@ fun Kooby.services() {
 
 private fun Kooby.unsecureControllers() {
     use("*", RequestLogger())
+    use("*", CsrfHandler())
     use("*") { req, resp, chain ->
         val loggedIn = req.session().get(Auth.ID).toOptional().isPresent
         req.set("loggedIn", loggedIn)

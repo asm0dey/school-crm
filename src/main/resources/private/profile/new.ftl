@@ -105,6 +105,7 @@
                     </label>
                 </div>
             </div>
+            <input type="hidden" value="${csrf}" name="csrf">
             <div class="row">
                 <button class="btn waves-effect waves-light" type="submit">Создать
                     <i class="material-icons right">send</i>
