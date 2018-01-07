@@ -9,8 +9,10 @@ import javax.annotation.Generated;
 import org.ort.school.crm.jooq.model.tables.Grade;
 import org.ort.school.crm.jooq.model.tables.Parent;
 import org.ort.school.crm.jooq.model.tables.ParentGrade;
+import org.ort.school.crm.jooq.model.tables.ParentStudent;
 import org.ort.school.crm.jooq.model.tables.Role;
 import org.ort.school.crm.jooq.model.tables.SchemaVersion;
+import org.ort.school.crm.jooq.model.tables.Student;
 import org.ort.school.crm.jooq.model.tables.User;
 import org.ort.school.crm.jooq.model.tables.UserRole;
 
@@ -44,9 +46,19 @@ public class Tables {
     public static final ParentGrade PARENT_GRADE = org.ort.school.crm.jooq.model.tables.ParentGrade.PARENT_GRADE;
 
     /**
+     * The table <code>PUBLIC.PARENT_STUDENT</code>.
+     */
+    public static final ParentStudent PARENT_STUDENT = org.ort.school.crm.jooq.model.tables.ParentStudent.PARENT_STUDENT;
+
+    /**
      * The table <code>PUBLIC.ROLE</code>.
      */
     public static final Role ROLE = org.ort.school.crm.jooq.model.tables.Role.ROLE;
+
+    /**
+     * The table <code>PUBLIC.STUDENT</code>.
+     */
+    public static final Student STUDENT = org.ort.school.crm.jooq.model.tables.Student.STUDENT;
 
     /**
      * The table <code>PUBLIC.USER</code>.

@@ -2,13 +2,16 @@ package org.ort.school.app.validate
 
 import com.google.inject.Inject
 import org.ort.school.app.repo.UserRepo
-import org.ort.school.app.routes.UserInfoDTO
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
 import javax.validation.Payload
 import kotlin.annotation.AnnotationTarget.*
 import kotlin.reflect.KClass
+
+interface CreateUser
+interface FirstUser
+
 
 @Target(FIELD, VALUE_PARAMETER, PROPERTY_GETTER)
 @Retention(AnnotationRetention.RUNTIME)

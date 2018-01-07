@@ -45,8 +45,8 @@
                     </div>
 
                     <div class="field">
-                        <label for="repeat" class="label">Повторите пароль</label>
-                        <div class="control"><input id="repeat" type="password" class="input" name="repeat"></div>
+                        <label for="passwordConfirm" class="label">Повторите пароль</label>
+                        <div class="control"><input id="passwordConfirm" type="password" class="input" name="passwordConfirm"></div>
                         <#if errors?? && errors['valid']??>
                             <p class="help is-danger">${errors['valid']}</p>
                         </#if>

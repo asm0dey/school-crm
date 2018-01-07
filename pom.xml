@@ -14,10 +14,11 @@
     <groupId>org.ort.school</groupId>
 
     <properties>
+        <boringssl.version>2.0.7.Final</boringssl.version>
         <jooby.version>1.2.3</jooby.version>
         <jooq.version>3.10.0</jooq.version>
         <spek.version>1.1.5</spek.version>
-        <kotlin.version>1.2.0</kotlin.version>
+        <kotlin.version>1.2.10</kotlin.version>
         <!-- Startup class -->
         <application.class>org.ort.school.app.AppKt</application.class>
     </properties>
@@ -25,9 +26,10 @@
     <dependencies>
 
         <!-- Server -->
+
         <dependency>
             <groupId>org.jooby</groupId>
-            <artifactId>jooby-netty</artifactId>
+            <artifactId>jooby-undertow</artifactId>
         </dependency>
 
         <dependency>
@@ -36,6 +38,7 @@
         </dependency>
 
         <!-- Test -->
+
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -91,12 +94,6 @@
 
         <dependency>
             <groupId>org.jooby</groupId>
-            <artifactId>jooby-caffeine</artifactId>
-            <version>${jooby.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jooby</groupId>
             <artifactId>jooby-hbv</artifactId>
         </dependency>
 
@@ -136,6 +133,14 @@
             <artifactId>jooby-csl</artifactId>
         </dependency>
 
+        <!-- REST client -->
+
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+
         <!--webjars-->
 
         <dependency>
@@ -150,11 +155,17 @@
             <version>0.100.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>materialNote</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
 
         <plugins>
             <plugin>
@@ -168,7 +179,6 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
                                 <sourceDir>${project.basedir}/src/main/java</sourceDir>
                             </sourceDirs>
                         </configuration>
@@ -225,13 +235,6 @@
             <plugin>
 
                 <!-- Specify the maven code generator plugin -->
-                <!-- Use org.jooq            for the Open Source Edition
-                         org.jooq.pro        for commercial editions,
-                         org.jooq.pro-java-6 for commercial editions with Java 6 support,
-                         org.jooq.trial      for the free trial edition
-
-                     Note: Only the Open Source Edition is hosted on Maven Central.
-                           Import the others manually from your distribution -->
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq.version}</version>
@@ -283,6 +286,18 @@
                         </target>
                     </generator>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
