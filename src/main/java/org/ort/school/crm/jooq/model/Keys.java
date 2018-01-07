@@ -13,15 +13,19 @@ import org.jooq.impl.AbstractKeys;
 import org.ort.school.crm.jooq.model.tables.Grade;
 import org.ort.school.crm.jooq.model.tables.Parent;
 import org.ort.school.crm.jooq.model.tables.ParentGrade;
+import org.ort.school.crm.jooq.model.tables.ParentStudent;
 import org.ort.school.crm.jooq.model.tables.Role;
 import org.ort.school.crm.jooq.model.tables.SchemaVersion;
+import org.ort.school.crm.jooq.model.tables.Student;
 import org.ort.school.crm.jooq.model.tables.User;
 import org.ort.school.crm.jooq.model.tables.UserRole;
 import org.ort.school.crm.jooq.model.tables.records.GradeRecord;
 import org.ort.school.crm.jooq.model.tables.records.ParentGradeRecord;
 import org.ort.school.crm.jooq.model.tables.records.ParentRecord;
+import org.ort.school.crm.jooq.model.tables.records.ParentStudentRecord;
 import org.ort.school.crm.jooq.model.tables.records.RoleRecord;
 import org.ort.school.crm.jooq.model.tables.records.SchemaVersionRecord;
+import org.ort.school.crm.jooq.model.tables.records.StudentRecord;
 import org.ort.school.crm.jooq.model.tables.records.UserRecord;
 import org.ort.school.crm.jooq.model.tables.records.UserRoleRecord;
 
@@ -46,6 +50,7 @@ public class Keys {
 
     public static final Identity<GradeRecord, Integer> IDENTITY_GRADE = Identities0.IDENTITY_GRADE;
     public static final Identity<ParentRecord, Long> IDENTITY_PARENT = Identities0.IDENTITY_PARENT;
+    public static final Identity<StudentRecord, Long> IDENTITY_STUDENT = Identities0.IDENTITY_STUDENT;
     public static final Identity<UserRecord, Long> IDENTITY_USER = Identities0.IDENTITY_USER;
 
     // -------------------------------------------------------------------------
@@ -55,8 +60,12 @@ public class Keys {
     public static final UniqueKey<GradeRecord> CONSTRAINT_4 = UniqueKeys0.CONSTRAINT_4;
     public static final UniqueKey<GradeRecord> CONSTRAINT_40 = UniqueKeys0.CONSTRAINT_40;
     public static final UniqueKey<ParentRecord> CONSTRAINT_8 = UniqueKeys0.CONSTRAINT_8;
+    public static final UniqueKey<ParentRecord> CONSTRAINT_8C = UniqueKeys0.CONSTRAINT_8C;
     public static final UniqueKey<ParentGradeRecord> CONSTRAINT_13D = UniqueKeys0.CONSTRAINT_13D;
+    public static final UniqueKey<ParentStudentRecord> CONSTRAINT_194D = UniqueKeys0.CONSTRAINT_194D;
     public static final UniqueKey<RoleRecord> CONSTRAINT_26 = UniqueKeys0.CONSTRAINT_26;
+    public static final UniqueKey<StudentRecord> CONSTRAINT_BA = UniqueKeys0.CONSTRAINT_BA;
+    public static final UniqueKey<StudentRecord> CONSTRAINT_BACA = UniqueKeys0.CONSTRAINT_BACA;
     public static final UniqueKey<UserRecord> CONSTRAINT_2 = UniqueKeys0.CONSTRAINT_2;
     public static final UniqueKey<UserRecord> CONSTRAINT_27 = UniqueKeys0.CONSTRAINT_27;
     public static final UniqueKey<UserRoleRecord> CONSTRAINT_BC1 = UniqueKeys0.CONSTRAINT_BC1;
@@ -68,6 +77,9 @@ public class Keys {
 
     public static final ForeignKey<ParentGradeRecord, ParentRecord> CONSTRAINT_1 = ForeignKeys0.CONSTRAINT_1;
     public static final ForeignKey<ParentGradeRecord, GradeRecord> CONSTRAINT_13 = ForeignKeys0.CONSTRAINT_13;
+    public static final ForeignKey<ParentStudentRecord, ParentRecord> CONSTRAINT_19 = ForeignKeys0.CONSTRAINT_19;
+    public static final ForeignKey<ParentStudentRecord, StudentRecord> CONSTRAINT_194 = ForeignKeys0.CONSTRAINT_194;
+    public static final ForeignKey<StudentRecord, GradeRecord> CONSTRAINT_BAC = ForeignKeys0.CONSTRAINT_BAC;
     public static final ForeignKey<UserRoleRecord, UserRecord> CONSTRAINT_B = ForeignKeys0.CONSTRAINT_B;
     public static final ForeignKey<UserRoleRecord, RoleRecord> CONSTRAINT_BC = ForeignKeys0.CONSTRAINT_BC;
 
@@ -78,6 +90,7 @@ public class Keys {
     private static class Identities0 extends AbstractKeys {
         public static Identity<GradeRecord, Integer> IDENTITY_GRADE = createIdentity(Grade.GRADE, Grade.GRADE.ID);
         public static Identity<ParentRecord, Long> IDENTITY_PARENT = createIdentity(Parent.PARENT, Parent.PARENT.ID);
+        public static Identity<StudentRecord, Long> IDENTITY_STUDENT = createIdentity(Student.STUDENT, Student.STUDENT.ID);
         public static Identity<UserRecord, Long> IDENTITY_USER = createIdentity(User.USER, User.USER.ID);
     }
 
@@ -85,8 +98,12 @@ public class Keys {
         public static final UniqueKey<GradeRecord> CONSTRAINT_4 = createUniqueKey(Grade.GRADE, "CONSTRAINT_4", Grade.GRADE.ID);
         public static final UniqueKey<GradeRecord> CONSTRAINT_40 = createUniqueKey(Grade.GRADE, "CONSTRAINT_40", Grade.GRADE.GRADE_NO, Grade.GRADE.GRADE_LETTER);
         public static final UniqueKey<ParentRecord> CONSTRAINT_8 = createUniqueKey(Parent.PARENT, "CONSTRAINT_8", Parent.PARENT.ID);
+        public static final UniqueKey<ParentRecord> CONSTRAINT_8C = createUniqueKey(Parent.PARENT, "CONSTRAINT_8C", Parent.PARENT.EMAIL);
         public static final UniqueKey<ParentGradeRecord> CONSTRAINT_13D = createUniqueKey(ParentGrade.PARENT_GRADE, "CONSTRAINT_13D", ParentGrade.PARENT_GRADE.PARENT_ID, ParentGrade.PARENT_GRADE.GRADE_ID);
+        public static final UniqueKey<ParentStudentRecord> CONSTRAINT_194D = createUniqueKey(ParentStudent.PARENT_STUDENT, "CONSTRAINT_194D", ParentStudent.PARENT_STUDENT.PARENT_ID, ParentStudent.PARENT_STUDENT.STUDENT_ID);
         public static final UniqueKey<RoleRecord> CONSTRAINT_26 = createUniqueKey(Role.ROLE, "CONSTRAINT_26", Role.ROLE.NAME);
+        public static final UniqueKey<StudentRecord> CONSTRAINT_BA = createUniqueKey(Student.STUDENT, "CONSTRAINT_BA", Student.STUDENT.ID);
+        public static final UniqueKey<StudentRecord> CONSTRAINT_BACA = createUniqueKey(Student.STUDENT, "CONSTRAINT_BACA", Student.STUDENT.FIRSTNAME, Student.STUDENT.LASTNAME, Student.STUDENT.PATRONYMIC, Student.STUDENT.GRADE_ID);
         public static final UniqueKey<UserRecord> CONSTRAINT_2 = createUniqueKey(User.USER, "CONSTRAINT_2", User.USER.ID);
         public static final UniqueKey<UserRecord> CONSTRAINT_27 = createUniqueKey(User.USER, "CONSTRAINT_27", User.USER.USERNAME);
         public static final UniqueKey<UserRoleRecord> CONSTRAINT_BC1 = createUniqueKey(UserRole.USER_ROLE, "CONSTRAINT_BC1", UserRole.USER_ROLE.USER_ID, UserRole.USER_ROLE.ROLE);
@@ -96,6 +113,9 @@ public class Keys {
     private static class ForeignKeys0 extends AbstractKeys {
         public static final ForeignKey<ParentGradeRecord, ParentRecord> CONSTRAINT_1 = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_8, ParentGrade.PARENT_GRADE, "CONSTRAINT_1", ParentGrade.PARENT_GRADE.PARENT_ID);
         public static final ForeignKey<ParentGradeRecord, GradeRecord> CONSTRAINT_13 = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_4, ParentGrade.PARENT_GRADE, "CONSTRAINT_13", ParentGrade.PARENT_GRADE.GRADE_ID);
+        public static final ForeignKey<ParentStudentRecord, ParentRecord> CONSTRAINT_19 = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_8, ParentStudent.PARENT_STUDENT, "CONSTRAINT_19", ParentStudent.PARENT_STUDENT.PARENT_ID);
+        public static final ForeignKey<ParentStudentRecord, StudentRecord> CONSTRAINT_194 = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_BA, ParentStudent.PARENT_STUDENT, "CONSTRAINT_194", ParentStudent.PARENT_STUDENT.STUDENT_ID);
+        public static final ForeignKey<StudentRecord, GradeRecord> CONSTRAINT_BAC = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_4, Student.STUDENT, "CONSTRAINT_BAC", Student.STUDENT.GRADE_ID);
         public static final ForeignKey<UserRoleRecord, UserRecord> CONSTRAINT_B = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_2, UserRole.USER_ROLE, "CONSTRAINT_B", UserRole.USER_ROLE.USER_ID);
         public static final ForeignKey<UserRoleRecord, RoleRecord> CONSTRAINT_BC = createForeignKey(org.ort.school.crm.jooq.model.Keys.CONSTRAINT_26, UserRole.USER_ROLE, "CONSTRAINT_BC", UserRole.USER_ROLE.ROLE);
     }

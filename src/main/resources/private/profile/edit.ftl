@@ -25,7 +25,9 @@
         <ul>
             <li><a href="/">На главную</a></li>
         </ul>
+
         <ul class="right">
+            <#if profile.roles?seq_contains('admin')>
             <li><a href="/private/admin/users">Пользователи</a></li>
             <li><a href="/private/admin/degrees">Классы</a></li>
             <li>
@@ -34,6 +36,7 @@
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
             </li>
+            </#if>
         </ul>
     </div>
 
@@ -41,7 +44,7 @@
 <div class="container">
     <h1>Редактирование пользователя</h1>
     <div class="row">
-        <form action="/private/user/${data.username}/update" class="col s12" method="post">
+        <form action="/private/user/${data.username}/edit" class="col s12" method="post">
             <div class="row">
                 <div class="input-field col s4">
                     <input id="lastname" type="text" class="validate" name="lastname"
@@ -60,15 +63,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s4">
+                <div class="input-field col s6">
                     <input id="password" type="password" class="validate" name="password">
                     <label for="password">Пароль</label>
                 </div>
-                <div class="input-field col s4">
+                <div class="input-field col s6">
                     <input id="passwordConfirm" type="password" class="validate" name="passwordConfirm">
                     <label for="passwordConfirm">Пароль</label>
                 </div>
-                <div class="input-field col s4">
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="email" type="email" class="validate" name="email"
+                    <#if data.email??>value="${data.email}"</#if>>
+                    <label for="email">EMail</label>
+                </div>
+                <div class="input-field col s6">
                     <select id="role" name="role">
                         <option value="no" disabled>Выберите роль</option>
                         <option value="admin"
@@ -83,10 +93,9 @@
                     </select>
                     <label for="role">Роль</label>
                 </div>
-
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Обновить
+                <button class="btn waves-effect waves-light" type="submit">Обновить
                     <i class="material-icons right">send</i>
                 </button>
             </div>

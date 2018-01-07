@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="degrees" type="java.util.List<kotlin.Pair<java.lang.Integer, java.lang.String>>" -->
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
 <head>
@@ -12,44 +13,52 @@
 
 </head>
 <body>
+<#if profile??>
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="/private/user/${profile.id}/edit">Профиль</a></li>
+    <li class="disabled"><a href="/private/user/${profile.id}/edit">Профиль</a></li>
     <li><a href="/logout">Выйти</a></li>
 </ul>
-<nav class="nav-extended">
-    <div class="nav-wrapper">
-        <a href="/" class="brand-logo"></a>
+</#if>
+<nav>
+    <div class="nav-wrapper"><a href="/" class="brand-logo"></a>
         <ul>
             <li><a href="/">На главную</a></li>
         </ul>
         <ul class="right">
-            <li <#if part == 'users'>class="active" </#if>><a href="/private/admin/users">Пользователи</a></li>
-            <li <#if part == 'degrees'>class="active" </#if>><a href="/private/admin/degrees">Классы</a></li>
+        <#if !loggedIn>
+            <li><a href="/private">Войти</a></li>
+        <#else >
 
+            <#if profile.roles?seq_contains('admin')>
+            <li><a href="/private/admin/users">Пользователи</a></li>
+            <li><a href="/private/admin/degrees">Классы</a></li>
             <li>
-                <a class="dropdown-button" href="#!" data-activates="dropdown1">
+                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
                     <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
             </li>
+            <#elseif profile.roles?seq_contains('author')>
+            <li><a href="/private/author">Создать рассылку</a></li>
+            <li>
+                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
+                    <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+            </li>
+            </#if>
+        </#if>
         </ul>
     </div>
-
 </nav>
-<div>
-    <div class="row">
-        <div class="col s10 offset-s1">
-            <#include "admin/"+part+".ftl">
-        </div>
-    </div>
-</div>
+<h1>Ошибка</h1>
+<h3>${status}: ${reason}</h3>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="/webjars/materializecss/0.100.2/js/materialize.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".dropdown-button").dropdown();
         $('select').material_select();
-        $('.modal').modal();
     })
 </script>
 </body>

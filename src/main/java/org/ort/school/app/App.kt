@@ -1,27 +1,26 @@
 package org.ort.school.app
 
 import com.google.inject.TypeLiteral
+import jdk.nashorn.internal.runtime.regexp.joni.Config.log
 import org.jooby.Kooby
 import org.jooby.RequestLogger
-import org.jooby.caffeine.CaffeineCache
+import org.jooby.Results
+import org.jooby.csl.XSS
 import org.jooby.flyway.Flywaydb
 import org.jooby.ftl.Ftl
 import org.jooby.hbv.Hbv
+import org.jooby.internal.pac4j.AuthFilter
 import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Auth
 import org.jooby.pac4j.AuthSessionStore
 import org.jooby.run
+import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.UserRepo
-import org.ort.school.app.routes.Login
-import org.ort.school.app.routes.Main
-import org.ort.school.app.routes.Private
-import org.ort.school.app.routes.User
-import org.ort.school.app.service.DBAuth
+import org.ort.school.app.routes.*
+import org.ort.school.app.service.*
 import org.pac4j.core.profile.CommonProfile
-import org.jooby.csl.XSS
-
-
+import org.pac4j.http.client.indirect.FormClient
 
 
 /**
@@ -30,12 +29,39 @@ import org.jooby.csl.XSS
 class App : Kooby({
     modules()
     repositoriies()
+    services()
     unsecureControllers()
-
-    use(Auth().form("*", DBAuth::class.java).logout("/logout", "/"))
-    use(User::class)
-    use(Private::class)
+    err { req, rsp, err ->
+        val require = require(CommonProfile::class.java)
+        rsp.send(
+                Results
+                        .html("/public/error")
+                        .put("status", err.statusCode())
+                        .put("profile", require)
+                        .put("reason", when (err.statusCode()) {
+                            403 -> "Недостаточно прав"
+                            404 -> "Страница не найдена"
+                            else -> "Неизвестная ошибка"
+                        })
+        )
+    }
+    use(Auth().form("/private/**", DBAuth::class.java).)
+    secureControllers()
 })
+
+private fun Kooby.secureControllers() {
+    use(User::class)
+    use(Degree::class)
+    use(Author::class)
+    use(Private::class)
+}
+
+fun Kooby.services() {
+    use(PasswordService::class)
+    use(UserService::class)
+    use(DegreeService::class)
+    use(SubscribeService::class)
+}
 
 
 private fun Kooby.unsecureControllers() {
@@ -58,13 +84,13 @@ private fun Kooby.unsecureControllers() {
 
 private fun Kooby.repositoriies() {
     use(UserRepo::class)
+    use(DegreeRepo::class)
 }
 
 private fun Kooby.modules() {
     use(Jdbc())
     use(Flywaydb())
     use(jOOQ())
-    use(CaffeineCache.newCache())
     use(Ftl("/", ".ftl"))
     use(Hbv())
     assets("/webjars/**", "/META-INF/resources/webjars/{0}")

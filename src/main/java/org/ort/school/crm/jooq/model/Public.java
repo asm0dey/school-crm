@@ -16,8 +16,10 @@ import org.jooq.impl.SchemaImpl;
 import org.ort.school.crm.jooq.model.tables.Grade;
 import org.ort.school.crm.jooq.model.tables.Parent;
 import org.ort.school.crm.jooq.model.tables.ParentGrade;
+import org.ort.school.crm.jooq.model.tables.ParentStudent;
 import org.ort.school.crm.jooq.model.tables.Role;
 import org.ort.school.crm.jooq.model.tables.SchemaVersion;
+import org.ort.school.crm.jooq.model.tables.Student;
 import org.ort.school.crm.jooq.model.tables.User;
 import org.ort.school.crm.jooq.model.tables.UserRole;
 
@@ -35,7 +37,7 @@ import org.ort.school.crm.jooq.model.tables.UserRole;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = 1797844789;
+    private static final long serialVersionUID = -1043395009;
 
     /**
      * The reference instance of <code>PUBLIC</code>
@@ -58,9 +60,19 @@ public class Public extends SchemaImpl {
     public final ParentGrade PARENT_GRADE = org.ort.school.crm.jooq.model.tables.ParentGrade.PARENT_GRADE;
 
     /**
+     * The table <code>PUBLIC.PARENT_STUDENT</code>.
+     */
+    public final ParentStudent PARENT_STUDENT = org.ort.school.crm.jooq.model.tables.ParentStudent.PARENT_STUDENT;
+
+    /**
      * The table <code>PUBLIC.ROLE</code>.
      */
     public final Role ROLE = org.ort.school.crm.jooq.model.tables.Role.ROLE;
+
+    /**
+     * The table <code>PUBLIC.STUDENT</code>.
+     */
+    public final Student STUDENT = org.ort.school.crm.jooq.model.tables.Student.STUDENT;
 
     /**
      * The table <code>PUBLIC.USER</code>.
@@ -105,7 +117,9 @@ public class Public extends SchemaImpl {
             Grade.GRADE,
             Parent.PARENT,
             ParentGrade.PARENT_GRADE,
+            ParentStudent.PARENT_STUDENT,
             Role.ROLE,
+            Student.STUDENT,
             User.USER,
             UserRole.USER_ROLE,
             SchemaVersion.SCHEMA_VERSION);

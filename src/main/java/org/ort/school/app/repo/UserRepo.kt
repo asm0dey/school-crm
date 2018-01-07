@@ -4,10 +4,9 @@ import com.google.inject.Inject
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.mindrot.jbcrypt.BCrypt
-import org.ort.school.app.routes.FirstUserInfo
-import org.ort.school.app.routes.UserInfoDTO
+import org.ort.school.app.model.UserInfoDTO
+import org.ort.school.crm.jooq.model.Tables
 import org.ort.school.crm.jooq.model.Tables.*
-import org.pac4j.core.credentials.password.JBCryptPasswordEncoder
 
 class UserRepo @Inject constructor(private val ctx: DSLContext) {
 
@@ -19,23 +18,8 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
             .where(ROLE.NAME.eq("admin"))
             .fetchOne(0, Int::class.java) > 0
 
-    fun createUser(userInfo: FirstUserInfo) {
-        ctx.transactionResult { conf ->
-            val tx = DSL.using(conf)
-            val userId = tx
-                    .insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.EMAIL)
-                    .values(userInfo.username, JBCryptPasswordEncoder().encode(userInfo.password), userInfo.email)
-                    .returning(USER.ID)
-                    .fetchOne()[USER.ID]
-            tx.insertInto(USER_ROLE, USER_ROLE.USER_ID, USER_ROLE.ROLE)
-                    .values(userId, "admin")
-                    .execute()
-
-        }
-    }
-
     fun listUsers() = ctx
-            .select(USER.USERNAME, USER.FIRSTNAME, USER.LASTNAME, USER.PATRONYMIC, USER_ROLE.ROLE)
+            .select(USER.USERNAME, USER.FIRSTNAME, USER.LASTNAME, USER.PATRONYMIC, USER_ROLE.ROLE, USER.EMAIL)
             .from(USER, USER_ROLE)
             .where(
                     USER.ID.eq(USER_ROLE.USER_ID)
@@ -95,17 +79,33 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
 
     }
 
-    fun userBy(username: String): UserDTO {
-        return ctx
-                .select(USER.USERNAME, USER.FIRSTNAME, USER.LASTNAME, USER.PATRONYMIC, USER_ROLE.ROLE)
-                .from(USER, USER_ROLE)
-                .where(
-                        USER.ID.eq(USER_ROLE.USER_ID),
-                        USER.USERNAME.eq(username)
-                )
-                .fetchOneInto(UserDTO::class.java)
-                .copy(password = null)
-    }
+    fun userBy(username: String): UserDTO =
+            ctx
+                    .select(USER.USERNAME, USER.FIRSTNAME, USER.LASTNAME, USER.PATRONYMIC, USER_ROLE.ROLE, USER.EMAIL)
+                    .from(USER, USER_ROLE)
+                    .where(
+                            USER.ID.eq(USER_ROLE.USER_ID),
+                            USER.USERNAME.eq(username)
+                    )
+                    .fetchOneInto(UserDTO::class.java)
+                    .copy(password = null)
+
+    fun rolesBy(username: String) = ctx
+            .select(Tables.ROLE.NAME)
+            .from(Tables.USER, Tables.USER_ROLE, Tables.ROLE)
+            .where(
+                    Tables.USER.ID.eq(Tables.USER_ROLE.USER_ID),
+                    Tables.ROLE.NAME.eq(Tables.USER_ROLE.ROLE),
+                    Tables.USER.USERNAME.eq(username)
+            )
+            .fetch(Tables.ROLE.NAME)
+            .toSet()
+
+    fun userRecordBy(username: String) = ctx
+            .selectFrom(Tables.USER)
+            .where(Tables.USER.USERNAME.eq(username))
+            .fetchOptional().orElse(null)
+
 
     fun countUsersBy(username: String): Long = ctx
             .selectCount()
@@ -118,7 +118,6 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
             val tx = DSL.using(configuration)
             val record = tx.newRecord(USER)
             record.from(userInfo)
-            record.password = BCrypt.hashpw(record.password,BCrypt.gensalt())
             val userRecord = tx
                     .insertInto(USER)
                     .set(record)
@@ -130,6 +129,25 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                     .execute()
         }
     }
+
+    fun deleteUser(username: String) =
+            ctx.transactionResult { configuration ->
+                val tx = DSL.using(configuration)
+                val userId = tx
+                        .select(USER.ID)
+                        .from(USER)
+                        .where(USER.USERNAME.eq(username))
+                        .fetchOne(USER.ID)
+                tx
+                        .deleteFrom(USER_ROLE)
+                        .where(USER_ROLE.USER_ID.eq(userId))
+                        .execute()
+                tx
+                        .deleteFrom(USER)
+                        .where(USER.ID.eq(userId))
+                        .execute()
+            }
+
 }
 
 data class UserDTO @JvmOverloads constructor(
@@ -138,6 +156,7 @@ data class UserDTO @JvmOverloads constructor(
         val lastname: String?,
         val patronymic: String?,
         val role: String,
+        val email: String?,
         val password: String? = null
 ) {
     val displayName
