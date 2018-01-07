@@ -51,6 +51,7 @@
                             <p class="help is-danger">${errors['valid']}</p>
                         </#if>
                     </div>
+                    <input type="hidden" value="${csrf}" name="csrf">
 
                     <div class="control">
                         <button class="button isLink" type="submit">Отправить</button>

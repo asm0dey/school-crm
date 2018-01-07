@@ -43,6 +43,7 @@
                     <i class="material-icons right">send</i>
                 </button>
             </div>
+            <input type="hidden" value="${csrf}" name="csrf">
         </form>
         <div class="col s4"></div>
     </div>
