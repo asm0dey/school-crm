@@ -1,4 +1,5 @@
 [#ftl]
 [#-- @implicitly included --]
+[#-- @ftlvariable name="csrf" type="java.lang.String" --]
 [#-- @ftlvariable name="loggedIn" type="boolean" --]
 [#-- @ftlvariable name="profile" type="org.pac4j.core.profile.CommonProfile" --]
