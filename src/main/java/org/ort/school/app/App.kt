@@ -1,8 +1,9 @@
 package org.ort.school.app
 
 import com.google.inject.TypeLiteral
-import org.jooby.*
-import org.jooby.csl.XSS
+import org.jooby.Kooby
+import org.jooby.RequestLogger
+import org.jooby.Results
 import org.jooby.flyway.Flywaydb
 import org.jooby.ftl.Ftl
 import org.jooby.handlers.CsrfHandler
@@ -11,6 +12,7 @@ import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Auth
 import org.jooby.pac4j.AuthSessionStore
+import org.jooby.run
 import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.app.routes.*
@@ -60,7 +62,9 @@ fun Kooby.services() {
 
 
 private fun Kooby.unsecureControllers() {
-    use("*", RequestLogger())
+    use("*", RequestLogger().latency().extended().queryString())
+    assets("/webjars/**", "/META-INF/resources/webjars/{0}")
+    assets("favicon*", "/")
     use("*", CsrfHandler())
     use("*") { req, resp, chain ->
         val loggedIn = req.session().get(Auth.ID).toOptional().isPresent
@@ -89,8 +93,6 @@ private fun Kooby.modules() {
     use(jOOQ())
     use(Ftl("/", ".ftl"))
     use(Hbv())
-    assets("/webjars/**", "/META-INF/resources/webjars/{0}")
-    use(XSS())
 }
 
 
