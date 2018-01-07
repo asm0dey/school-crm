@@ -38,7 +38,7 @@ import org.ort.school.crm.jooq.model.tables.records.ParentRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Parent extends TableImpl<ParentRecord> {
 
-    private static final long serialVersionUID = 880076576;
+    private static final long serialVersionUID = 1857700024;
 
     /**
      * The reference instance of <code>PUBLIC.PARENT</code>
@@ -61,22 +61,22 @@ public class Parent extends TableImpl<ParentRecord> {
     /**
      * The column <code>PUBLIC.PARENT.LASTNAME</code>.
      */
-    public final TableField<ParentRecord, String> LASTNAME = createField("LASTNAME", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<ParentRecord, String> LASTNAME = createField("LASTNAME", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.PARENT.FIRSTNAME</code>.
      */
-    public final TableField<ParentRecord, String> FIRSTNAME = createField("FIRSTNAME", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<ParentRecord, String> FIRSTNAME = createField("FIRSTNAME", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.PARENT.EMAIL</code>.
      */
-    public final TableField<ParentRecord, String> EMAIL = createField("EMAIL", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<ParentRecord, String> EMAIL = createField("EMAIL", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.PARENT.PATRONYMIC</code>.
      */
-    public final TableField<ParentRecord, String> PATRONYMIC = createField("PATRONYMIC", org.jooq.impl.SQLDataType.CLOB, this, "");
+    public final TableField<ParentRecord, String> PATRONYMIC = createField("PATRONYMIC", org.jooq.impl.SQLDataType.VARCHAR(300), this, "");
 
     /**
      * Create a <code>PUBLIC.PARENT</code> table reference
@@ -120,7 +120,7 @@ public class Parent extends TableImpl<ParentRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PRIMARY_KEY_8);
+        return Arrays.<Index>asList(Indexes.CONSTRAINT_INDEX_8, Indexes.PRIMARY_KEY_8);
     }
 
     /**
@@ -144,7 +144,7 @@ public class Parent extends TableImpl<ParentRecord> {
      */
     @Override
     public List<UniqueKey<ParentRecord>> getKeys() {
-        return Arrays.<UniqueKey<ParentRecord>>asList(Keys.CONSTRAINT_8);
+        return Arrays.<UniqueKey<ParentRecord>>asList(Keys.CONSTRAINT_8, Keys.CONSTRAINT_8C);
     }
 
     /**

@@ -99,8 +99,7 @@
                     </label>
                 </div>
                 <div class="input-field col s6">
-                    <input id="passwordConfirm" type="password" class="validate <#if errors?? && errors['validPassword']??>invalid</#if>" name="passwordConfirm" minlength="6"
-                           required>
+                    <input id="passwordConfirm" type="password" class="validate <#if errors?? && errors['validPassword']??>invalid</#if>" name="passwordConfirm" minlength="6" required>
                     <label for="passwordConfirm" <#if errors?? && errors['validPassword']??>data-error="${errors['validPassword']}"</#if>>
                         Повторите пароль
                     </label>
@@ -120,7 +119,6 @@
     $(document).ready(function () {
         $(".dropdown-button").dropdown();
         $('select').material_select();
-        Materialize.updateTextFields();
     })
 </script>
 </body>

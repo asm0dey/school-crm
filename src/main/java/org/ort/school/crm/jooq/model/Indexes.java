@@ -12,8 +12,10 @@ import org.jooq.impl.AbstractKeys;
 import org.ort.school.crm.jooq.model.tables.Grade;
 import org.ort.school.crm.jooq.model.tables.Parent;
 import org.ort.school.crm.jooq.model.tables.ParentGrade;
+import org.ort.school.crm.jooq.model.tables.ParentStudent;
 import org.ort.school.crm.jooq.model.tables.Role;
 import org.ort.school.crm.jooq.model.tables.SchemaVersion;
+import org.ort.school.crm.jooq.model.tables.Student;
 import org.ort.school.crm.jooq.model.tables.User;
 import org.ort.school.crm.jooq.model.tables.UserRole;
 
@@ -37,11 +39,21 @@ public class Indexes {
 
     public static final Index CONSTRAINT_INDEX_4 = Indexes0.CONSTRAINT_INDEX_4;
     public static final Index PRIMARY_KEY_4 = Indexes0.PRIMARY_KEY_4;
+    public static final Index CONSTRAINT_INDEX_8 = Indexes0.CONSTRAINT_INDEX_8;
     public static final Index PRIMARY_KEY_8 = Indexes0.PRIMARY_KEY_8;
     public static final Index CONSTRAINT_INDEX_1 = Indexes0.CONSTRAINT_INDEX_1;
     public static final Index CONSTRAINT_INDEX_13 = Indexes0.CONSTRAINT_INDEX_13;
     public static final Index PRIMARY_KEY_1 = Indexes0.PRIMARY_KEY_1;
+    public static final Index CONSTRAINT_INDEX_19 = Indexes0.CONSTRAINT_INDEX_19;
+    public static final Index CONSTRAINT_INDEX_194 = Indexes0.CONSTRAINT_INDEX_194;
+    public static final Index PRIMARY_KEY_19 = Indexes0.PRIMARY_KEY_19;
+    public static final Index P_S_PID = Indexes0.P_S_PID;
+    public static final Index P_S_SID = Indexes0.P_S_SID;
     public static final Index PRIMARY_KEY_26 = Indexes0.PRIMARY_KEY_26;
+    public static final Index CONSTRAINT_INDEX_BA = Indexes0.CONSTRAINT_INDEX_BA;
+    public static final Index CONSTRAINT_INDEX_BAC = Indexes0.CONSTRAINT_INDEX_BAC;
+    public static final Index PRIMARY_KEY_BA = Indexes0.PRIMARY_KEY_BA;
+    public static final Index STUDENT_GRADE = Indexes0.STUDENT_GRADE;
     public static final Index CONSTRAINT_INDEX_2 = Indexes0.CONSTRAINT_INDEX_2;
     public static final Index PRIMARY_KEY_2 = Indexes0.PRIMARY_KEY_2;
     public static final Index USER_NAME = Indexes0.USER_NAME;
@@ -60,11 +72,21 @@ public class Indexes {
     private static class Indexes0 extends AbstractKeys {
         public static Index CONSTRAINT_INDEX_4 = createIndex("CONSTRAINT_INDEX_4", Grade.GRADE, new OrderField[] { Grade.GRADE.GRADE_NO, Grade.GRADE.GRADE_LETTER }, true);
         public static Index PRIMARY_KEY_4 = createIndex("PRIMARY_KEY_4", Grade.GRADE, new OrderField[] { Grade.GRADE.ID }, true);
+        public static Index CONSTRAINT_INDEX_8 = createIndex("CONSTRAINT_INDEX_8", Parent.PARENT, new OrderField[] { Parent.PARENT.EMAIL }, true);
         public static Index PRIMARY_KEY_8 = createIndex("PRIMARY_KEY_8", Parent.PARENT, new OrderField[] { Parent.PARENT.ID }, true);
         public static Index CONSTRAINT_INDEX_1 = createIndex("CONSTRAINT_INDEX_1", ParentGrade.PARENT_GRADE, new OrderField[] { ParentGrade.PARENT_GRADE.PARENT_ID }, false);
         public static Index CONSTRAINT_INDEX_13 = createIndex("CONSTRAINT_INDEX_13", ParentGrade.PARENT_GRADE, new OrderField[] { ParentGrade.PARENT_GRADE.GRADE_ID }, false);
         public static Index PRIMARY_KEY_1 = createIndex("PRIMARY_KEY_1", ParentGrade.PARENT_GRADE, new OrderField[] { ParentGrade.PARENT_GRADE.PARENT_ID, ParentGrade.PARENT_GRADE.GRADE_ID }, true);
+        public static Index CONSTRAINT_INDEX_19 = createIndex("CONSTRAINT_INDEX_19", ParentStudent.PARENT_STUDENT, new OrderField[] { ParentStudent.PARENT_STUDENT.PARENT_ID }, false);
+        public static Index CONSTRAINT_INDEX_194 = createIndex("CONSTRAINT_INDEX_194", ParentStudent.PARENT_STUDENT, new OrderField[] { ParentStudent.PARENT_STUDENT.STUDENT_ID }, false);
+        public static Index PRIMARY_KEY_19 = createIndex("PRIMARY_KEY_19", ParentStudent.PARENT_STUDENT, new OrderField[] { ParentStudent.PARENT_STUDENT.PARENT_ID, ParentStudent.PARENT_STUDENT.STUDENT_ID }, true);
+        public static Index P_S_PID = createIndex("P_S_PID", ParentStudent.PARENT_STUDENT, new OrderField[] { ParentStudent.PARENT_STUDENT.PARENT_ID }, false);
+        public static Index P_S_SID = createIndex("P_S_SID", ParentStudent.PARENT_STUDENT, new OrderField[] { ParentStudent.PARENT_STUDENT.STUDENT_ID }, false);
         public static Index PRIMARY_KEY_26 = createIndex("PRIMARY_KEY_26", Role.ROLE, new OrderField[] { Role.ROLE.NAME }, true);
+        public static Index CONSTRAINT_INDEX_BA = createIndex("CONSTRAINT_INDEX_BA", Student.STUDENT, new OrderField[] { Student.STUDENT.GRADE_ID }, false);
+        public static Index CONSTRAINT_INDEX_BAC = createIndex("CONSTRAINT_INDEX_BAC", Student.STUDENT, new OrderField[] { Student.STUDENT.FIRSTNAME, Student.STUDENT.LASTNAME, Student.STUDENT.PATRONYMIC, Student.STUDENT.GRADE_ID }, true);
+        public static Index PRIMARY_KEY_BA = createIndex("PRIMARY_KEY_BA", Student.STUDENT, new OrderField[] { Student.STUDENT.ID }, true);
+        public static Index STUDENT_GRADE = createIndex("STUDENT_GRADE", Student.STUDENT, new OrderField[] { Student.STUDENT.GRADE_ID }, false);
         public static Index CONSTRAINT_INDEX_2 = createIndex("CONSTRAINT_INDEX_2", User.USER, new OrderField[] { User.USER.USERNAME }, true);
         public static Index PRIMARY_KEY_2 = createIndex("PRIMARY_KEY_2", User.USER, new OrderField[] { User.USER.ID }, true);
         public static Index USER_NAME = createIndex("USER_NAME", User.USER, new OrderField[] { User.USER.USERNAME }, false);

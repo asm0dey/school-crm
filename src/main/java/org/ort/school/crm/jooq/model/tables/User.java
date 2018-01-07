@@ -38,7 +38,7 @@ import org.ort.school.crm.jooq.model.tables.records.UserRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = -393297814;
+    private static final long serialVersionUID = 1807967899;
 
     /**
      * The reference instance of <code>PUBLIC.USER</code>
@@ -66,27 +66,27 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>PUBLIC.USER.PASSWORD</code>.
      */
-    public final TableField<UserRecord, String> PASSWORD = createField("PASSWORD", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UserRecord, String> PASSWORD = createField("PASSWORD", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.USER.EMAIL</code>.
      */
-    public final TableField<UserRecord, String> EMAIL = createField("EMAIL", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UserRecord, String> EMAIL = createField("EMAIL", org.jooq.impl.SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.USER.FIRSTNAME</code>.
      */
-    public final TableField<UserRecord, String> FIRSTNAME = createField("FIRSTNAME", org.jooq.impl.SQLDataType.CLOB, this, "");
+    public final TableField<UserRecord, String> FIRSTNAME = createField("FIRSTNAME", org.jooq.impl.SQLDataType.VARCHAR(300), this, "");
 
     /**
      * The column <code>PUBLIC.USER.LASTNAME</code>.
      */
-    public final TableField<UserRecord, String> LASTNAME = createField("LASTNAME", org.jooq.impl.SQLDataType.CLOB, this, "");
+    public final TableField<UserRecord, String> LASTNAME = createField("LASTNAME", org.jooq.impl.SQLDataType.VARCHAR(300), this, "");
 
     /**
      * The column <code>PUBLIC.USER.PATRONYMIC</code>.
      */
-    public final TableField<UserRecord, String> PATRONYMIC = createField("PATRONYMIC", org.jooq.impl.SQLDataType.CLOB, this, "");
+    public final TableField<UserRecord, String> PATRONYMIC = createField("PATRONYMIC", org.jooq.impl.SQLDataType.VARCHAR(300), this, "");
 
     /**
      * Create a <code>PUBLIC.USER</code> table reference

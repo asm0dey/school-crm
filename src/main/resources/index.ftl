@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="degrees" type="java.util.List<kotlin.Pair<java.lang.Integer, java.lang.String>>" -->
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
 <head>
@@ -12,6 +13,12 @@
 
 </head>
 <body>
+<#if profile??>
+<ul id="dropdown1" class="dropdown-content">
+    <li class="disabled"><a href="/private/user/${profile.id}/edit">Профиль</a></li>
+    <li><a href="/logout">Выйти</a></li>
+</ul>
+</#if>
 <nav>
     <div class="nav-wrapper"><a href="/" class="brand-logo"></a>
         <ul>
@@ -21,7 +28,19 @@
         <#if !loggedIn>
             <li><a href="/private">Войти</a></li>
         <#else >
-            <li><a href="/logout">Выйти</a></li>
+
+            <#if profile.roles?seq_contains('admin')>
+            <li><a href="/private/admin/users">Пользователи</a></li>
+            <li><a href="/private/admin/degrees">Классы</a></li>
+            <#elseif profile.roles?seq_contains('author')>
+            <li><a href="/private/author">Создать рассылку</a></li>
+            </#if>
+            <li>
+                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
+                    <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+            </li>
         </#if>
         </ul>
     </div>
@@ -36,36 +55,50 @@
         <form action="/subscribe" class="col s12" method="post">
             <div class="row">
                 <div class="input-field col s4">
-                    <input id="firstname" type="text" class="validate" required>
-                    <label for="firstname">Имя<span style="color: crimson">*</span></label>
+                    <input id="parent-lastname" type="text" class="validate" required name="parent[lastname]">
+                    <label for="parent-lastname">Ваша фамилия<span style="color: crimson">*</span></label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="lastname" type="text" class="validate" required>
-                    <label for="lastname">Фамилия<span style="color: crimson">*</span></label>
+                    <input id="parent-firstname" type="text" class="validate" required name="parent[firstname]">
+                    <label for="parent-firstname">Ваше имя<span style="color: crimson">*</span></label>
                 </div>
                 <div class="input-field col s4">
-                    <input id="patronymic" type="text" class="validate">
-                    <label for="patronymic">Отчество</label>
+                    <input id="parent-patronymic" type="text" name="parent[patronymic]">
+                    <label for="parent-patronymic">Ваше отчество</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s4">
-                    <i class="material-icons prefix">contact_mail</i>
-                    <input type="email" class="validate" name="email" id="email" required>
-                    <label for="email" data-error="Некорректный адрес">Email<span
+                    <input id="student-lastname" type="text" class="validate" required name="student[lastname]">
+                    <label for="student-lastname">Фамилия ученика<span style="color: crimson">*</span></label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="student-firstname" type="text" class="validate" required name="student[firstname]">
+                    <label for="student-firstname">Имя ученика<span style="color: crimson">*</span></label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="student-patronymic" type="text" class="validate" name="student[patronymic]">
+                    <label for="student-patronymic">Отчество ученика</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="email" class="validate" name="parent[email]" id="email" required>
+                    <label for="email" data-error="Некорректный адрес"> Ваш Email<span
                             style="color: crimson">*</span></label>
                 </div>
-                <div class="input-field col s4">
-                    <input type="number" class="validate" required min="1" max="11" id="classno" name="classno">
-                    <label for="classno">Номер класса<span style="color: crimson">*</span></label>
-                </div>
-                <div class="input-field col s4">
-                    <input type="text" class="validate" required pattern="^[А-ЯЁа-яё]{1}$">
-                    <label for="">Буква класса<span style="color: crimson">*</span></label>
+                <div class="input-field col s6">
+                    <select name="degreeNo" id="classno" class="validate" required>
+                        <option value="no" selected disabled>Выберите номер класса</option>
+                        <#list degrees as degree>
+                        <option value="${degree.first}">${degree.second}</option>
+                        </#list>
+                    </select>
+                    <label for="classno">Класс<span style="color: crimson">*</span></label>
                 </div>
             </div>
             <div class="row">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Зарегистрировать
+                <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
                     <i class="material-icons right">send</i>
                 </button>
             </div>
@@ -74,5 +107,11 @@
 </div>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="/webjars/materializecss/0.100.2/js/materialize.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".dropdown-button").dropdown();
+        $('select').material_select();
+    })
+</script>
 </body>
 </html>
