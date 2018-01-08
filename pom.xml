@@ -321,6 +321,17 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.3.1</version>
+                <configuration>
+                    <excludedMethods>
+                        <excludedMethod>kotlin.jvm.internal.Intrinsics.checkExpressionValueIsNotNull</excludedMethod>
+                    </excludedMethods>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
