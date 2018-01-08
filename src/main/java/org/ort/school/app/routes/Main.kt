@@ -19,7 +19,12 @@ import javax.validation.Validator
 
 @Singleton
 @Path("/")
-class Main @Inject constructor(private val validator: Validator, private val userService: UserService, private val degreeService: DegreeService, private val subscribeService: SubscribeService) {
+class Main @Inject constructor(
+        private val validator: Validator,
+        private val userService: UserService,
+        private val degreeService: DegreeService,
+        private val subscribeService: SubscribeService
+) {
 
     @GET
     fun home(): Result {
