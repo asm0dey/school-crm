@@ -27,6 +27,7 @@ class App : Kooby({
     modules()
     repositoriies()
     services()
+    filters()
     unsecureControllers()
     err { _, rsp, err ->
         val require = require(CommonProfile::class.java)
@@ -40,6 +41,7 @@ class App : Kooby({
                             404 -> "Страница не найдена"
                             else -> "Неизвестная ошибка"
                         })
+                        .status(err.statusCode())
         )
     }
     use(Auth().form("/private/**", DBAuth::class.java))
@@ -62,6 +64,11 @@ fun Kooby.services() {
 
 
 private fun Kooby.unsecureControllers() {
+    use(Main::class)
+    use(Login::class)
+}
+
+private fun Kooby.filters() {
     use("*", RequestLogger().latency().extended().queryString())
     assets("/webjars/**", "/META-INF/resources/webjars/{0}")
     assets("favicon*", "/")
@@ -78,8 +85,6 @@ private fun Kooby.unsecureControllers() {
         }
         chain.next(req, resp)
     }
-    use(Main::class)
-    use(Login::class)
 }
 
 private fun Kooby.repositoriies() {
