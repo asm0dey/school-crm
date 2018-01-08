@@ -1,9 +1,7 @@
 package org.ort.school.app
 
 import com.google.inject.TypeLiteral
-import org.jooby.Kooby
-import org.jooby.RequestLogger
-import org.jooby.Results
+import org.jooby.*
 import org.jooby.flyway.Flywaydb
 import org.jooby.ftl.Ftl
 import org.jooby.handlers.CsrfHandler
@@ -12,7 +10,6 @@ import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Auth
 import org.jooby.pac4j.AuthSessionStore
-import org.jooby.run
 import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.app.routes.*
@@ -98,6 +95,7 @@ private fun Kooby.modules() {
     use(jOOQ())
     use(Ftl("/", ".ftl"))
     use(Hbv())
+    use(FlashScope())
 }
 
 
