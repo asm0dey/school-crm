@@ -3,7 +3,6 @@ package org.ort.school.app.routes
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.mashape.unirest.http.Unirest
-import org.intellij.lang.annotations.Language
 import org.jooby.Result
 import org.jooby.Results
 import org.jooby.mvc.GET
@@ -30,8 +29,7 @@ class Main @Inject constructor(
     fun home(): Result {
         if (!isInitialized()) return Results.tempRedirect("init")
 
-        val degrees = degreeService.listDegreeNames()
-        return Results.html("index").put("degrees", degrees)
+        return renderIndex().put("errors", mapOf<String, String>())
     }
 
     @GET
@@ -53,11 +51,17 @@ class Main @Inject constructor(
     }
 
     @POST
-    @Path("/subscribe")
+    @Path("/")
     fun subscribe(subscribeDTO: SubscribeDTO): Result {
+        val errors = validator.validate(subscribeDTO).associate { it.propertyPath.toString() to it.message }
+        if (errors.isNotEmpty()) {
+            return renderIndex().put("errors", errors)
+        }
         subscribeService.subscribe(subscribeDTO)
-        return Results.redirect("/")
+        return renderIndex()
     }
+
+    private fun renderIndex() = Results.html("index").put("degrees", degreeService.listDegreeNames())
 
     private fun isInitialized() = userService.hasUsers()
 
