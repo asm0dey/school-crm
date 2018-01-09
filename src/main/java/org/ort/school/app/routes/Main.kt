@@ -24,10 +24,11 @@ class Main @Inject constructor(
         private val degreeService: DegreeService,
         private val subscribeService: SubscribeService
 ) {
+    private val initialized by lazy(LazyThreadSafetyMode.PUBLICATION) { isInitialized() }
 
     @GET
     fun home(): Result {
-        if (!isInitialized()) return Results.tempRedirect("init")
+        if (!initialized) return Results.tempRedirect("init")
 
         return renderIndex().put("errors", mapOf<String, String>())
     }
@@ -35,7 +36,7 @@ class Main @Inject constructor(
     @GET
     @Path("/init")
     fun init(): Result =
-            if (!isInitialized()) Results.html("init")
+            if (!initialized) Results.html("init")
             else Results.redirect("/")
 
     @POST

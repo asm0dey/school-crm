@@ -20,7 +20,7 @@ import org.pac4j.core.profile.CommonProfile
 /**
  * Kotlin stater project.
  */
-class App : Kooby({
+class SchoolCRM : Kooby({
     modules()
     repositoriies()
     services()
@@ -47,7 +47,7 @@ class App : Kooby({
 
 private fun Kooby.secureControllers() {
     use(User::class)
-    use(Degree::class)
+    use(Admin::class)
     use(Author::class)
     use(Private::class)
 }
@@ -103,5 +103,5 @@ private fun Kooby.modules() {
  * Run application:
  */
 fun main(args: Array<String>) {
-    run(::App, *args)
+    run(::SchoolCRM, *args)
 }
