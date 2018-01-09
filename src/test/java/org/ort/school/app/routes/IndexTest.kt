@@ -1,4 +1,4 @@
-package org.ort.school.app
+package org.ort.school.app.routes
 
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
@@ -7,7 +7,6 @@ import org.jooby.Status
 import org.jooby.View
 import org.junit.Test
 import org.ort.school.app.model.UserInfoDTO
-import org.ort.school.app.routes.Main
 import org.ort.school.app.service.DegreeService
 import org.ort.school.app.service.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
