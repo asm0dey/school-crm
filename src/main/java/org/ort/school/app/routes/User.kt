@@ -2,10 +2,8 @@ package org.ort.school.app.routes
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
-import org.jooby.Request
-import org.jooby.Result
-import org.jooby.Results
-import org.jooby.Status
+import org.jooby.*
+import org.jooby.Results.redirect
 import org.jooby.mvc.*
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.UserService
@@ -15,10 +13,21 @@ import javax.validation.Validator
 
 @Singleton
 @Path("/private/user")
-class User @Inject constructor(val validator: Validator, val userService: UserService) {
+class User @Inject constructor(private val validator: Validator, private val userService: UserService) {
+    @GET
+    fun defaultUserArea(@Local profile: CommonProfile): Result {
+        return redirect("/private/user/${profile.username}/edit")
+    }
+
+    @GET
+    @Path(":username")
+    fun userAreaByName(request: Request): Result {
+        return redirect("/private/user/${request.param("username").value()}/edit")
+    }
+
     @GET
     @Path(":username/edit")
-    fun updateUserProfile(request: Request, @Local profile: CommonProfile): Result {
+    fun updateUserProfilePage(request: Request, @Local profile: CommonProfile): Result {
         val username = request.param("username").value()
         if (profile.roles.contains("admin") || profile.id == username) {
             val adminsCount = userService.countAdmins()
@@ -28,7 +37,7 @@ class User @Inject constructor(val validator: Validator, val userService: UserSe
                     .put("errors", emptyMap<String, Any?>())
                     .put("data", user)
         }
-        return Results.with(Status.FORBIDDEN)
+        throw Err(403)
     }
 
     @POST
@@ -43,9 +52,9 @@ class User @Inject constructor(val validator: Validator, val userService: UserSe
             }
             userService.updateUser(request.param("username").value(), userInfoDTO)
         } else {
-            return Results.with(Status.FORBIDDEN)
+            throw Err(403)
         }
-        return Results.redirect("/private/admin/users")
+        return redirect("/private/admin/users")
     }
 
     @DELETE
@@ -56,7 +65,7 @@ class User @Inject constructor(val validator: Validator, val userService: UserSe
             userService.deleteUser(userToDelete)
             Results.ok()
         } else {
-            Results.with(Status.FORBIDDEN)
+            throw Err(403)
         }
     }
 
@@ -69,7 +78,7 @@ class User @Inject constructor(val validator: Validator, val userService: UserSe
                     .put("editorEnabled", profile.roles.contains("admin"))
                     .put("errors", emptyMap<String, Any?>())
         }
-        return Results.with(Status.FORBIDDEN)
+        throw Err(403)
     }
 
     @POST
@@ -86,7 +95,7 @@ class User @Inject constructor(val validator: Validator, val userService: UserSe
             }
             userService.createUser(userInfoDTO)
         }
-        return Results.redirect("/private")
+        return redirect("/private")
     }
 }
 
