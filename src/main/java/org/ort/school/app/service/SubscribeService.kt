@@ -44,4 +44,7 @@ data class ParentInfo(
         val patronymic: String? = null,
         @get:NotBlank @get:Email
         val email: String? = null
-)
+) {
+    val displayName
+        get() = listOfNotNull(lastname, firstname, patronymic).joinToString(" ")
+}
