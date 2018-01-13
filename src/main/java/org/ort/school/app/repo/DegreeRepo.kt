@@ -158,6 +158,27 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                 .execute()
     }
 
+    fun degreesAndParentsBy(degreeIds: List<Int>): Map<String, MutableList<ParentInfo>> {
+        val concat = DSL.concat(GRADE.GRADE_NO, GRADE.GRADE_LETTER)
+
+        return ctx.select(concat, PARENT.LASTNAME, PARENT.FIRSTNAME, PARENT.PATRONYMIC, PARENT.EMAIL)
+                .from(GRADE, PARENT_GRADE, PARENT)
+                .where(GRADE.ID.eq(PARENT_GRADE.GRADE_ID),
+                        PARENT.ID.eq(PARENT_GRADE.PARENT_ID),
+                        GRADE.ID.`in`(degreeIds))
+                .fetchGroups { it -> it[concat] }
+                .mapValues { (_, value) ->
+                    value.map {
+                        ParentInfo(
+                                it[PARENT.LASTNAME],
+                                it[PARENT.FIRSTNAME],
+                                it[PARENT.PATRONYMIC],
+                                it[PARENT.EMAIL]
+                        )
+                    }
+                }
+    }
+
 
 }
 
@@ -180,5 +201,6 @@ data class ParentWithChildren(
         val parent: HumanInfoDTO?,
         val children: List<HumanInfoDTO?>
 )
+
 
 typealias GradeWithParents = Pair<GradeInfoDTO, List<ParentWithChildren>>

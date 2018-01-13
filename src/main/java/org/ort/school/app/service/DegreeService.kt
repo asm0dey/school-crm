@@ -11,4 +11,7 @@ class DegreeService @Inject constructor(private val degreeRepo: DegreeRepo) {
     }
 
     fun listDegreeNames() = degreeRepo.listDegreeNames()
+    fun degreesAndParentsBy(degreeIds: List<Int>): Map<String, MutableList<ParentInfo>> {
+        return degreeRepo.degreesAndParentsBy(degreeIds)
+    }
 }
