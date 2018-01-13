@@ -10,6 +10,7 @@ import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Auth
 import org.jooby.pac4j.AuthSessionStore
+import org.jooby.whoops.Whoops
 import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.app.routes.*
@@ -22,25 +23,26 @@ import org.pac4j.core.profile.CommonProfile
  */
 class SchoolCRM : Kooby({
     modules()
-    repositoriies()
-    services()
     filters()
     unsecureControllers()
-    err { _, rsp, err ->
-        val require = require(CommonProfile::class.java)
-        rsp.send(
-                Results
-                        .html("/public/error")
-                        .put("status", err.statusCode())
-                        .put("profile", require)
-                        .put("reason", when (err.statusCode()) {
-                            403 -> "Недостаточно прав"
-                            404 -> "Страница не найдена"
-                            else -> "Неизвестная ошибка"
-                        })
-                        .status(err.statusCode())
-        )
-    }
+    on("dev", Runnable { use(Whoops()) }).orElse(Runnable {
+        err { _, rsp, err ->
+            val require = require(CommonProfile::class.java)
+            rsp.send(
+                    Results
+                            .html("/public/error")
+                            .put("status", err.statusCode())
+                            .put("profile", require)
+                            .put("reason", when (err.statusCode()) {
+                                403 -> "Недостаточно прав"
+                                404 -> "Страница не найдена"
+                                else -> "Неизвестная ошибка"
+                            })
+                            .status(err.statusCode())
+            )
+        }
+    })
+
     use(Auth().form("/private/**", DBAuth::class.java))
     secureControllers()
 })
@@ -50,13 +52,6 @@ private fun Kooby.secureControllers() {
     use(Admin::class)
     use(Author::class)
     use(Private::class)
-}
-
-fun Kooby.services() {
-    use(PasswordService::class)
-    use(UserService::class)
-    use(DegreeService::class)
-    use(SubscribeService::class)
 }
 
 
@@ -82,11 +77,6 @@ private fun Kooby.filters() {
         }
         chain.next(req, resp)
     }
-}
-
-private fun Kooby.repositoriies() {
-    use(UserRepo::class)
-    use(DegreeRepo::class)
 }
 
 private fun Kooby.modules() {
