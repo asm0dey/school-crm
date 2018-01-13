@@ -26,18 +26,4 @@ class BasicIntegrationTest : Spek({
             }
         }
     }
-    joobyProd(app) { port ->
-        describe("Server") {
-            on("get /") {
-                val response = Request.Get("http://localhost:$port/")
-                        .execute()
-                        .returnResponse()
-                it("status should be 200") {
-                    response
-                            .statusLine
-                            .statusCode.should.be.equal(200)
-                }
-            }
-        }
-    }
 })
