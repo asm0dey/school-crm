@@ -217,6 +217,7 @@ import org.ort.school.app.service.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.FirstUser
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.validation.Validator
 
 @Singleton
@@ -251,6 +252,7 @@ class Main @Inject constructor(
             return Results.html("init").put("errors", map)
         }
         userService.createUser(userInfo.copy(role = "admin"))
+        initialized.set(true)
         return Results.redirect("/")
     }
 
@@ -267,7 +269,7 @@ class Main @Inject constructor(
 
     private fun renderIndex() = Results.html("index").put("degrees", degreeService.listDegreeNames())
 
-    private fun isInitialized() = userService.hasUsers()
+    private fun isInitialized() = userService.hasUsers().atomic
 
 
 }
@@ -288,3 +290,8 @@ fun main(args: Array<String>) {
     println(request.body.toString())
 
 }
+
+val Boolean.atomic
+    get() = AtomicBoolean(this)
+
+operator fun AtomicBoolean.not() = !get()

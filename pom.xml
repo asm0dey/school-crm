@@ -133,6 +133,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>summernote</artifactId>
       <version>0.8.9</version>
@@ -209,6 +215,7 @@
         <version>${kotlin.version}</version>
         <configuration>
           <jvmTarget>1.8</jvmTarget>
+          <myIncremental>true</myIncremental>
         </configuration>
         <executions>
           <execution>
@@ -277,7 +284,7 @@
         <version>${jooq.version}</version>
 
         <!-- Specify the plugin configuration.
-                     The configuration format is the same as for the standalone code generator -->
+                                     The configuration format is the same as for the standalone code generator -->
         <configuration>
           <skip>true</skip>
           <!-- JDBC connection parameters -->
@@ -295,8 +302,8 @@
               <includes>.*</includes>
               <excludes></excludes>
               <!-- In case your database supports catalogs, e.g. SQL Server:
-                            <inputCatalog>public</inputCatalog>
-                              -->
+                                                        <inputCatalog>public</inputCatalog>
+                                                          -->
               <inputSchema>PUBLIC</inputSchema>
             </database>
             <target>
@@ -382,7 +389,7 @@
               <fork>true</fork>
             </configuration>
             <!-- without forking compilation happens in the
-                            same process, so no arguments are applied -->
+                                                    same process, so no arguments are applied -->
           </plugin>
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -428,6 +435,5 @@
         </plugins>
       </build>
     </profile>
-
   </profiles>
 </project>
