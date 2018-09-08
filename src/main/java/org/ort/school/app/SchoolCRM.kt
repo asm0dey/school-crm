@@ -217,10 +217,6 @@ import org.ort.school.app.routes.*
 import org.ort.school.app.service.DBAuth
 import org.pac4j.core.profile.CommonProfile
 
-
-/**
- * Kotlin stater project.
- */
 class SchoolCRM : Kooby({
     modules()
     filters()
