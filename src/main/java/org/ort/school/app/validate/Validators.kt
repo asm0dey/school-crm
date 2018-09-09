@@ -226,11 +226,8 @@ annotation class UniqueUsername(
         val payload: Array<KClass<out Payload>> = []
 )
 
-class UniqueUsernameValidator @Inject constructor(val userRepo: UserRepo) : ConstraintValidator<UniqueUsername, String> {
+class UniqueUsernameValidator @Inject constructor(private val userRepo: UserRepo) : ConstraintValidator<UniqueUsername, String> {
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
         return value == null || userRepo.countUsersBy(value) == 0L
-    }
-
-    override fun initialize(constraintAnnotation: UniqueUsername?) {
     }
 }
