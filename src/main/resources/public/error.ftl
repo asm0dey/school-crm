@@ -9,7 +9,7 @@
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="/webjars/materializecss/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="/webjars/materializecss/1.0.0-rc.2/css/materialize.min.css">
 
 </head>
 <body>
@@ -53,8 +53,8 @@
 </nav>
 <h1>Ошибка</h1>
 <h3>${status}: ${reason}</h3>
-<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-<script src="/webjars/materializecss/0.100.2/js/materialize.min.js"></script>
+<script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+<script src="/webjars/materializecss/1.0.0-rc.2/js/materialize.min.js"></script>
 <script>
     $(document).ready(function () {
         $(".dropdown-button").dropdown();

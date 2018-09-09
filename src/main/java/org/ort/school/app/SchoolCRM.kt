@@ -203,7 +203,6 @@
  */
 package org.ort.school.app
 
-import com.google.inject.TypeLiteral
 import org.jooby.*
 import org.jooby.flyway.Flywaydb
 import org.jooby.ftl.Ftl
@@ -211,23 +210,25 @@ import org.jooby.handlers.CsrfHandler
 import org.jooby.hbv.Hbv
 import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
-import org.jooby.pac4j.Auth
-import org.jooby.pac4j.AuthSessionStore
+import org.jooby.pac4j.Pac4j
 import org.ort.school.app.routes.*
 import org.ort.school.app.service.DBAuth
+import org.pac4j.core.credentials.UsernamePasswordCredentials
 import org.pac4j.core.profile.CommonProfile
+import org.pac4j.core.profile.ProfileManager
+import org.pac4j.http.client.indirect.FormClient
+
 
 class SchoolCRM : Kooby({
     modules()
     filters()
     unsecureControllers()
+    use(DBAuth::class)
     err { _, rsp, err ->
-        val require = require(CommonProfile::class.java)
         rsp.send(
                 Results
                         .html("/public/error")
                         .put("status", err.statusCode())
-                        .put("profile", require)
                         .put("reason", when (err.statusCode()) {
                             403 -> "Недостаточно прав"
                             404 -> "Страница не найдена"
@@ -237,7 +238,12 @@ class SchoolCRM : Kooby({
         )
     }
 
-    use(Auth().form("/private/**", DBAuth::class.java))
+//    use(Auth().form("/private/**", DBAuth::class.java))
+    use(Pac4j()
+            .client("/private/**") {
+                FormClient("/login") { credentials, context -> require(DBAuth::class).validate(credentials as UsernamePasswordCredentials, context) }
+            })
+
     secureControllers()
 })
 
@@ -260,12 +266,12 @@ private fun Kooby.filters() {
     assets("favicon*", "/")
     use("*", CsrfHandler())
     use("*") { req, resp, chain ->
-        val loggedIn = req.session().get(Auth.ID).toOptional().isPresent
+        val pm = require(ProfileManager::class)
+        val profiles = pm.getAll(req.ifSession().isPresent)
+        val loggedIn = profiles.isNotEmpty()
         req.set("loggedIn", loggedIn)
         if (loggedIn) {
-            val sessionStore = require(object : TypeLiteral<AuthSessionStore<CommonProfile>>() {})
-            val profile = sessionStore.get(req.session().get(Auth.ID).value()).get()
-            req.set("profile", profile)
+            req.set("profile", profiles[0])
         } else {
             req.unset<CommonProfile>("profile")
         }
