@@ -211,7 +211,7 @@ class UserService @Inject constructor(
         private val userRepo: UserRepo,
         private val passwordService: PasswordService
 ) {
-    fun createUser(userInfo: UserInfoDTO) = userRepo.createUser(userInfo.copy(password = passwordService.encryptPassword(userInfo.password!!)))
+    fun createUser(userInfo: UserInfoDTO) = userRepo.createUser(userInfo.copy(passwordConfirm = null, password = passwordService.encryptPassword(userInfo.password!!)))
     fun hasUsers() = userRepo.hasUsers()
     fun userBy(username: String) = userRepo.userBy(username)
     fun countAdmins() = userRepo.countAdmins()
@@ -219,9 +219,8 @@ class UserService @Inject constructor(
     fun listUsers() = userRepo.listUsers()
     fun mayDeleteUser(userToDelete: String): Boolean {
         val roles = userRepo.rolesBy(userToDelete)
-        if (!roles.contains("admin")) return true
-        if (userRepo.countAdmins() > 1) return true
-        return false
+        return if (!roles.contains("admin")) true
+        else userRepo.countAdmins() > 1
     }
 
     fun deleteUser(username: String) =

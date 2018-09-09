@@ -1,3 +1,8 @@
 language: java
 jdk:
   - oraclejdk8
+  - oraclejdk9
+  - openjdk10
+install: true
+script:
+  - mvn -B -V -Prun-its clean verify
