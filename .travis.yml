@@ -1,8 +1,12 @@
+---
 language: java
 jdk:
   - oraclejdk8
   - oraclejdk9
   - openjdk10
-install: true
+install: mvn -B package
 script:
-  - mvn -B -V -Prun-its clean verify
+  - mvn -B -V -Prun-its clean verify org.pitest:pitest-maven:mutationCoverage
+cache:
+  directories:
+    - $HOME/.m2
