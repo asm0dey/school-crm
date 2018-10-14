@@ -3,6 +3,7 @@ jdk:
 - oraclejdk8
 - oraclejdk9
 - openjdk10
+- openjdk11
 install: mvn -B -V package -Dmaven.test.skip=true
 script:
 - mvn -B -V -Prun-its clean verify org.pitest:pitest-maven:mutationCoverage

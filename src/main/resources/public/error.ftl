@@ -9,7 +9,7 @@
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="/webjars/materializecss/1.0.0-rc.2/css/materialize.min.css">
+    <link rel="stylesheet" href="/webjars/materializecss/1.0.0/css/materialize.min.css">
 
 </head>
 <body>
@@ -33,7 +33,7 @@
             <li><a href="/private/admin/users">Пользователи</a></li>
             <li><a href="/private/admin/degrees">Классы</a></li>
             <li>
-                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
+                <a class="dropdown-trigger" href="/private/user/${profile.id}" data-target="dropdown1">
                     <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
@@ -41,7 +41,7 @@
             <#elseif profile.roles?seq_contains('author')>
             <li><a href="/private/author">Создать рассылку</a></li>
             <li>
-                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
+                <a class="dropdown-trigger" href="/private/user/${profile.id}" data-target="dropdown1">
                     <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
@@ -54,12 +54,15 @@
 <h1>Ошибка</h1>
 <h3>${status}: ${reason}</h3>
 <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
-<script src="/webjars/materializecss/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="/webjars/materializecss/1.0.0/js/materialize.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $(".dropdown-button").dropdown();
-        $('select').material_select();
-    })
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+
+    });
 </script>
 </body>
 </html>

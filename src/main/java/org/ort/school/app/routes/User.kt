@@ -223,6 +223,35 @@ class User @Inject constructor(private val validator: Validator, private val use
     }
 
     @GET
+    @Path("new")
+    fun newUserPage(@Local profile: CommonProfile): Result {
+        if (profile.roles.contains("admin")) {
+            val admins = userService.countAdmins()
+            return Results.html("private/profile/new")
+                    .put("editorEnabled", profile.roles.contains("admin"))
+                    .put("errors", emptyMap<String, Any?>())
+        }
+        throw Err(403)
+    }
+
+    @POST
+    @Path("new")
+    fun newUser(userInfoDTO: UserInfoDTO, @Local profile: CommonProfile): Result {
+        if (profile.roles.contains("admin")) {
+            val validate = validator.validate(userInfoDTO, CreateUser::class.java)
+            val map = validate.associate { it -> it.propertyPath.toString() to it.message }
+
+            if (validate.size > 0) {
+                return Results.html("private/profile/new")
+                        .put("errors", map)
+                        .put("editorEnabled", profile.roles.contains("admin"))
+            }
+            userService.createUser(userInfoDTO)
+        }
+        return redirect("/private")
+    }
+
+    @GET
     @Path(":username")
     fun userAreaByName(request: Request): Result {
         return redirect("/private/user/${request.param("username").value()}/edit")
@@ -270,35 +299,6 @@ class User @Inject constructor(private val validator: Validator, private val use
         } else {
             throw Err(403)
         }
-    }
-
-    @GET
-    @Path("new")
-    fun newUserPage(@Local profile: CommonProfile): Result {
-        if (profile.roles.contains("admin")) {
-            val admins = userService.countAdmins()
-            return Results.html("private/profile/new")
-                    .put("editorEnabled", profile.roles.contains("admin"))
-                    .put("errors", emptyMap<String, Any?>())
-        }
-        throw Err(403)
-    }
-
-    @POST
-    @Path("new")
-    fun newUser(userInfoDTO: UserInfoDTO, @Local profile: CommonProfile): Result {
-        if (profile.roles.contains("admin")) {
-            val validate = validator.validate(userInfoDTO, CreateUser::class.java)
-            val map = validate.associate { it -> it.propertyPath.toString() to it.message }
-
-            if (validate.size > 0) {
-                return Results.html("private/profile/new")
-                        .put("errors", map)
-                        .put("editorEnabled", profile.roles.contains("admin"))
-            }
-            userService.createUser(userInfoDTO)
-        }
-        return redirect("/private")
     }
 }
 

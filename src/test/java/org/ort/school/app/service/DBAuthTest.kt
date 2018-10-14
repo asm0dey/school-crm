@@ -54,6 +54,14 @@ class DBAuthTest {
         val credentials = UsernamePasswordCredentials("", "admin", "def")
         dbAuth.validate(credentials, mock())
     }
+    @Test(expected = CredentialsException::class)
+    fun `invalid password shoud throw exception`() {
+        val userRepo = mock<UserRepo>()
+        val passwordService = PasswordService()
+        val dbAuth = DBAuth(userRepo, passwordService)
+        val credentials = UsernamePasswordCredentials("admin", "admin", "def")
+        dbAuth.validate(credentials, mock())
+    }
 
     @Test(expected = CredentialsException::class)
     fun `empty password should throw exception`() {

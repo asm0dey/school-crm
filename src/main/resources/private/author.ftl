@@ -8,8 +8,8 @@
     <title>School CRM</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="/webjars/materializecss/1.0.0-rc.2/css/materialize.min.css">
-    <link href="/webjars/summernote/0.8.9/dist/summernote-lite.css" rel="stylesheet">
+    <link rel="stylesheet" href="/webjars/materializecss/1.0.0/css/materialize.min.css">
+    <link href="/webjars/summernote/0.8.10/dist/summernote-lite.css" rel="stylesheet">
 
 </head>
 <body>
@@ -33,7 +33,7 @@
             <li><a href="/private/admin/users">Пользователи</a></li>
             <li><a href="/private/admin/degrees">Классы</a></li>
             <li>
-                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
+                <a class="dropdown-trigger" href="/private/user/${profile.id}" data-target="dropdown1">
                     <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
@@ -41,7 +41,7 @@
             <#elseif profile.roles?seq_contains('author')>
             <li <#if path?contains('/author')>class="active" </#if>><a href="/private/author">Создать рассылку</a></li>
             <li>
-                <a class="dropdown-button" href="/private/user/${profile.id}" data-activates="dropdown1">
+                <a class="dropdown-trigger" href="/private/user/${profile.id}" data-target="dropdown1">
                     <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
@@ -60,10 +60,10 @@
         <form action="/private/author" class="col s12" method="post">
             <div class="row">
                 <#list degrees as degree>
-                    <div class="col s2">
+                    <label class="col s2">
                         <input type="checkbox" name="d-${degree.first}" id="degree-${degree?index}">
-                        <label for="degree-${degree?index}">${degree.second}</label>
-                    </div>
+                        <span>${degree.second}</span>
+                    </label>
                 </#list>
             </div>
             <div class="row input-field">
@@ -86,14 +86,18 @@
 </div>
 
 <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
-<script src="/webjars/materializecss/1.0.0-rc.2/js/materialize.min.js"></script>
-<script src="/webjars/summernote/0.8.9/dist/summernote-lite.js"></script>
+<script src="/webjars/materializecss/1.0.0/js/materialize.min.js"></script>
+<script src="/webjars/summernote/0.8.10/dist/summernote-lite.js"></script>
 <script>
-    $(document).ready(function () {
-        $(".dropdown-button").dropdown();
-        $('select').material_select();
-        <#if flash?? && flash.success?? && flash.success == 'OK'>Materialize.toast("Рассылка успешно выполнена")</#if>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+        <#if flash?? && flash.success?? && flash.success == 'OK'>M.toast({html: "Рассылка успешно выполнена"})</#if>
+
     });
+
     const FioButton = function (context) {
         const ui = $.summernote.ui;
 
