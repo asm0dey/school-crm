@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.ort.school</groupId>
   <artifactId>crm</artifactId>
-  <version>1.4.0</version>
+  <version>1.4.1</version>
   <prerequisites>
     <maven>3.0.2</maven>
   </prerequisites>
@@ -24,6 +24,7 @@
     <hibernate-validator.version>6.0.7.Final</hibernate-validator.version>
     <javax.el-api.version>3.0.0</javax.el-api.version>
     <h2.version>1.4.196</h2.version>
+    <http-client.version>4.5.6</http-client.version>
     <!-- Startup class -->
     <application.class>org.ort.school.app.SchoolCRMKt</application.class>
   </properties>
@@ -104,10 +105,10 @@
       <artifactId>javax.el-api</artifactId>
     </dependency>
 
-      <dependency>
-          <groupId>org.jooby</groupId>
-          <artifactId>jooby-rocker</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.jooby</groupId>
+      <artifactId>jooby-rocker</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>com.github.salomonbrys.kotson</groupId>
@@ -237,8 +238,8 @@
             <phase>compile</phase>
             <configuration>
               <sourceDirs>
-                  <sourceDir>${project.basedir}/src/main/java</sourceDir>
-                  <sourceDir>${project.basedir}/target/generated-sources</sourceDir>
+                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                <sourceDir>${project.basedir}/target/generated-sources</sourceDir>
               </sourceDirs>
             </configuration>
           </execution>
