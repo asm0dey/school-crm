@@ -138,7 +138,7 @@
     </dependency>
 
     <dependency>
-      <!--@todo migrate from NPM version -->
+        <!--@todo migrate from NPM version -->
       <groupId>org.webjars.npm</groupId>
       <artifactId>summernote</artifactId>
       <version>0.8.10</version>
