@@ -1,0 +1,65 @@
+@import java.util.Map
+
+@args (Map
+<String, String> errors)
+
+<!DOCTYPE html>
+<html>
+@views.head.template()
+<body>
+<section class="section">
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Первый запуск</span>
+                <p>Похоже, что это первый раз, когда вы запускаете CRM.</p>
+                <p>Чтобы система заработала в ней надо создать учётную запись адинистратора</p>
+                <p></p>
+                <form action="/init" method="post">
+                    <div class="input-field">
+                        <input type="text" class='validate @if (errors != null && errors.get("username") != null) {invalid}' id="username" name="username">
+                        <label for="username" class="label">Имя пользователя</label>
+                        @if (errors != null && errors.get("username") != null) {
+                        <span class="helper-text"
+                              data-error='@(errors.get("username"))'></span>
+                        }
+                    </div>
+
+                    <div class="input-field">
+                        <input type="email" class='validate @if (errors != null && errors.get("email") != null) {invalid}' id="email" name="email">
+                        <label for="email" class="label">Email</label>
+                        @if (errors != null && errors.get("email") != null) {
+                        <span class="helper-text" data-error='@(errors.get("email"))'></span>
+                        }
+                    </div>
+
+                    <div class="input-field">
+                        <input type="password" class='validate @if (errors != null && errors.get("password") != null) {invalid}' id="password" name="password">
+                        <label for="password" class="label">Пароль</label>
+                        @if (errors != null && errors.get("password") != null) {
+                        <span class="helper-text"
+                              data-error='@(errors.get("password"))'></span>
+                        }
+                    </div>
+
+                    <div class="input-field">
+                        <input id="passwordConfirm" type="password" class='validate @if (errors != null && errors.get("valid") != null) {invalid}' name="passwordConfirm">
+                        <label for="passwordConfirm" class="label">Повторите пароль</label>
+                        @if (errors != null && errors.get("valid") != null) {
+                        <span class="helper-text" data-error='@(errors.get("valid"))'></span>
+                        }
+                    </div>
+                    <input type="hidden" value='@(locals.get("csrf"))' name="csrf">
+
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Отправить
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+@views.scripts.template()
+</body>
+</html>

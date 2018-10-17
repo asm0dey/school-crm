@@ -1,100 +1,95 @@
-<#-- @ftlvariable name="editorEnabled" type="boolean" -->
-<#-- @ftlvariable name="profile" type="org.pac4j.core.profile.CommonProfile" -->
-<#-- @ftlvariable name="data" type="org.ort.school.app.repo.UserDTO" -->
+@import org.pac4j.core.profile.CommonProfile
+@import org.ort.school.app.repo.UserDTO
+@import java.util.Map
+
+@args (boolean editorEnabled, UserDTO data, Map<String,Object> errors)
+
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>School CRM</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <!--Import Google Icon Font-->
-    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="/webjars/materializecss/1.0.0/css/materialize.min.css">
-
-</head>
+@views.head.template()
 <body>
-<ul id="dropdown1" class="dropdown-content">
-    <li class="disabled"><a href="/private/user/${profile.id}/edit">Профиль</a></li>
-    <li><a href="/logout">Выйти</a></li>
-</ul>
-<nav class="nav-extended">
-    <div class="nav-wrapper">
-        <a href="/" class="brand-logo"></a>
-        <ul>
-            <li><a href="/">На главную</a></li>
-        </ul>
-
-        <ul class="right">
-            <#if profile.roles?seq_contains('admin')>
-            <li><a href="/private/admin/users">Пользователи</a></li>
-            <li><a href="/private/admin/degrees">Классы</a></li>
-            <li>
-                <a class="dropdown-trigger" href="/private/user/${profile.id}" data-target="dropdown1">
-                    <#if profile.displayName?has_content>${profile.displayName}<#else>${profile.id}</#if>
-                    <i class="material-icons right">arrow_drop_down</i>
-                </a>
-            </li>
-            </#if>
-        </ul>
-    </div>
-
-</nav>
+@views.nav.template()
 <div class="container">
     <h1>Редактирование пользователя</h1>
     <div class="row">
-        <form action="/private/user/${data.username}/edit" class="col s12" method="post">
+        <form action="/private/user/@data.getUsername()/edit" class="col s12" method="post">
             <div class="row">
                 <div class="input-field col s4">
-                    <input id="lastname" type="text" class="validate" name="lastname"
-                           <#if data.lastname??>value="${data.lastname}"</#if>>
+                    <input id="lastname" type="text" class="validate" name="lastname" value='@if(data.getLastname()!=null){@data.getLastname()}'>
                     <label for="lastname">Фамилия</label>
+                    @if (errors != null && errors.get("lastname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("lastname"))'></span>
+                    }
                 </div>
                 <div class="input-field col s4">
                     <input id="firstname" type="text" class="validate" name="firstname"
-                           <#if data.firstName??>value="${data.firstName}"</#if>>
+                           value='@with?(name=data.getFirstName()){@name}'>
                     <label for="firstname">Имя</label>
+                    @if (errors != null && errors.get("firstname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("firstname"))'></span>
+                    }
                 </div>
                 <div class="input-field col s4">
                     <input id="patronymic" type="text" class="validate" name="patronymic"
-                           <#if data.patronymic??>value="${data.patronymic}"</#if>>
+                           value='@with?(name=data.getPatronymic()){@name}'>
                     <label for="patronymic">Отчество</label>
+                    @if (errors != null && errors.get("patronymic") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("patronymic"))'></span>
+                    }
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6">
                     <input id="password" type="password" class="validate" name="password">
                     <label for="password">Пароль</label>
+                    @if (errors != null && errors.get("password") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("password"))'></span>
+                    }
                 </div>
                 <div class="input-field col s6">
                     <input id="passwordConfirm" type="password" class="validate" name="passwordConfirm">
                     <label for="passwordConfirm">Пароль</label>
+                    @if (errors != null && errors.get("passwordConfirm") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("passwordConfirm"))'></span>
+                    }
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s6">
                     <input id="email" type="email" class="validate" name="email"
-                    <#if data.email??>value="${data.email}"</#if>>
+                           value='@with?(mail=data.getEmail()){@mail}'>
                     <label for="email">EMail</label>
+                    @if (errors != null && errors.get("email") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("email"))'></span>
+                    }
                 </div>
                 <div class="input-field col s6">
                     <select id="role" name="role">
                         <option value="no" disabled>Выберите роль</option>
+                        @with(profile = (CommonProfile)locals.get("profile")){
                         <option value="admin"
-                                <#if profile.roles?seq_contains('author')>disabled</#if>
-                                <#if data.role == 'admin'>selected</#if>>
+                                @if( profile.getRoles().contains("author")){disabled } @if("admin".equals(data.getRole())){selected}>
                             Администратор
                         </option>
-                        <option value="author"
-                            <#if !editorEnabled></#if>disabled<#if data.role == 'author'>selected</#if>>
+                        }
+                        <option value="author" @if(!editorEnabled){disabled } @if("author".equals(data.getRole())){selected}>
                             Редактор
                         </option>
                     </select>
                     <label for="role">Роль</label>
+                    @if (errors != null && errors.get("role") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("role"))'></span>
+                    }
                 </div>
             </div>
-            <input type="hidden" value="${csrf}" name="csrf">
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
             <div class="row">
                 <button class="btn waves-effect waves-light" type="submit">Обновить
                     <i class="material-icons right">send</i>
@@ -103,8 +98,7 @@
         </form>
     </div>
 </div>
-<script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
-<script src="/webjars/materializecss/1.0.0/js/materialize.min.js"></script>
+@views.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var selects = document.querySelectorAll('select');

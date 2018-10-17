@@ -1,0 +1,42 @@
+@import java.util.Map
+
+@args (Map<String,String> params)
+
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+@views.head.template()
+<body>
+@views.nav.template()
+<div class="container">
+    <div class="row">
+        <form action="/callback?client_name=FormClient" method="post" class="col s6 offset-s3">
+            <p class="flow-text">Вход в систему</p>
+            <div class="row">
+                <div class="input-field ">
+
+                    <input id="username" type="text" name="username" required value='@if(params!=null && params.get("username")!=null){@params.get("username")}'>
+                    <label for="username">Логин</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field ">
+                    <input id="password" type="password" class='@if(params!=null&&params.get("error")!=null){invalid}' name="password" required>
+                    <label for="password">Пароль</label>
+                    @if (params != null && params.get("error") != null) {
+                    <span class="helper-text" data-error='Имя пользователя или пароль введены неверно'></span>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Войти
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+        </form>
+        <div class="col s4"></div>
+    </div>
+</div>
+@views.scripts.template()
+</body>
+</html>

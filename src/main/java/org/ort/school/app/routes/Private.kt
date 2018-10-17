@@ -212,11 +212,11 @@ import org.jooby.mvc.Path
 import org.pac4j.core.profile.CommonProfile
 
 @Singleton
-@Path("/private")
+@Path("/priv")
 class Private {
     @GET
     fun findCorrectRedirect(@Local profile: CommonProfile): Result {
         return if (profile.roles.isEmpty()) Results.tempRedirect("/logout")
-        else Results.tempRedirect("/private/${profile.roles.first()}")
+        else Results.tempRedirect("/priv/${profile.roles.first()}")
     }
 }

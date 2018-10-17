@@ -205,31 +205,37 @@ package org.ort.school.app.routes
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
-import org.jooby.*
+import org.jooby.Err
+import org.jooby.Request
+import org.jooby.Result
+import org.jooby.Results
+import org.jooby.Results.ok
 import org.jooby.Results.redirect
 import org.jooby.mvc.*
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.CreateUser
 import org.pac4j.core.profile.CommonProfile
+import views.priv.profile.edit
+import views.priv.profile.newuser
 import javax.validation.Validator
 
 @Singleton
-@Path("/private/user")
+@Path("/priv/user")
 class User @Inject constructor(private val validator: Validator, private val userService: UserService) {
     @GET
     fun defaultUserArea(@Local profile: CommonProfile): Result {
-        return redirect("/private/user/${profile.username}/edit")
+        return redirect("/priv/user/${profile.username}/edit")
     }
 
     @GET
     @Path("new")
-    fun newUserPage(@Local profile: CommonProfile): Result {
+    fun newUserPage(@Local profile: CommonProfile): newuser {
         if (profile.roles.contains("admin")) {
             val admins = userService.countAdmins()
-            return Results.html("private/profile/new")
-                    .put("editorEnabled", profile.roles.contains("admin"))
-                    .put("errors", emptyMap<String, Any?>())
+            return views.priv.profile.newuser()
+                    .editorEnabled(profile.roles.contains("admin"))
+                    .errors(emptyMap())
         }
         throw Err(403)
     }
@@ -242,32 +248,34 @@ class User @Inject constructor(private val validator: Validator, private val use
             val map = validate.associate { it -> it.propertyPath.toString() to it.message }
 
             if (validate.size > 0) {
-                return Results.html("private/profile/new")
-                        .put("errors", map)
-                        .put("editorEnabled", profile.roles.contains("admin"))
+                return ok(
+                        views.priv.profile.newuser()
+                                .errors(map)
+                                .editorEnabled(profile.roles.contains("admin"))
+                )
             }
             userService.createUser(userInfoDTO)
         }
-        return redirect("/private")
+        return redirect("/priv")
     }
 
     @GET
     @Path(":username")
     fun userAreaByName(request: Request): Result {
-        return redirect("/private/user/${request.param("username").value()}/edit")
+        return redirect("/priv/user/${request.param("username").value()}/edit")
     }
 
     @GET
     @Path(":username/edit")
-    fun updateUserProfilePage(request: Request, @Local profile: CommonProfile): Result {
+    fun updateUserProfilePage(request: Request, @Local profile: CommonProfile): edit {
         val username = request.param("username").value()
         if (profile.roles.contains("admin") || profile.id == username) {
             val adminsCount = userService.countAdmins()
             val user = userService.userBy(username)
-            return Results.html("private/profile/edit")
-                    .put("editorEnabled", profile.roles.contains("admin") && adminsCount > 1)
-                    .put("errors", emptyMap<String, Any?>())
-                    .put("data", user)
+            return views.priv.profile.edit()
+                    .editorEnabled(profile.roles.contains("admin") && adminsCount > 1)
+                    .errors(emptyMap())
+                    .data(user)
         }
         throw Err(403)
     }
@@ -280,13 +288,17 @@ class User @Inject constructor(private val validator: Validator, private val use
             val admins = userService.countAdmins()
             if (validate.size > 0) {
                 val map = validate.associate { it -> it.propertyPath.toString() to it.message }
-                return Results.html("private/profile/edit").put("errors", map).put("editorEnabled", profile.roles.contains("admin") && admins > 1)
+                return ok(
+                        views.priv.profile.edit()
+                                .errors(map)
+                                .editorEnabled(profile.roles.contains("admin") && admins > 1)
+                )
             }
             userService.updateUser(request.param("username").value(), userInfoDTO)
         } else {
             throw Err(403)
         }
-        return redirect("/private/admin/users")
+        return redirect("/priv/admin/users")
     }
 
     @DELETE

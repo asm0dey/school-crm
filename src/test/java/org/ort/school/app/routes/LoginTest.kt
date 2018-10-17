@@ -20,8 +20,7 @@ class LoginTest {
         whenever(req.params()).thenReturn(mock)
         whenever(mock.value()).thenReturn("another")
         whenever(mock.toMap()).thenReturn(mapOf("some" to mock))
-        val view = Login().login(req).get<View>()!!
-        view.name().should.be.equal("login")
-        view.model().should.contain("params" to mapOf("some" to "another"))
+        val login = Login().login(req)
+        login.params().should.equal(mapOf("some" to "another"))
     }
 }

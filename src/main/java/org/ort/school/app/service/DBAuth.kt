@@ -204,7 +204,6 @@
 package org.ort.school.app.service
 
 import com.google.inject.Inject
-import org.mindrot.jbcrypt.BCrypt
 import org.ort.school.app.repo.UserRepo
 import org.pac4j.core.context.Pac4jConstants
 import org.pac4j.core.context.WebContext
@@ -224,7 +223,7 @@ class DBAuth @Inject constructor(private val userRepo: UserRepo, private val pas
         if (!passwordService.checkPw(credentials.password, userInfo.password))
             throw CredentialsException("Username or password invalid")
 
-        val roles =userRepo.rolesBy(username)
+        val roles = userRepo.rolesBy(username)
         val profile = CommonProfile()
         profile.setId(username)
         profile.addAttribute(Pac4jConstants.USERNAME, username)

@@ -11,6 +11,8 @@ import org.ort.school.app.service.DegreeService
 import org.ort.school.app.service.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
 import org.ort.school.app.service.UserService
+import views.index
+import views.init
 import javax.validation.ConstraintViolation
 import javax.validation.Validator
 
@@ -41,8 +43,7 @@ class IndexTest {
         val userService = mock<UserService>()
         whenever(userService.hasUsers()).thenReturn(false)
         val main = Main(mock(), userService, mock(), mock())
-        val view = main.init().get<View>()!!
-        view.name().should.equal("init")
+        val view = main.init().get<init>()!!
     }
 
     @Test
@@ -53,12 +54,9 @@ class IndexTest {
         val degrees = listOf(1 to "1А", 2 to "1Б", 3 to "1В")
         whenever(degreeService.listDegreeNames()).thenReturn(degrees)
         val main = Main(mock(), userService, degreeService, mock())
-        val view = main.home().get<View>()!!
-        view.name().should.equal("index")
-        view.model().should
-                .size(2)
-                .contain("degrees" to degrees)
-                .contain("errors" to emptyMap<String, String>())
+        val view = main.home().get<index>()!!
+        view.degrees().should.equal(degrees)
+        view.errors().should.equal(emptyMap())
     }
 
     @Test
@@ -69,11 +67,8 @@ class IndexTest {
         whenever(constraintViolation.message).thenReturn("mess")
         whenever(validator.validate(any<UserInfoDTO>(), any())).thenReturn(setOf(constraintViolation))
         val main = Main(validator, mock(), mock(), mock())
-        val view = main.createFirstUser(UserInfoDTO()).get<View>()!!
-        view.name().should.equal("init")
-        view.model().should
-                .size(1)
-                .contain("errors" to mapOf("ss" to "mess"))
+        val view = main.createFirstUser(UserInfoDTO()).get<init>()!!
+        view.errors().should.equal(mapOf("ss" to "mess"))
     }
 
     @Test
@@ -94,18 +89,16 @@ class IndexTest {
         whenever(constraintViolation.propertyPath).thenReturn(PathImpl.createPathFromString("ss"))
         whenever(constraintViolation.message).thenReturn("mess")
         whenever(validator.validate(any<SubscribeDTO>(), any())).thenReturn(setOf(constraintViolation))
-        val index = Main(validator, mock(), mock(), mock()).subscribe(SubscribeDTO()).get<View>()!!
-        index.name().should.equal("index")
-        index.model().should.contain("errors" to mapOf("ss" to "mess"))
+        val index = Main(validator, mock(), mock(), mock()).subscribe(SubscribeDTO())
+        index.errors().should.equal(mapOf("ss" to "mess"))
     }
 
     @Test
     fun `subscribe should save info about parent and child when subscribeDTO is fine`() {
         val subscribeService = mock<SubscribeService>()
         val subscribeDTO = SubscribeDTO()
-        val view = Main(mock(), mock(), mock(), subscribeService).subscribe(subscribeDTO).get<View>()!!
-        view.name().should.equal("index")
-        view.model().should.contain("degrees" to emptyList<String>())
+        val view = Main(mock(), mock(), mock(), subscribeService).subscribe(subscribeDTO)
+        view.degrees().should.equal(emptyList())
         verify(subscribeService, times(1)).subscribe(subscribeDTO)
     }
 }

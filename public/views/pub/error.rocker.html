@@ -1,0 +1,21 @@
+@args (int status, String reason)
+
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+@views.head.template()
+<body>
+@views.nav.template()
+<h1>Ошибка</h1>
+<h3>${status}: ${reason}</h3>
+@views.scripts.template()
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+
+    });
+</script>
+</body>
+</html>

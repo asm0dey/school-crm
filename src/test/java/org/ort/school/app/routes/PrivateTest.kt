@@ -24,7 +24,7 @@ class PrivateTest {
         whenever(profile.roles).thenReturn(setOf("admin"))
         val result = Private().findCorrectRedirect(profile)
         result.status().should.be.equal(Optional.of(Status.TEMPORARY_REDIRECT))
-        result.headers().should.contain("location" to "/private/admin")
+        result.headers().should.contain("location" to "/priv/admin")
     }
     @Test
     fun `when author enters private zone he's redirected to author zone`() {
@@ -32,6 +32,6 @@ class PrivateTest {
         whenever(profile.roles).thenReturn(setOf("author"))
         val result = Private().findCorrectRedirect(profile)
         result.status().should.be.equal(Optional.of(Status.TEMPORARY_REDIRECT))
-        result.headers().should.contain("location" to "/private/author")
+        result.headers().should.contain("location" to "/priv/author")
     }
 }

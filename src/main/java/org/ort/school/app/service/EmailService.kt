@@ -203,10 +203,10 @@
  */
 package org.ort.school.app.service
 
+import com.github.salomonbrys.kotson.jsonObject
 import com.google.inject.Inject
 import com.mashape.unirest.http.Unirest
 import com.typesafe.config.Config
-import com.github.salomonbrys.kotson.*
 
 class EmailService @Inject constructor(private val config: Config) {
     fun sendMails(degreesAndParents: Map<String, MutableList<ParentInfo>>, letterContent: String, subject: String) {

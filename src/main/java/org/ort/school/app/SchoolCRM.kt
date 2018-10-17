@@ -205,12 +205,12 @@ package org.ort.school.app
 
 import org.jooby.*
 import org.jooby.flyway.Flywaydb
-import org.jooby.ftl.Ftl
 import org.jooby.handlers.CsrfHandler
 import org.jooby.hbv.Hbv
 import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Pac4j
+import org.jooby.rocker.Rockerby
 import org.ort.school.app.routes.*
 import org.ort.school.app.service.DBAuth
 import org.pac4j.core.credentials.UsernamePasswordCredentials
@@ -225,22 +225,20 @@ class SchoolCRM : Kooby({
     unsecureControllers()
     use(DBAuth::class)
     err { _, rsp, err ->
-        rsp.send(
-                Results
-                        .html("/public/error")
-                        .put("status", err.statusCode())
-                        .put("reason", when (err.statusCode()) {
-                            403 -> "Недостаточно прав"
-                            404 -> "Страница не найдена"
-                            else -> "Неизвестная ошибка"
-                        })
-                        .status(err.statusCode())
+        val page = views.pub.error()
+                .status(err.statusCode())
+                .reason(when (err.statusCode()) {
+                    403 -> "Недостаточно прав"
+                    404 -> "Страница не найдена"
+                    else -> "Неизвестная ошибка"
+                })
+        rsp.send(Result().set(page).status(err.statusCode())
         )
     }
 
-//    use(Auth().form("/private/**", DBAuth::class.java))
+//    use(Auth().form("/priv/**", DBAuth::class.java))
     use(Pac4j()
-            .client("/private/**") {
+            .client("/priv/**") {
                 FormClient("/login") { credentials, context -> require(DBAuth::class).validate(credentials as UsernamePasswordCredentials, context) }
             })
 
@@ -283,7 +281,7 @@ private fun Kooby.modules() {
     use(Jdbc())
     use(Flywaydb())
     use(jOOQ())
-    use(Ftl("/", ".ftl"))
+    use(Rockerby())
     use(Hbv())
     use(FlashScope())
 }

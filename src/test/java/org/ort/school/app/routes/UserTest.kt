@@ -17,7 +17,7 @@ class UserTest {
         whenever(profile.username).thenReturn("asm")
         val result = User(mock(), mock()).defaultUserArea(profile)
         result.status().get().should.be.equal(Status.FOUND)
-        result.headers()["location"].should.be.equal("/private/user/asm/edit")
+        result.headers()["location"].should.be.equal("/priv/user/asm/edit")
     }
 
     @Test
@@ -28,7 +28,7 @@ class UserTest {
         whenever(request.param("username")).thenReturn(mutant)
         val result = User(mock(), mock()).userAreaByName(request)
         result.status().get().should.be.equal(Status.FOUND)
-        result.headers()["location"].should.be.equal("/private/user/asm/edit")
+        result.headers()["location"].should.be.equal("/priv/user/asm/edit")
     }
 
     @Test

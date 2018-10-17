@@ -1,0 +1,36 @@
+@import org.pac4j.core.profile.CommonProfile
+
+@if(locals.get("profile") != null){
+<ul id="dropdown1" class="dropdown-content">
+    <li class="disabled"><a href='/private/user/@(((CommonProfile)locals.get("profile")).getId())/edit'>Профиль</a></li>
+    <li><a href="/logout">Выйти</a></li>
+</ul>
+}
+<nav>
+    <div class="nav-wrapper"><a href="/" class="brand-logo"></a>
+        <ul>
+            <li><a href="/">На главную</a></li>
+        </ul>
+        <ul class="right">
+            @if(!Boolean.TRUE.equals(locals.get("loggedIn"))){
+            <li><a href="/private">Войти</a></li>
+            } else {
+            @with (profile = (CommonProfile)locals.get("profile")) {
+            @if(profile.getRoles().contains("admin")) {
+            <li><a href="/private/admin/users">Пользователи</a></li>
+            <li><a href="/private/admin/degrees">Классы</a></li>
+            }
+            else if(profile.getRoles().contains("author")) {
+            <li><a href="/private/author">Создать рассылку</a></li>
+            }
+            <li>
+                <a class="dropdown-trigger" href="/private/user/@(profile.getId())" data-target="dropdown1">
+                    @if(!profile.getDisplayName().isEmpty()) { @(profile.getDisplayName()) } else { @(profile.getId()) }
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+            </li>
+            }
+            }
+        </ul>
+    </div>
+</nav>

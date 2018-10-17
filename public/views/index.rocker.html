@@ -1,0 +1,130 @@
+@import java.util.Map
+@import java.util.List
+@import kotlin.Pair
+@import org.pac4j.core.profile.CommonProfile
+
+@args (Map<String,String> errors, List<Pair<Integer, String>> degrees)
+
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+@views.head.template()
+<body>
+@views.nav.template()
+<div class="container">
+    <h1>Добро пожаловать</h1>
+    <p class="flow-text">Спасибо, что зашли на нашу страничку! Здесь вы можете добавить информацию о себе и ребёнке,
+        учащемся в нашей школе в базу рассылок. Если у нас будет информация у вас вы сможете получать все нашин
+        информационные рассылки. </p>
+    <p class="flow-text">Обещаем никому не отдавать ваши данные!</p>
+    <div class="row">
+        <form action="/" class="col s12" method="post">
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="parent-lastname" type="text"
+                           class='validate @if(errors != null && errors.get("parent.lastname") != null) {invalid}' required
+                           name="parent.lastname">
+                    <label for="parent-lastname" class="label">Ваша фамилия<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("parent.lastname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.lastname"))'></span>
+                    }
+                </div>
+                <div class="input-field col s4">
+                    <input id="parent-firstname" type="text"
+                           class='validate @if(errors != null && errors.get("parent.firstName") != null) {invalid}'
+                           required name="parent.firstname">
+                    <label for="parent-firstname" class="label">Ваше имя<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("parent.firstname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.firstname"))'></span>
+                    }
+                </div>
+                <div class="input-field col s4">
+                    <input id="parent-patronymic" type="text"
+                           name="parent.patronymic"
+                           class='validate @if(errors != null && errors.get("parent.patronymic") != null) {invalid}'>
+                    <label for="parent-patronymic" class="label">Ваше отчество</label>
+                    @if (errors != null && errors.get("parent.patronymic") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.patronymic"))'></span>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="student-lastname" type="text"
+                           class='validate @if(errors != null && errors.get("student.lastname") != null) {invalid}' required
+                           name="student.lastname">
+                    <label for="student-lastname">Фамилия ученика<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("student.lastname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("student.lastname"))'></span>
+                    }
+                </div>
+                <div class="input-field col s4">
+                    <input id="student-firstname" type="text"
+                           class='validate @if(errors != null && errors.get("student.firstname") != null) {invalid}' required
+                           name="student.firstname">
+                    <label for="student-firstname">Имя ученика<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("student.firstname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("student.firstname"))'></span>
+                    }
+                </div>
+                <div class="input-field col s4">
+                    <input id="student-patronymic" type="text"
+                           class='validate @if(errors != null && errors.get("student.patronymic") != null) {invalid}'
+                           name="student.patronymic">
+                    <label for="student-patronymic">Отчество ученика</label>
+                    @if (errors != null && errors.get("student.patronymic") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("student.patronymic"))'></span>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="email" class='validate @if(errors != null && errors.get("parent.email") != null) {invalid}'
+                           name="parent.email" id="email" required>
+                    <label for="email"> Ваш Email<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("parent.email") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.email"))'></span>
+                    }
+                </div>
+                <div class="input-field col s6">
+                    <select name="degreeNo" id="classno"
+                            class='validate @if(errors != null && errors.get("parent.degreeNoemail") != null) {invalid}' required>
+                        <option value="no" disabled>Выберите номер класса</option>
+                        @for(degree:degrees){
+                        <option value="${degree.first}">@degree.getSecond()</option>
+                        }
+                    </select>
+                    <label for="classno">Класс<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("degreeNo") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("degreeNo"))'></span>
+                    }
+                </div>
+            </div>
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@views.scripts.template()
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+
+    });
+</script>
+</body>
+</html>

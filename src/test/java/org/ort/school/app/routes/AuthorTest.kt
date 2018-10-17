@@ -24,11 +24,5 @@ class AuthorTest {
         Assert.fail("Err has not been thrown")
     }
 
-    @Test
-    fun `author should see his page on enter`() {
-        val profile = mock<CommonProfile>()
-        whenever(profile.roles).thenReturn(setOf("author"))
-        val index = Author(mock(), mock()).index(profile)
-        index.name().should.equal("private/author")
-    }
+
 }

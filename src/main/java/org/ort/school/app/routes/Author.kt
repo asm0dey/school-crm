@@ -207,8 +207,6 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.jooby.Err
 import org.jooby.Request
-import org.jooby.Results
-import org.jooby.View
 import org.jooby.mvc.GET
 import org.jooby.mvc.Local
 import org.jooby.mvc.POST
@@ -216,18 +214,19 @@ import org.jooby.mvc.Path
 import org.ort.school.app.service.AuthorService
 import org.ort.school.app.service.DegreeService
 import org.pac4j.core.profile.CommonProfile
+import views.priv.author
 
 @Singleton
-@Path("/private/author")
+@Path("/priv/author")
 class Author @Inject constructor(private val degreeService: DegreeService, private val authorService: AuthorService) {
     @GET
-    fun index(@Local profile: CommonProfile): View {
+    fun index(@Local profile: CommonProfile): author {
         if (!profile.roles.contains("author")) throw Err(403)
-        return Results.html("private/author").put("degrees", degreeService.listDegreeNames())
+        return views.priv.author().degrees(degreeService.listDegreeNames())
     }
 
     @POST
-    fun sendLetter(request: Request): View {
+    fun sendLetter(request: Request): author {
         val degreeIds = request
                 .params()
                 .toMap()
@@ -238,6 +237,6 @@ class Author @Inject constructor(private val degreeService: DegreeService, priva
         val subject = request.param("subject", "text").value()
         authorService.sendLetter(degreeIds, letterContent, subject)
         request.flash("success", "OK")
-        return Results.html("private/author").put("degrees", degreeService.listDegreeNames())
+        return views.priv.author().degrees(degreeService.listDegreeNames())
     }
 }

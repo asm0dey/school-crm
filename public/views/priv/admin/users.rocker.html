@@ -1,0 +1,71 @@
+@import com.fizzed.rocker.Rocker
+@import java.util.Collection
+@import org.ort.school.app.repo.UserDTO
+
+@args (Collection<UserDTO> users)
+
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+@views.head.template()
+<body>
+@views.nav.template()
+<div>
+    <div class="row">
+        <div class="col s10 offset-s1">
+            <table class="highlight responsive-table">
+                <thead>
+                <tr>
+                    <td width="20%">Имя пользователя</td>
+                    <td width="58%">Полное имя</td>
+                    <td width="20%">Роль</td>
+                    <td width="1%"></td>
+                    <td width="1%"></td>
+                </tr>
+                </thead>
+                <tbody>
+                @for(user:users){
+                <tr>
+                    <td>@user.getUsername()</td>
+                    <td>@user.getDisplayName()</td>
+                    <td>@if(user.getRole()=="admin"){Администратор} else {Автор}</td>
+                    <td><a class="waves-effect waves-light btn-floating" href="/private/user/@user.getUsername()/edit"
+                           title="Изменить"><i
+                            class="material-icons">edit</i></a></td>
+                    <td><a class="waves-effect waves-light btn-floating red" onclick="deleteUser('@user.getUsername()')"
+                           title="Удалить"><i
+                            class="material-icons">delete</i></a></td>
+                </tr>
+
+                }
+                </tbody>
+            </table>
+            <a href="/private/user/new" class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>Создать нового</a>
+            <script type="application/javascript">
+                const deleteUser = function (username) {
+                    if (confirm("Вы уверены что пользователя " + username + " нужно удалить?")) {
+                        $.ajax({
+                            url: "/priv/user/" + username + "/delete",
+                            type: 'DELETE',
+                            success: function (result) {
+                                window.location.reload(true)
+                            }
+                        })
+                    }
+                };
+            </script>
+        </div>
+    </div>
+</div>
+@views.scripts.template()
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+        var modals = document.querySelectorAll('.modal');
+        var instances3 = M.Modal.init(modals);
+    });
+</script>
+</body>
+</html>

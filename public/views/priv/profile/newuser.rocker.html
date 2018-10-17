@@ -1,0 +1,92 @@
+@import org.pac4j.core.profile.CommonProfile
+@import java.util.Map
+
+@args (boolean editorEnabled, Map<String,String> errors)
+
+<!DOCTYPE html>
+@with(profile = (CommonProfile) locals.get("profile")){
+<html class="has-navbar-fixed-top">
+@views.head.template()
+<body>
+@views.nav.template()
+<div class="container">
+    <h1>Создание пользователя</h1>
+    <div class="row">
+        <form action="/private/user/new" class="col s12" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="lastname" type="text"
+                           class='validate @if(errors!=null&&errors.get("lastname")!=null){invalid}' name="lastname"
+                           required>
+                    <label for="lastname">Фамилия</label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="firstname" type="text"
+                           class='validate @if(errors!=null&&errors.get("firstname")!=null){invalid}' name="firstname"
+                           required>
+                    <label for="firstname">Имя</label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="patronymic" type="text"
+                           class='validate @if(errors!=null&&errors.get("patronymic")!=null){invalid}' name="patronymic">
+                    <label for="patronymic">Отчество</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4">
+                    <input id="username" type="text"
+                           class='validate @if(errors!=null&&errors.get("username")!=null){invalid}' name="username"
+                           minlength="6" required>
+                    <label for="username">Имя пользователя</label>
+                </div>
+                <div class="input-field col s4">
+                    <input id="email" type="email" class='validate @if(errors!=null&&errors.get("email")!=null){invalid}'
+                           name="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field col s4">
+                    <select id="role" name="role" required
+                            class='validate @if(errors!=null&&errors.get("role")!=null){invalid}'>
+                        <option value="no" disabled selected>Выберите роль</option>
+                        <option value="admin" @if(profile.getRoles().contains("admin")){disabled}> Администратор</option>
+                        <option value="author" @if(profile.getRoles().contains("author")){disabled}> Редактор</option>
+                    </select>
+                    <label for="role">Роль</label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="password" type="password"
+                           class='validate @if(errors!=null&&errors.get("password")!=null){invalid}' name="password"
+                           minlength="6" required>
+                    <label for="password">Пароль</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="passwordConfirm" type="password"
+                           class='validate @if(errors!=null&&errors.get("validPassword")!=null){invalid}'
+                           name="passwordConfirm" minlength="6" required>
+                    <label for="passwordConfirm">Повторите пароль</label>
+                </div>
+            </div>
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">Создать
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@views.scripts.template()
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+    });
+</script>
+</body>
+}
+</html>

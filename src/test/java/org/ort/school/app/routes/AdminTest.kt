@@ -25,7 +25,7 @@ class AdminTest {
     fun `when user hits slash-admin he's redirected to users area`() {
         val admin = Admin(mock(), mock(), mock()).get()
         admin.status().get().should.be.equal(Status.MOVED_PERMANENTLY)
-        admin.headers().should.contain("location" to "/private/admin/users")
+        admin.headers().should.contain("location" to "/priv/admin/users")
     }
 
     @Test
@@ -64,11 +64,7 @@ class AdminTest {
         val userService = mock<UserService>()
         whenever(userService.listUsers()).thenReturn(users)
         val view = Admin(userService, mock(), mock()).getUsers(profile)
-        view.name().should.be.equal("private/admin")
-        view.model().should
-                .contain("part" to "users")
-                .contain("users" to users)
-                .size(2)
+        view.users().should.equal(users)
     }
 
     @Test
@@ -84,13 +80,9 @@ class AdminTest {
         whenever(config.getStringList(any())).thenReturn(allowedLetters)
         whenever(degreeService.listDegrees()).thenReturn(gradeList)
         val view = Admin(mock(), config, degreeService).degrees(profile)
-        view.name().should.be.equal("private/admin")
-        view.model().should
-                .contain("part" to "degrees")
-                .contain("degrees" to gradeList)
-                .contain("allowedDegrees" to allowedDegrees)
-                .contain("allowedLetters" to allowedLetters)
-                .size(4)
+        view.degrees().should.equal(gradeList)
+        view.allowedDegrees().should.equal(allowedDegrees)
+        view.allowedLetters().should.equal(allowedLetters)
     }
 
     @Test
@@ -117,9 +109,7 @@ class AdminTest {
         val degreeDTO = m.constructor(DegreeDTO::class.java).params(m.strings(), m.intSeq()).`val`()
         val profile = mock<CommonProfile>()
         whenever(profile.roles).thenReturn(setOf("admin"))
-        val view = Admin(mock(), mock(), degreeService).createDegree(degreeDTO, profile).get<View>()!!
-        view.name().should.be.equal("private/admin")
-        view.model().should.contain("part" to "degrees")
+        val view = Admin(mock(), mock(), degreeService).createDegree(degreeDTO, profile)
         verify(degreeService, times(1)).createDegree(degreeDTO)
     }
 
