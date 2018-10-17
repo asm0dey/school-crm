@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.ort.school</groupId>
   <artifactId>crm</artifactId>
-  <version>1.4.1</version>
+  <version>1.5.0</version>
   <prerequisites>
     <maven>3.0.2</maven>
   </prerequisites>
@@ -138,8 +138,7 @@
     </dependency>
 
     <dependency>
-      <!--@todo migrate from NPM version -->
-      <groupId>org.webjars.npm</groupId>
+      <groupId>org.webjars</groupId>
       <artifactId>summernote</artifactId>
       <version>0.8.10</version>
     </dependency>

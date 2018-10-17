@@ -14,7 +14,7 @@ deploy:
   provider: releases
   api_key:
     secure: ICX8ymuqWzl+0/oxpYrEl9mmjV369ZHqtVt6Rfw5HDD1E7HGCE+hvKn4MBgRbCEwBjazEkZObd3a+tLIup4ebizWh76aPub1OVMjNN/pM3UkWECblDF2TXlyEc3HG2jRllnOh+R9OohlKe05NWZAv6mfQ1xq3qqbzPFZXd3s9N/2Zm4hUYaKC/2OSTLAGqtNrDs7OmvfQI/8/Vgqfc4+D0Xvj0ISKVXyvk8aFzC91A58cYFdbhxJFByYAQVrkWnfS1leMo1/ZLo1hOJXSmUaDJQofi5unPf3KVgRyuQ5/YBKPazqdNLip/uGrDT89pcvhphPRX/aGnfDXpLgdvAjBXwS/3YSkavKiTQS1+xqJsWcSCIjb/z6TZl1/0vUIyXRi50HBEQp3nsYNZ8kMPe+TPH4gbrqLq38VZEDjDbml6kz+mYoNlxzeqErlKqIo3tD6Z3hqema10VVX48OTrYzE3xpIGjhlAyyuCbQEdm3SHHh60oMBcwr/gAMYBJDm6T6I6KTjVLDYAh+Fsois0CuXBbTX+BZ4IFBi/N8lb2pV+YP1J+C4RxV66jQPtMJlposMC1MvdUByqy3E/Jr8trFU0Lktt3pvL/znDaIRu/KJ2hYlABRgINiW6IW9ht4iRx/BFMsUqCVonyPrSuosUftq//sRqEgtG+Fl4LlRI4FkjY=
-  file: target/crm-*.jar
+  file: target/crm-*.zip
   file_glob: true
   on:
     repo: asm0dey/school-crm
