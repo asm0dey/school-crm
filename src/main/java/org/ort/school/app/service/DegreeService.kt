@@ -204,8 +204,9 @@
 package org.ort.school.app.service
 
 import com.google.inject.Inject
+import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.repo.DegreeRepo
-import org.ort.school.app.routes.DegreeDTO
+import org.ort.school.app.model.DegreeDTO
 
 class DegreeService @Inject constructor(private val degreeRepo: DegreeRepo) {
     fun listDegrees() = degreeRepo.listDegrees()

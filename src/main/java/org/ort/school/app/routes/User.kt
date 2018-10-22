@@ -232,9 +232,8 @@ class User @Inject constructor(private val validator: Validator, private val use
     @Path("new")
     fun newUserPage(@Local profile: CommonProfile): newuser {
         if (profile.roles.contains("admin")) {
-            val admins = userService.countAdmins()
             return views.priv.profile.newuser()
-                    .editorEnabled(profile.roles.contains("admin"))
+                    .editorEnabled(true)
                     .errors(emptyMap())
         }
         throw Err(403)
@@ -251,7 +250,7 @@ class User @Inject constructor(private val validator: Validator, private val use
                 return ok(
                         views.priv.profile.newuser()
                                 .errors(map)
-                                .editorEnabled(profile.roles.contains("admin"))
+                                .editorEnabled(true)
                 )
             }
             userService.createUser(userInfoDTO)

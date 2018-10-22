@@ -10,7 +10,7 @@ import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.GradeInfoDTO
 import org.ort.school.app.repo.GradeWithParents
 import org.ort.school.app.repo.ParentWithChildren
-import org.ort.school.app.routes.DegreeDTO
+import org.ort.school.app.model.DegreeDTO
 
 class DegreeServiceTest {
 

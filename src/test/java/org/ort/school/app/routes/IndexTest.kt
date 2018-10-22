@@ -4,11 +4,10 @@ import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Status
-import org.jooby.View
 import org.junit.Test
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.DegreeService
-import org.ort.school.app.service.SubscribeDTO
+import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
 import org.ort.school.app.service.UserService
 import views.index
@@ -80,6 +79,7 @@ class IndexTest {
         verify(userService, times(1)).createUser(userInfo.copy(role = "admin"))
         view.status().get().should.equal(Status.FOUND)
         view.headers().should.contain("location" to "/")
+        main.home().get<index>()!!.errors().should.be.empty
     }
 
     @Test

@@ -31,23 +31,4 @@ class UserTest {
         result.headers()["location"].should.be.equal("/priv/user/asm/edit")
     }
 
-    @Test
-    fun updateUserProfile() {
-    }
-
-    @Test
-    fun updateUser() {
-    }
-
-    @Test
-    fun deleteUser() {
-    }
-
-    @Test
-    fun newUserPage() {
-    }
-
-    @Test
-    fun newUser() {
-    }
 }

@@ -12,7 +12,7 @@
 <div class="container">
     <h1>Создание пользователя</h1>
     <div class="row">
-        <form action="/private/user/new" class="col s12" method="post" enctype="application/x-www-form-urlencoded">
+        <form action="/priv/user/new" class="col s12" method="post" enctype="application/x-www-form-urlencoded">
             <div class="row">
                 <div class="input-field col s4">
                     <input id="lastname" type="text"
@@ -48,8 +48,8 @@
                     <select id="role" name="role" required
                             class='validate @if(errors!=null&&errors.get("role")!=null){invalid}'>
                         <option value="no" disabled selected>Выберите роль</option>
-                        <option value="admin" @if(profile.getRoles().contains("admin")){disabled}> Администратор</option>
-                        <option value="author" @if(profile.getRoles().contains("author")){disabled}> Редактор</option>
+                        <option value="admin" @if(!profile.getRoles().contains("admin")){disabled}> Администратор</option>
+                        <option value="author" @if(!editorEnabled){disabled}> Редактор</option>
                     </select>
                     <label for="role">Роль</label>
                 </div>

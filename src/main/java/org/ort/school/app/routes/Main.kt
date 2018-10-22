@@ -214,7 +214,7 @@ import org.jooby.mvc.POST
 import org.jooby.mvc.Path
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.DegreeService
-import org.ort.school.app.service.SubscribeDTO
+import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.FirstUser

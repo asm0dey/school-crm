@@ -226,13 +226,16 @@ class Author @Inject constructor(private val degreeService: DegreeService, priva
     }
 
     @POST
-    fun sendLetter(request: Request): author {
+    fun sendLetter(@Local profile: CommonProfile, request: Request): author {
+        if (!profile.roles.contains("author")) throw Err(403)
         val degreeIds = request
                 .params()
                 .toMap()
-                .filterKeys { it.startsWith("d-") }
-                .keys
+                .asSequence()
+                .filter { (a, _) -> a.startsWith("d-") }
+                .map { (a, _) -> a }
                 .map { it.replace("d-", "").toInt() }
+                .toList()
         val letterContent = request.param("content", "html").value()
         val subject = request.param("subject", "text").value()
         authorService.sendLetter(degreeIds, letterContent, subject)

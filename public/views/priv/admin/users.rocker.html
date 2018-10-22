@@ -1,6 +1,7 @@
 @import com.fizzed.rocker.Rocker
 @import java.util.Collection
 @import org.ort.school.app.repo.UserDTO
+@import org.pac4j.core.profile.CommonProfile
 
 @args (Collection<UserDTO> users)
 
@@ -27,19 +28,27 @@
                 <tr>
                     <td>@user.getUsername()</td>
                     <td>@user.getDisplayName()</td>
-                    <td>@if(user.getRole()=="admin"){Администратор} else {Автор}</td>
-                    <td><a class="waves-effect waves-light btn-floating" href="/private/user/@user.getUsername()/edit"
+                    <td>@if(user.getRole().equals("admin")){Администратор} else {Автор}</td>
+                    <td><a class="waves-effect waves-light btn-floating" href="/priv/user/@user.getUsername()/edit"
                            title="Изменить"><i
                             class="material-icons">edit</i></a></td>
-                    <td><a class="waves-effect waves-light btn-floating red" onclick="deleteUser('@user.getUsername()')"
+                    <td>
+                        @if(!user.getRole().equals("admin") || users.stream().filter(it -> it.getRole().equals("admin")).count() > 1) {
+                        @with(profile = (CommonProfile)locals.get("profile")) {
+                        @if(!profile.getUsername().equals(user.getUsername())) {
+                        <a class="waves-effect waves-light btn-floating red" onclick="deleteUser('@user.getUsername()')"
                            title="Удалить"><i
-                            class="material-icons">delete</i></a></td>
+                            class="material-icons">delete</i></a>
+                        }
+                        }
+                        }
+                    </td>
                 </tr>
 
                 }
                 </tbody>
             </table>
-            <a href="/private/user/new" class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>Создать нового</a>
+            <a href="/priv/user/new" class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>Создать нового</a>
             <script type="application/javascript">
                 const deleteUser = function (username) {
                     if (confirm("Вы уверены что пользователя " + username + " нужно удалить?")) {

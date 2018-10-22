@@ -6,10 +6,10 @@ import com.winterbe.expekt.should
 import net.andreinc.mockneat.MockNeat
 import org.jooby.Err
 import org.jooby.Status
-import org.jooby.View
 import org.junit.Assert
 import org.junit.Assert.fail
 import org.junit.Test
+import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.repo.*
 import org.ort.school.app.service.DegreeService
 import org.ort.school.app.service.UserService

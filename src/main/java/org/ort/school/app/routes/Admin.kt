@@ -213,6 +213,7 @@ import org.jooby.mvc.GET
 import org.jooby.mvc.Local
 import org.jooby.mvc.POST
 import org.jooby.mvc.Path
+import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.service.DegreeService
 import org.ort.school.app.service.UserService
 import org.pac4j.core.profile.CommonProfile
@@ -260,7 +261,3 @@ class Admin @Inject constructor(
     }
 }
 
-data class DegreeDTO(
-        val degreeLetter: String,
-        val degreeNo: Int
-)

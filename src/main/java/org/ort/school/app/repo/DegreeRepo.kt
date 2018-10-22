@@ -207,9 +207,9 @@ import com.google.inject.Inject
 import org.jooq.DSLContext
 import org.jooq.Record10
 import org.jooq.impl.DSL
-import org.ort.school.app.routes.DegreeDTO
-import org.ort.school.app.service.ParentInfo
-import org.ort.school.app.service.StudentInfo
+import org.ort.school.app.model.DegreeDTO
+import org.ort.school.app.model.ParentInfo
+import org.ort.school.app.model.StudentInfo
 import org.ort.school.crm.jooq.model.Tables.*
 
 class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
