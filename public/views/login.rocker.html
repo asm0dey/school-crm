@@ -4,9 +4,9 @@
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-@views.head.template()
+@views.partials.head.template()
 <body>
-@views.nav.template()
+@views.partials.nav.template()
 <div class="container">
     <div class="row">
         <form action="/callback?client_name=FormClient" method="post" class="col s6 offset-s3">
@@ -37,6 +37,6 @@
         <div class="col s4"></div>
     </div>
 </div>
-@views.scripts.template()
+@views.partials.scripts.template()
 </body>
 </html>

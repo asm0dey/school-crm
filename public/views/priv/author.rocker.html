@@ -5,9 +5,9 @@
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-@views.head.template()
+@views.partials.head.template()
 <body>
-@views.nav.template()
+@views.partials.nav.template()
 <div class="container">
     <div class="row">
         <h2>Создание рассылки</h2>
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-@views.scripts.template()
+@views.partials.scripts.template()
 <script src="/webjars/summernote/0.8.10/dist/summernote-lite.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

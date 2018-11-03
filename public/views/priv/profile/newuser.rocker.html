@@ -6,9 +6,9 @@
 <!DOCTYPE html>
 @with(profile = (CommonProfile) locals.get("profile")){
 <html class="has-navbar-fixed-top">
-@views.head.template()
+@views.partials.head.template()
 <body>
-@views.nav.template()
+@views.partials.nav.template()
 <div class="container">
     <h1>Создание пользователя</h1>
     <div class="row">
@@ -78,7 +78,7 @@
         </form>
     </div>
 </div>
-@views.scripts.template()
+@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');

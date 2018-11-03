@@ -18,7 +18,7 @@
   <properties>
     <boringssl.version>2.0.7.Final</boringssl.version>
     <jooby.version>1.5.1</jooby.version>
-    <jooq.version>3.11.5</jooq.version>
+    <jooq.version>3.11.6</jooq.version>
     <spek.version>1.2.1</spek.version>
     <kotlin.version>1.2.71</kotlin.version>
     <hibernate-validator.version>6.0.7.Final</hibernate-validator.version>
@@ -288,17 +288,11 @@
         <artifactId>maven-shade-plugin</artifactId>
       </plugin>
       <plugin>
-
-        <!-- Specify the maven code generator plugin -->
         <groupId>org.jooq</groupId>
         <artifactId>jooq-codegen-maven</artifactId>
         <version>${jooq.version}</version>
-
-        <!-- Specify the plugin configuration.
-                                             The configuration format is the same as for the standalone code generator -->
         <configuration>
           <skip>true</skip>
-          <!-- JDBC connection parameters -->
           <jdbc>
             <driver>org.h2.Driver</driver>
             <url>jdbc:h2:file:./db/schoolcrm;MODE=PostgreSQL;LOCK_MODE=0</url>
@@ -306,15 +300,10 @@
             <password></password>
           </jdbc>
 
-          <!-- Generator parameters -->
           <generator>
             <database>
-              <name>org.jooq.util.h2.H2Database</name>
               <includes>.*</includes>
-              <excludes></excludes>
-              <!-- In case your database supports catalogs, e.g. SQL Server:
-                                                                      <inputCatalog>pub</inputCatalog>
-                                                                        -->
+              <excludes>flyway_schema_history</excludes>
               <inputSchema>PUBLIC</inputSchema>
             </database>
             <target>
@@ -324,7 +313,6 @@
           </generator>
         </configuration>
 
-        <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL database -->
         <dependencies>
           <dependency>
             <groupId>com.h2database</groupId>
@@ -333,7 +321,6 @@
           </dependency>
         </dependencies>
 
-        <!-- The plugin should hook into the generate goal -->
         <executions>
           <execution>
             <goals>
@@ -378,7 +365,27 @@
           </dependency>
         </dependencies>
       </plugin>
-
+        <plugin>
+            <groupId>org.jooby</groupId>
+            <artifactId>jooby-maven-plugin</artifactId>
+            <configuration>
+                <mainClass>${application.class}</mainClass>
+                <commands>
+                </commands>
+                <compiler>on</compiler>
+                <fork>false</fork>
+                <vmArgs></vmArgs>
+                <debug>true</debug>
+                <includes>
+                    <include>**/*.class</include>
+                    <include>**/*.conf</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <excludes>
+                </excludes>
+                <srcExtensions>.java,.kt,.conf,.properties,.html</srcExtensions>
+            </configuration>
+        </plugin>
     </plugins>
       <pluginManagement>
           <plugins>

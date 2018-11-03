@@ -1,20 +1,25 @@
-@args (int status, String reason)
+@import com.fizzed.rocker.Rocker
+@import java.util.Collection
+@import org.ort.school.app.repo.UserDTO
+@import org.pac4j.core.profile.CommonProfile
+
+@args (Collection<UserDTO> users)
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
 @views.partials.head.template()
 <body>
 @views.partials.nav.template()
-<h1>Ошибка</h1>
-<h3>${status}: ${reason}</h3>
+<h2>some</h2>
 @views.partials.scripts.template()
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         var selects = document.querySelectorAll('select');
         var instances = M.FormSelect.init(selects);
         var dropdowns = document.querySelectorAll('.dropdown-trigger');
         var instances2 = M.Dropdown.init(dropdowns);
-
+        var modals = document.querySelectorAll('.modal');
+        var instances3 = M.Modal.init(modals);
     });
 </script>
 </body>

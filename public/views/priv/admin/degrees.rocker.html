@@ -9,9 +9,9 @@
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-@views.head.template()
+@views.partials.head.template()
 <body>
-@views.nav.template()
+@views.partials.nav.template()
 <div>
     <div class="row">
         <div class="col s10 offset-s1">
@@ -21,7 +21,7 @@
                         class="material-icons">add</i></a>
             </div>
 
-            <div id="create-degree" class="modal modal-fixed-footer">
+            <div id="create-degree" class="modal bottom-sheet">
                 <div class="modal-content">
                     <h4>Добавление класса</h4>
                     <form action="/priv/admin/degrees" class="col s12" method="post">
@@ -99,17 +99,17 @@
         </div>
     </div>
 </div>
-@views.scripts.template()
+@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(selects);
+        M.FormSelect.init(selects);
         var dropdowns = document.querySelectorAll('.dropdown-trigger');
-        var instances2 = M.Dropdown.init(dropdowns);
+        M.Dropdown.init(dropdowns);
         var modals = document.querySelectorAll('.modal');
-        var instances3 = M.Modal.init(modals);
+        M.Modal.init(modals);
         var elems = document.querySelectorAll('.collapsible');
-        var instances4 = M.Collapsible.init(elems);
+        M.Collapsible.init(elems);
     });
 </script>
 </body>

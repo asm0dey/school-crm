@@ -4,9 +4,7 @@ import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Err
-import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.CreateUser
@@ -14,6 +12,7 @@ import org.pac4j.core.profile.CommonProfile
 import views.priv.profile.newuser
 import javax.validation.ConstraintViolation
 import javax.validation.Validator
+import kotlin.test.fail
 
 class UserSpecTest {
     @JvmField
@@ -23,22 +22,16 @@ class UserSpecTest {
     @JvmField
     val user = User(validator, userService)
 
-    @Before
-    fun setup() {
-        Mockito.reset(validator, userService)
-    }
-
-
     @Test
     fun `non-adin on new user page should throw 403`() {
         val profile = mock<CommonProfile>()
-        var catched: Err? = null
         try {
             user.newUserPage(profile)
         } catch (e: Err) {
-            catched = e;
+            e.statusCode().should.be.equal(403)
+            return
         }
-        catched?.statusCode().should.be.equal(403)
+        fail()
     }
 
     @Test
@@ -74,11 +67,11 @@ class UserSpecTest {
 
     @Test
     fun `when I'm creating user with invalid date we should be returned to page with errors filled`() {
-        val vio = mock<ConstraintViolation<UserInfoDTO>>() {
+        val vio = mock<ConstraintViolation<UserInfoDTO>> {
             on { propertyPath } doReturn PathImpl.createPathFromString("path1")
             on { message } doReturn "mess1"
         }
-        val vio2 = mock<ConstraintViolation<UserInfoDTO>>() {
+        val vio2 = mock<ConstraintViolation<UserInfoDTO>> {
             on { propertyPath } doReturn PathImpl.createPathFromString("path2")
             on { message } doReturn "mess2"
         }

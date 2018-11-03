@@ -8,7 +8,6 @@ import com.winterbe.expekt.should
 import org.jooby.Err
 import org.jooby.Mutant
 import org.jooby.Request
-import org.junit.Assert
 import org.junit.Test
 import org.ort.school.app.service.AuthorService
 import org.ort.school.app.service.DegreeService
@@ -16,17 +15,15 @@ import org.pac4j.core.profile.CommonProfile
 
 class AuthorTest {
 
-    @Test
+    @Test(expected = Err::class)
     fun `should throw 403 if user is not author`() {
         val profile = mock<CommonProfile>()
         try {
             Author(mock(), mock()).index(profile)
-        } catch (e: Exception) {
-            e.should.be.instanceof(Err::class.java)
-            (e as Err).statusCode().should.be.equal(403)
-            return
+        } catch (e: Err) {
+            e.statusCode().should.be.equal(403)
+            throw e
         }
-        Assert.fail("Err has not been thrown")
     }
 
     @Test
@@ -73,12 +70,13 @@ class AuthorTest {
         sendLetter.degrees().should.equal(degrees)
     }
 
-    @Test
-    fun `can't send letter without author role`(){
+    @Test(expected = Err::class)
+    fun `can't send letter without author role`() {
         try {
             Author(mock(), mock()).sendLetter(mock(), mock())
-        }catch (e:Err){
+        } catch (e: Err) {
             e.statusCode().should.be.equal(403)
+            throw e
         }
     }
 

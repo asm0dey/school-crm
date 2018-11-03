@@ -7,9 +7,9 @@
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-@views.head.template()
+@views.partials.head.template()
 <body>
-@views.nav.template()
+@views.partials.nav.template()
 <div>
     <div class="row">
         <div class="col s10 offset-s1">
@@ -65,7 +65,7 @@
         </div>
     </div>
 </div>
-@views.scripts.template()
+@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var selects = document.querySelectorAll('select');

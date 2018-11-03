@@ -7,9 +7,9 @@
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
-@views.head.template()
+@views.partials.head.template()
 <body>
-@views.nav.template()
+@views.partials.nav.template()
 <div class="container">
     <h1>Добро пожаловать</h1>
     <p class="flow-text">Спасибо, что зашли на нашу страничку! Здесь вы можете добавить информацию о себе и ребёнке,
@@ -116,7 +116,7 @@
         </form>
     </div>
 </div>
-@views.scripts.template()
+@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');

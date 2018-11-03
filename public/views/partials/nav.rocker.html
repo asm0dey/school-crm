@@ -18,6 +18,7 @@
             @with (profile = (CommonProfile)locals.get("profile")) {
             @if(profile.getRoles().contains("admin")) {
             <li><a href="/priv/admin/users">Пользователи</a></li>
+            <li><a href="/priv/admin/groups">Группы</a></li>
             <li><a href="/priv/admin/degrees">Классы</a></li>
             }
             else if(profile.getRoles().contains("author")) {

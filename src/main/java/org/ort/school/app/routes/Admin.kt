@@ -208,7 +208,7 @@ import com.google.inject.Singleton
 import com.typesafe.config.Config
 import org.jooby.Err
 import org.jooby.Result
-import org.jooby.Results
+import org.jooby.Results.moved
 import org.jooby.mvc.GET
 import org.jooby.mvc.Local
 import org.jooby.mvc.POST
@@ -229,7 +229,7 @@ class Admin @Inject constructor(
 ) {
     @GET
     fun get(): Result {
-        return Results.moved("/priv/admin/users")
+        return moved("/priv/admin/users")
     }
 
     @GET
@@ -259,5 +259,9 @@ class Admin @Inject constructor(
         degreeService.createDegree(degree)
         return degrees(profile)
     }
+
+    @Path("/groups")
+    @GET
+    fun groups() = views.priv.admin.groups()
 }
 
