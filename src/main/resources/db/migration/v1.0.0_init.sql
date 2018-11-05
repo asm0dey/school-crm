@@ -1,4 +1,4 @@
-CREATE TABLE user (
+CREATE TABLE "user" (
   id         BIGSERIAL PRIMARY KEY,
   username   VARCHAR(500) NOT NULL UNIQUE,
   password   VARCHAR(300) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE user (
 );
 
 CREATE INDEX user_name
-  ON user (username);
+  ON "user" (username);
 
 
 CREATE TABLE role (
@@ -22,7 +22,7 @@ INSERT INTO role (name) VALUES ('admin');
 INSERT INTO role (name) VALUES ('author');
 
 CREATE TABLE user_role (
-  user_id BIGINT       NOT NULL REFERENCES user (id),
+  user_id BIGINT       NOT NULL REFERENCES "user" (id),
   role    VARCHAR(100) NOT NULL REFERENCES role (name),
   PRIMARY KEY (user_id, role)
 );

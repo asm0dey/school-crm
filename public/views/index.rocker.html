@@ -3,7 +3,10 @@
 @import kotlin.Pair
 @import org.pac4j.core.profile.CommonProfile
 
-@args (Map<String,String> errors, List<Pair<Integer, String>> degrees)
+@args (Map
+<String,String> errors, List
+<Pair
+<Integer, String>> degrees)
 
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
@@ -18,10 +21,11 @@
     <p class="flow-text">Обещаем никому не отдавать ваши данные!</p>
     <div class="row">
         <form action="/" class="col s12" method="post">
-            <div class="row">
+            <div class="row j_parent">
                 <div class="input-field col s4">
                     <input id="parent-lastname" type="text"
-                           class='validate @if(errors != null && errors.get("parent.lastname") != null) {invalid}' required
+                           class='validate @if(errors != null && errors.get("parent.lastname") != null) {invalid}'
+                           required
                            name="parent.lastname">
                     <label for="parent-lastname" class="label">Ваша фамилия<span style="color: crimson">*</span></label>
                     @if (errors != null && errors.get("parent.lastname") != null) {
@@ -50,41 +54,10 @@
                     }
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s4">
-                    <input id="student-lastname" type="text"
-                           class='validate @if(errors != null && errors.get("student.lastname") != null) {invalid}' required
-                           name="student.lastname">
-                    <label for="student-lastname">Фамилия ученика<span style="color: crimson">*</span></label>
-                    @if (errors != null && errors.get("student.lastname") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("student.lastname"))'></span>
-                    }
-                </div>
-                <div class="input-field col s4">
-                    <input id="student-firstname" type="text"
-                           class='validate @if(errors != null && errors.get("student.firstname") != null) {invalid}' required
-                           name="student.firstname">
-                    <label for="student-firstname">Имя ученика<span style="color: crimson">*</span></label>
-                    @if (errors != null && errors.get("student.firstname") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("student.firstname"))'></span>
-                    }
-                </div>
-                <div class="input-field col s4">
-                    <input id="student-patronymic" type="text"
-                           class='validate @if(errors != null && errors.get("student.patronymic") != null) {invalid}'
-                           name="student.patronymic">
-                    <label for="student-patronymic">Отчество ученика</label>
-                    @if (errors != null && errors.get("student.patronymic") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("student.patronymic"))'></span>
-                    }
-                </div>
-            </div>
-            <div class="row">
+            <div class="row j_additional">
                 <div class="input-field col s6">
-                    <input type="email" class='validate @if(errors != null && errors.get("parent.email") != null) {invalid}'
+                    <input type="email"
+                           class='validate @if(errors != null && errors.get("parent.email") != null) {invalid}'
                            name="parent.email" id="email" required>
                     <label for="email"> Ваш Email<span style="color: crimson">*</span></label>
                     @if (errors != null && errors.get("parent.email") != null) {
@@ -92,23 +65,12 @@
                           data-error='@(errors.get("parent.email"))'></span>
                     }
                 </div>
-                <div class="input-field col s6">
-                    <select name="degreeNo" id="classno"
-                            class='validate @if(errors != null && errors.get("parent.degreeNoemail") != null) {invalid}' required>
-                        <option value="no" disabled>Выберите номер класса</option>
-                        @for(degree:degrees){
-                        <option value="${degree.first}">@degree.getSecond()</option>
-                        }
-                    </select>
-                    <label for="classno">Класс<span style="color: crimson">*</span></label>
-                    @if (errors != null && errors.get("degreeNo") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("degreeNo"))'></span>
-                    }
-                </div>
             </div>
             <input type="hidden" value='@locals.get("csrf")' name="csrf">
             <div class="row">
+                <button class="btn waves-effect waves-light j_addchild">Добавить ребёнка
+                    <i class="material-icons right">add</i>
+                </button>
                 <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
                     <i class="material-icons right">send</i>
                 </button>
@@ -117,13 +79,49 @@
     </div>
 </div>
 @views.partials.scripts.template()
+<script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
 <script>
+    let counter = 0;
+    const generateChildBlock = function (num) {
+        return "<div class=\"row j_child\"> <div class=\"input-field col s3\"> <input id=\"student-lastname[" + num + "]\" type=\"text\" class=\'validate\' required name=\"student[" + num + "]lastname\"> <label for=\"student-lastname[" + num + "]\">Фамилия ученика<span style=\"color: crimson\">*</span></label> </div> <div class=\"input-field col s3\"> <input id=\"student-firstname[" + num + "]\" type=\"text\" class=\'validate\' required name=\"student[" + num + "]firstname\"> <label for=\"student-firstname[" + num + "]\">Имя ученика<span style=\"color: crimson\">*</span></label> </div> <div class=\"input-field col s3\"> <input id=\"student-patronymic[" + num + "]\" type=\"text\" class=\'validate\' name=\"student[" + num + "]patronymic\"> <label for=\"student-patronymic[" + num + "]\">Отчество ученика</label> </div> <div class=\"input-field col s2\"> <select name=\"student[" + num + "]degreeNo\" id=\"classno[" + num + "]\" class=\'validate\' required> <option value=\"no\" disabled>Выберите номер класса</option> @for(degree:degrees){<option value=\"@degree.getFirst()\">@degree.getSecond()</option>} </select> <label for=\"classno[" + num + "]\">Класс<span style=\"color: crimson\">*</span></label> </div> <div class='input-field col s1'><btn onclick='deleteNode()' class='waves-effect waves-teal btn-flat btn-large'><i class='material-icons'>delete</i> </btn></div> </div>";
+    };
+    const initSelects = function () {
+        const selects = document.querySelectorAll('select');
+        M.FormSelect.init(selects);
+    };
+    const addChild = function () {
+        u('.j_additional').before(generateChildBlock(counter++));
+        let children = u('.j_child btn.btn-flat');
+        children.each(function (node, i) {
+            if (i === 0 || i !== children.length - 1)
+                u(node).addClass('hide')
+        })
+        initSelects();
+    };
+    const deleteNode = function () {
+        u(u('.j_child').last()).remove();
+        let buttons = u('.j_child btn.btn-flat');
+        u(buttons.last()).removeClass('hide')
+        u(buttons.first()).addClass('hide')
+        counter--;
+    };
     document.addEventListener('DOMContentLoaded', function () {
-        var selects = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(selects);
+        initSelects();
         var dropdowns = document.querySelectorAll('.dropdown-trigger');
         var instances2 = M.Dropdown.init(dropdowns);
-
+        u("button.j_addchild").on('click', addChild);
+        addChild();
+        //@@formatter:off
+        @with? (flash = (Map < String, Object >) locals.get("flash")){
+        @if("ok".equals(flash.get("success"))){
+        M.toast({html: "Дети успешно зарегистрированы"})
+        } else {
+        @for((key, item):flash){
+        M.toast({html: "@key: @item"})
+        }
+        }
+        }
+        //@@formatter:om
     });
 </script>
 </body>

@@ -207,8 +207,10 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import com.typesafe.config.Config
 import org.jooby.Err
+import org.jooby.Request
 import org.jooby.Result
 import org.jooby.Results.moved
+import org.jooby.Results.redirect
 import org.jooby.mvc.GET
 import org.jooby.mvc.Local
 import org.jooby.mvc.POST
@@ -218,6 +220,7 @@ import org.ort.school.app.service.DegreeService
 import org.ort.school.app.service.UserService
 import org.pac4j.core.profile.CommonProfile
 import views.priv.admin.degrees
+import views.priv.admin.groups
 import views.priv.admin.users
 
 @Singleton
@@ -226,6 +229,7 @@ class Admin @Inject constructor(
         private val userService: UserService,
         private val config: Config,
         private val degreeService: DegreeService
+
 ) {
     @GET
     fun get(): Result {
@@ -250,6 +254,7 @@ class Admin @Inject constructor(
                 .degrees(degrees)
                 .allowedDegrees(allowedDegrees)
                 .allowedLetters(allowedLetters)
+                .existingDegrees(degreeService.listDegreeNames())
     }
 
     @Path("/degrees")
@@ -262,6 +267,32 @@ class Admin @Inject constructor(
 
     @Path("/groups")
     @GET
-    fun groups() = views.priv.admin.groups()
+    fun groups(): groups {
+        return views.priv.admin.groups()
+    }
+
+    @Path("/student/move/:studentId")
+    @POST
+    fun moveStudentToAnotherDegree(req: Request, @Local profile: CommonProfile): Result {
+        if (!profile.roles.contains("admin")) throw Err(403)
+        val studentId = req.param("studentId").longValue()
+        val newDegree = req.form(LongDegreeWapper::class.java).newDegree
+        degreeService.moveStudentToDegree(studentId, newDegree)
+        req.flash("transfer", "ok")
+        return redirect("/priv/admin/degrees")
+    }
+
+    @Path("/student/delete/:studentId")
+    @POST
+    fun deleteStudent(req: Request, @Local profile: CommonProfile): Result {
+        if (!profile.roles.contains("admin")) throw Err(403)
+        val studentId = req.param("studentId").longValue()
+        degreeService.deleteStudent(studentId)
+        req.flash("delete", "ok")
+        return redirect("/priv/admin/degrees")
+
+    }
 }
+
+data class LongDegreeWapper(val newDegree: Long)
 

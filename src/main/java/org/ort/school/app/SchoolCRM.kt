@@ -211,6 +211,7 @@ import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.pac4j.Pac4j
 import org.jooby.rocker.Rockerby
+import org.jooby.whoops.Whoops
 import org.ort.school.app.routes.*
 import org.ort.school.app.service.DBAuth
 import org.pac4j.core.credentials.UsernamePasswordCredentials
@@ -223,20 +224,9 @@ class SchoolCRM : Kooby({
     modules()
     filters()
     unsecureControllers()
+    on("dev") { -> use(Whoops()); }
     use(DBAuth::class)
-    err { _, rsp, err ->
-        val page = views.pub.error()
-                .status(err.statusCode())
-                .reason(when (err.statusCode()) {
-                    403 -> "Недостаточно прав"
-                    404 -> "Страница не найдена"
-                    else -> "Неизвестная ошибка"
-                })
-        rsp.send(Result().set(page).status(err.statusCode())
-        )
-    }
 
-//    use(Auth().form("/priv/**", DBAuth::class.java))
     use(Pac4j()
             .client("/priv/**") {
                 FormClient("/login") { credentials, context -> require(DBAuth::class).validate(credentials as UsernamePasswordCredentials, context) }

@@ -36,9 +36,11 @@
                         @if(!user.getRole().equals("admin") || users.stream().filter(it -> it.getRole().equals("admin")).count() > 1) {
                         @with(profile = (CommonProfile)locals.get("profile")) {
                         @if(!profile.getUsername().equals(user.getUsername())) {
-                        <a class="waves-effect waves-light btn-floating red" onclick="deleteUser('@user.getUsername()')"
-                           title="Удалить"><i
-                            class="material-icons">delete</i></a>
+                        <a class="waves-effect waves-light btn-floating red"
+                           onclick="deleteUser('@user.getUsername()')"
+                           title="Удалить">
+                            <i class="material-icons">delete</i>
+                        </a>
                         }
                         }
                         }
@@ -49,6 +51,7 @@
                 </tbody>
             </table>
             <a href="/priv/user/new" class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>Создать нового</a>
+            <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
             <script type="application/javascript">
                 const deleteUser = function (username) {
                     if (confirm("Вы уверены что пользователя " + username + " нужно удалить?")) {

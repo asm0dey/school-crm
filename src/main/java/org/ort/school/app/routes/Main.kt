@@ -205,6 +205,7 @@ package org.ort.school.app.routes
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import org.jooby.Request
 import org.jooby.Result
 import org.jooby.Results
 import org.jooby.Results.ok
@@ -212,9 +213,9 @@ import org.jooby.Results.redirect
 import org.jooby.mvc.GET
 import org.jooby.mvc.POST
 import org.jooby.mvc.Path
+import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.DegreeService
-import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.FirstUser
@@ -224,7 +225,7 @@ import javax.validation.Validator
 
 @Singleton
 @Path("/")
-class Main @Inject constructor(
+open class Main @Inject constructor(
         private val validator: Validator,
         private val userService: UserService,
         private val degreeService: DegreeService,
@@ -260,11 +261,15 @@ class Main @Inject constructor(
 
     @POST
     @Path("/")
-    fun subscribe(subscribeDTO: SubscribeDTO): index {
+    fun subscribe(subscribeDTO: SubscribeDTO, req: Request): index {
         val errors = validator.validate(subscribeDTO).associate { it.propertyPath.toString() to it.message }
         if (errors.isNotEmpty()) {
-            return renderIndex(errors)
+            errors.toList().forEachIndexed { index, pair ->
+                req.flash("ошибка ${index + 1}", "${pair.first}: ${pair.second}")
+            }
+            return renderIndex()
         }
+        req.flash("success", "ok")
         subscribeService.subscribe(subscribeDTO)
         return renderIndex()
     }

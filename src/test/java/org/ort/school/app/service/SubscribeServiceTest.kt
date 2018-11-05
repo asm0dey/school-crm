@@ -20,12 +20,12 @@ class SubscribeServiceTest {
         val ctx = mock<DSLContext> {
             on { transactionResult(any<TransactionalCallable<*>>()) } doAnswer { invocation -> invocation.getArgument<TransactionalCallable<*>>(0).run(mockConfiguration) }
         }
-        val student = StudentInfo("ss", "ss", "ss")
+        val student = StudentInfo("ss", "ss", "ss", 2)
         val parent = ParentInfo("ss", "ss", "ss", "ss")
         val degreeNo = 2
-        val subscribeDTO = SubscribeDTO(parent, student, degreeNo)
+        val subscribeDTO = SubscribeDTO(parent, listOf(student))
         val degreeRepo = mock<DegreeRepo> {
-            on { saveStudent(eq(student), any(), eq(degreeNo)) } doReturn 777
+            on { saveStudent(eq(student), any()) } doReturn 777
         }
         val subscribeService = SubscribeService(ctx, degreeRepo)
         subscribeService.subscribe(subscribeDTO)

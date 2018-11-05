@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.ort.school</groupId>
   <artifactId>crm</artifactId>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
   <prerequisites>
     <maven>3.0.2</maven>
   </prerequisites>
@@ -20,13 +20,14 @@
     <jooby.version>1.5.1</jooby.version>
     <jooq.version>3.11.6</jooq.version>
     <spek.version>1.2.1</spek.version>
-    <kotlin.version>1.2.71</kotlin.version>
-    <hibernate-validator.version>6.0.7.Final</hibernate-validator.version>
+    <kotlin.version>1.3.0</kotlin.version>
+    <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
     <javax.el-api.version>3.0.0</javax.el-api.version>
     <h2.version>1.4.196</h2.version>
     <http-client.version>4.5.6</http-client.version>
     <!-- Startup class -->
     <application.class>org.ort.school.app.SchoolCRMKt</application.class>
+      <postgresql.version>42.2.5</postgresql.version>
   </properties>
 
   <dependencies>
@@ -100,7 +101,10 @@
       <groupId>org.jooby</groupId>
       <artifactId>jooby-csl</artifactId>
     </dependency>
-
+      <dependency>
+          <groupId>org.jooby</groupId>
+          <artifactId>jooby-whoops</artifactId>
+      </dependency>
     <dependency>
       <groupId>javax.el</groupId>
       <artifactId>javax.el-api</artifactId>
@@ -116,7 +120,14 @@
       <artifactId>kotson</artifactId>
       <version>2.5.0</version>
     </dependency>
-    <!-- REST client -->
+
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>42.2.5</version>
+          <scope>runtime</scope>
+      </dependency>
+      <!-- REST client -->
 
     <dependency>
       <groupId>com.mashape.unirest</groupId>
@@ -144,7 +155,13 @@
       <version>0.8.10</version>
     </dependency>
 
-    <!-- tests -->
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>umbrella</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+
+      <!-- tests -->
 
     <dependency>
       <groupId>com.nhaarman</groupId>
@@ -294,17 +311,17 @@
         <configuration>
           <skip>true</skip>
           <jdbc>
-            <driver>org.h2.Driver</driver>
-            <url>jdbc:h2:file:./db/schoolcrm;MODE=PostgreSQL;LOCK_MODE=0</url>
-            <user></user>
-            <password></password>
+            <driver>org.postgresql.Driver</driver>
+            <url>jdbc:postgresql:crm</url>
+            <user>crm</user>
+            <password>crm</password>
           </jdbc>
 
           <generator>
             <database>
               <includes>.*</includes>
               <excludes>flyway_schema_history</excludes>
-              <inputSchema>PUBLIC</inputSchema>
+              <inputSchema>public</inputSchema>
             </database>
             <target>
               <packageName>org.ort.school.crm.jooq.model</packageName>
@@ -314,7 +331,14 @@
         </configuration>
 
         <dependencies>
-          <dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>

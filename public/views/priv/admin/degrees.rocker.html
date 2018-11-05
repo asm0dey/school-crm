@@ -1,12 +1,11 @@
 @import com.fizzed.rocker.Rocker
 @import java.util.List
+@import java.util.Map
 @import java.util.Collection
 @import kotlin.Pair
 @import org.ort.school.app.repo.GradeInfoDTO
 @import org.ort.school.app.repo.ParentWithChildren
-
-@args (List<Pair<GradeInfoDTO, List<ParentWithChildren>>> degrees, Collection<String> allowedLetters, Collection<Integer> allowedDegrees)
-
+@args (List<Pair<GradeInfoDTO, List<ParentWithChildren>>> degrees, Collection<String> allowedLetters, Collection<Integer> allowedDegrees, List<Pair<Integer,String>> existingDegrees)
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
 @views.partials.head.template()
@@ -16,12 +15,12 @@
     <div class="row">
         <div class="col s10 offset-s1">
             <div class="fixed-action-btn">
-                <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
+                <a class="btn-floating btn-large waves-effect waves-light red modal-trigger pulse"
                    href="#create-degree"><i
                         class="material-icons">add</i></a>
             </div>
 
-            <div id="create-degree" class="modal bottom-sheet">
+            <div id="create-degree" class="modal modal-fixed-footer">
                 <div class="modal-content">
                     <h4>Добавление класса</h4>
                     <form action="/priv/admin/degrees" class="col s12" method="post">
@@ -69,6 +68,8 @@
                                 <tr>
                                     <th>Родитель</th>
                                     <th>Ребёнок</th>
+                                    <th width="12%"></th>
+                                    <th width="1%"></th>
                                 </tr>
                                 </thead>
 
@@ -84,6 +85,33 @@
                                     </td>
                                     }
                                     <td>@child.getDisplayName()</td>
+                                    <td>
+                                        <button class="btn waves-effect j_move_student_@i.index()" onclick="triggerMove(@i.index())" title="Перевести в другой класс">
+                                            <i class="material-icons">transfer_within_a_station</i>
+                                        </button>
+                                        <form class="j_move_student_@i.index() hide" method="post" action="/priv/admin/student/move/@child.getId()">
+                                            <div class="input-field col s12">
+                                                <select name="newDegree" onchange="this.form.submit()">
+                                                    <option value="" disabled selected>Выберите класс</option>
+                                                    @for(existingDegree:existingDegrees){
+                                                    @if(!existingDegree.getSecond().equals(degree.getFirst().getFullGradeName())){
+                                                    <option value="@existingDegree.getFirst()">@existingDegree.getSecond()</option>
+                                                    }
+                                                    }
+                                                </select>
+                                                <label>Перевести</label>
+                                            </div>
+                                            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="/priv/admin/student/delete/@child.getId()">
+                                            <button class="btn waves-effect red" type="button" onclick="deleteStudent(this.form)" title="Отчислить">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+                                        </form>
+                                    </td>
                                 </tr>
                                 }
                                 }
@@ -100,6 +128,7 @@
     </div>
 </div>
 @views.partials.scripts.template()
+<script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');
@@ -110,7 +139,26 @@
         M.Modal.init(modals);
         var elems = document.querySelectorAll('.collapsible');
         M.Collapsible.init(elems);
+        //@@formatter:off
+        @with? (flash = (Map < String, Object >) locals.get("flash")){
+        @if("ok".equals(flash.get("transfer"))){
+            M.toast({html: "Ребёнок переведён в другой класс"})
+        } else if("ok".equals(flash.get("delete"))){
+            M.toast({html: "Ребёнок отчислен"})
+        }
+        }
+        //@@formatter:on
     });
+    let triggerMove = function (id) {
+        u(".j_move_student_" + id).each(function (node) {
+            u(node).toggleClass('hide')
+        })
+    };
+    let deleteStudent = function (form) {
+        if (confirm("Вы уверены что ученик исключён? Действие нельзя обратить")) {
+            form.submit();
+        }
+    };
 </script>
 </body>
 </html>

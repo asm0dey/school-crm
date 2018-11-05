@@ -3,6 +3,7 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
 import org.hibernate.validator.internal.engine.path.PathImpl
+import org.jooby.Request
 import org.jooby.Status
 import org.junit.Test
 import org.ort.school.app.model.UserInfoDTO
@@ -42,7 +43,7 @@ class IndexTest {
         val userService = mock<UserService>()
         whenever(userService.hasUsers()).thenReturn(false)
         val main = Main(mock(), userService, mock(), mock())
-        val view = main.init().get<init>()!!
+        main.init().get<init>()
     }
 
     @Test
@@ -84,20 +85,23 @@ class IndexTest {
 
     @Test
     fun `subscribe should render index with errors in model if there are errors in DTO`() {
-        val validator = mock<Validator>()
-        val constraintViolation = mock<ConstraintViolation<SubscribeDTO>>()
-        whenever(constraintViolation.propertyPath).thenReturn(PathImpl.createPathFromString("ss"))
-        whenever(constraintViolation.message).thenReturn("mess")
-        whenever(validator.validate(any<SubscribeDTO>(), any())).thenReturn(setOf(constraintViolation))
-        val index = Main(validator, mock(), mock(), mock()).subscribe(SubscribeDTO())
-        index.errors().should.equal(mapOf("ss" to "mess"))
+        val constraintViolation = mock<ConstraintViolation<SubscribeDTO>>{
+            on { propertyPath } doReturn PathImpl.createPathFromString("ss")
+            on { message } doReturn "mess"
+        }
+        val validator = mock<Validator>{
+            on { validate(any<SubscribeDTO>(), any()) } doReturn setOf(constraintViolation)
+        }
+        val req = mock<Request>()
+        val index = Main(validator, mock(), mock(), mock()).subscribe(SubscribeDTO(mock(), mock()), req)
+        verify(req, times(1)).flash("ошибка 1","ss: mess")
     }
 
     @Test
     fun `subscribe should save info about parent and child when subscribeDTO is fine`() {
         val subscribeService = mock<SubscribeService>()
-        val subscribeDTO = SubscribeDTO()
-        val view = Main(mock(), mock(), mock(), subscribeService).subscribe(subscribeDTO)
+        val subscribeDTO = SubscribeDTO(mock(), mock())
+        val view = Main(mock(), mock(), mock(), subscribeService).subscribe(subscribeDTO, mock())
         view.degrees().should.equal(emptyList())
         verify(subscribeService, times(1)).subscribe(subscribeDTO)
     }

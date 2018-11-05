@@ -213,8 +213,10 @@ class SubscribeService @Inject constructor(private val ctx: DSLContext, private 
     fun subscribe(info: SubscribeDTO) {
         ctx.transactionResult { conf ->
             val tx = DSL.using(conf)
-            val studentId = degreeRepo.saveStudent(info.student!!, tx, info.degreeNo!!)
-            degreeRepo.createParent(info.parent!!, studentId, info.degreeNo, tx)
+            info
+                    .student
+                    ?.map { degreeRepo.saveStudent(it, tx) to it.degreeNo }
+                    ?.forEach { degreeRepo.createParent(info.parent!!, it.first, it.second!!, tx) }
         }
     }
 }

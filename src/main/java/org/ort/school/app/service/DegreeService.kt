@@ -204,9 +204,9 @@
 package org.ort.school.app.service
 
 import com.google.inject.Inject
+import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.repo.DegreeRepo
-import org.ort.school.app.model.DegreeDTO
 
 class DegreeService @Inject constructor(private val degreeRepo: DegreeRepo) {
     fun listDegrees() = degreeRepo.listDegrees()
@@ -218,4 +218,7 @@ class DegreeService @Inject constructor(private val degreeRepo: DegreeRepo) {
     fun degreesAndParentsBy(degreeIds: List<Int>): Map<String, MutableList<ParentInfo>> {
         return degreeRepo.degreesAndParentsBy(degreeIds)
     }
+
+    fun moveStudentToDegree(studentId: Long, newDegree: Long) = degreeRepo.moveStudentToDegree(studentId, newDegree)
+    fun deleteStudent(studentId: Long) = degreeRepo.deleteStudent(studentId)
 }

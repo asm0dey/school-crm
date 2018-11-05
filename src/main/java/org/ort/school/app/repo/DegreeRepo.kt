@@ -205,12 +205,16 @@ package org.ort.school.app.repo
 
 import com.google.inject.Inject
 import org.jooq.DSLContext
+import org.jooq.DeleteConditionStep
 import org.jooq.Record10
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.concat
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.model.StudentInfo
 import org.ort.school.crm.jooq.model.Tables.*
+import org.ort.school.crm.jooq.model.tables.records.StudentRecord
+import java.util.concurrent.CompletionStage
 
 class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
     fun listDegrees(): List<GradeWithParents> {
@@ -230,9 +234,8 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                 )
                 .from(GRADE)
                 .leftJoin(STUDENT).on(STUDENT.GRADE_ID.eq(GRADE.ID))
-                .leftJoin(PARENT_GRADE).on(PARENT_GRADE.GRADE_ID.eq(GRADE.ID))
-                .leftJoin(PARENT).on(PARENT.ID.eq(PARENT_GRADE.PARENT_ID))
-                .leftJoin(PARENT_STUDENT).on(PARENT_STUDENT.PARENT_ID.eq(PARENT.ID), PARENT_STUDENT.STUDENT_ID.eq(STUDENT.ID))
+                .leftJoin(PARENT_STUDENT).on(PARENT_STUDENT.STUDENT_ID.eq(STUDENT.ID))
+                .leftJoin(PARENT).on(PARENT_STUDENT.PARENT_ID.eq(PARENT.ID))
                 .orderBy(GRADE.GRADE_NO.asc(), GRADE.GRADE_LETTER.asc())
                 .fetch()
                 .asSequence()
@@ -294,21 +297,21 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
     }
 
     fun listDegreeNames(): List<Pair<Int, String>> {
-        val concat = DSL.concat(GRADE.GRADE_NO, GRADE.GRADE_LETTER)
+        val concat = concat(GRADE.GRADE_NO, GRADE.GRADE_LETTER)
         return ctx
                 .select(GRADE.ID, concat).from(GRADE)
                 .orderBy(GRADE.GRADE_NO.asc(), GRADE.GRADE_LETTER.asc())
                 .map { it[GRADE.ID] to it[concat] }
     }
 
-    fun saveStudent(student: StudentInfo, tx: DSLContext = ctx, degreeNo: Int): Long {
+    fun saveStudent(student: StudentInfo, tx: DSLContext = ctx): Long {
 
         return ctx.selectFrom(STUDENT)
                 .where(
                         STUDENT.LASTNAME.eq(student.lastname),
                         STUDENT.FIRSTNAME.eq(student.firstname),
                         STUDENT.PATRONYMIC.eq(student.patronymic),
-                        STUDENT.GRADE_ID.eq(degreeNo)
+                        STUDENT.GRADE_ID.eq(student.degreeNo)
                 )
                 .fetchOptional(STUDENT.ID)
                 .orElseGet {
@@ -318,7 +321,7 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                                 lastname = student.lastname
                                 firstname = student.firstname
                                 patronymic = student.patronymic
-                                gradeId = degreeNo
+                                gradeId = student.degreeNo
                             }
                     rcrd.insert()
                     rcrd.id
@@ -350,11 +353,6 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                 }
 
         tx
-                .insertInto(PARENT_GRADE, PARENT_GRADE.PARENT_ID, PARENT_GRADE.GRADE_ID)
-                .values(parentId, degreeNo)
-                .onDuplicateKeyIgnore()
-                .execute()
-        tx
                 .insertInto(PARENT_STUDENT, PARENT_STUDENT.PARENT_ID, PARENT_STUDENT.STUDENT_ID)
                 .values(parentId, studentId)
                 .onDuplicateKeyIgnore()
@@ -362,12 +360,13 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
     }
 
     fun degreesAndParentsBy(degreeIds: List<Int>): Map<String, MutableList<ParentInfo>> {
-        val concat = DSL.concat(GRADE.GRADE_NO, GRADE.GRADE_LETTER)
+        val concat = concat(GRADE.GRADE_NO, GRADE.GRADE_LETTER)
 
         return ctx.select(concat, PARENT.LASTNAME, PARENT.FIRSTNAME, PARENT.PATRONYMIC, PARENT.EMAIL)
-                .from(GRADE, PARENT_GRADE, PARENT)
-                .where(GRADE.ID.eq(PARENT_GRADE.GRADE_ID),
-                        PARENT.ID.eq(PARENT_GRADE.PARENT_ID),
+                .from(GRADE, STUDENT, PARENT_STUDENT, PARENT)
+                .where(GRADE.ID.eq(STUDENT.GRADE_ID),
+                        PARENT_STUDENT.STUDENT_ID.eq(STUDENT.ID),
+                        PARENT_STUDENT.PARENT_ID.eq(PARENT.ID),
                         GRADE.ID.`in`(degreeIds))
                 .fetchGroups { it -> it[concat] }
                 .mapValues { (_, value) ->
@@ -380,6 +379,31 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                         )
                     }
                 }
+    }
+
+    fun moveStudentToDegree(studentId: Long, newDegree: Long) {
+        ctx.update(STUDENT)
+                .set(STUDENT.GRADE_ID, newDegree.toInt())
+                .where(STUDENT.ID.eq(studentId))
+                .execute()
+    }
+
+    fun deleteStudent(studentId: Long): Int {
+        return ctx.transactionResult { conf ->
+            val tx = DSL.using(conf)
+            tx
+                    .deleteFrom(PARENT_STUDENT)
+                    .where(PARENT_STUDENT.STUDENT_ID.eq(studentId))
+                    .execute()
+            tx
+                    .deleteFrom(GROUP_STUDENT)
+                    .where(GROUP_STUDENT.STUDENT_ID.eq(studentId))
+                    .execute()
+            tx
+                    .deleteFrom(STUDENT)
+                    .where(STUDENT.ID.eq(studentId))
+                    .execute()
+        }
     }
 
 
