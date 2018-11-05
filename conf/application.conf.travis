@@ -1,6 +1,6 @@
 #db.url="jdbc:h2:file:./db/schoolcrm;MODE=PostgreSQL;LOCK_MODE=0"
 db {
-    url="jdbc:postgresql://localhost/crm"
+    url="jdbc:postgresql://localhost:5433/crm"
     user="crm"
     password="crm"
 }
