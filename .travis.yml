@@ -1,14 +1,6 @@
 addons:
-  postgresql: "10"
-  apt:
-    packages:
-      - postgresql-10
-      - postgresql-client-10
-env:
-  global:
-    - PGPORT=5433
+  postgresql: "9.4"
 before_script:
-  - cp -f conf/application.conf.travis conf/application.conf
   - psql -c "create database crm" -U postgres
   - psql -c "create user crm with password 'crm'" -U postgres
   - psql -c "grant all on database crm to crm" -U postgres
