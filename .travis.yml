@@ -1,3 +1,7 @@
+services:
+  - postgresql
+before_script:
+  - psql -c "create database crm; create user crm with password 'crm'; grant all on database crm to crm" -U postgres
 language: java
 jdk:
 - oraclejdk8
