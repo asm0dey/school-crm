@@ -1,5 +1,9 @@
-services:
-  - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+      - postgresql-10
+      - postgresql-client-10
 before_script:
   - psql -c "create database crm" -U postgres
   - psql -c "create user crm with password 'crm'" -U postgres
