@@ -252,6 +252,7 @@
             <configuration>
               <sourceDirs>
                 <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                <sourceDir>${project.basedir}/src/main/native</sourceDir>
                 <sourceDir>${project.basedir}/target/generated-sources</sourceDir>
               </sourceDirs>
             </configuration>
