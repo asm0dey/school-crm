@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.ort.school</groupId>
   <artifactId>crm</artifactId>
-  <version>1.6.2</version>
+  <version>1.7.0</version>
   <prerequisites>
     <maven>3.0.2</maven>
   </prerequisites>
