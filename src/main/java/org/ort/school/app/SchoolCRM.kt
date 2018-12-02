@@ -217,16 +217,21 @@ import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
 import org.jooby.metrics.Metrics
 import org.jooby.pac4j.Pac4j
+import org.jooby.quartz.Quartz
 import org.jooby.rocker.Rockerby
 import org.jooby.whoops.Whoops
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.ort.school.app.job.GradeUpdater
 import org.ort.school.app.routes.*
 import org.ort.school.app.service.DBAuth
 import org.pac4j.core.credentials.UsernamePasswordCredentials
 import org.pac4j.core.profile.CommonProfile
 import org.pac4j.core.profile.ProfileManager
 import org.pac4j.http.client.indirect.FormClient
+import org.quartz.CalendarIntervalScheduleBuilder
+import org.quartz.CronScheduleBuilder
+import org.quartz.DateBuilder
 import java.util.concurrent.TimeUnit
 
 
@@ -300,6 +305,7 @@ private fun Kooby.modules() {
                         return@reporter reporter
                     }
     )
+    use(Quartz().with(GradeUpdater::class.java))
 }
 
 class DatabaseHealthCheck(private val ctx: () -> DSLContext) : HealthCheck() {

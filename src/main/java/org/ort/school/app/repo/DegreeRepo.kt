@@ -205,17 +205,15 @@ package org.ort.school.app.repo
 
 import com.google.inject.Inject
 import org.jooq.DSLContext
-import org.jooq.DeleteConditionStep
 import org.jooq.Record10
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.concat
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.model.StudentInfo
+import org.ort.school.crm.jooq.model.Tables
 import org.ort.school.crm.jooq.model.Tables.*
-import org.ort.school.crm.jooq.model.tables.records.StudentRecord
 import java.sql.Date
-import java.util.concurrent.CompletionStage
 
 class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
     fun listDegrees(): List<GradeWithParents> {
@@ -406,6 +404,18 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                     .where(STUDENT.ID.eq(studentId))
                     .execute()
         }
+    }
+
+    fun moveDegreesForward(tx: DSLContext = ctx) {
+        tx.update(Tables.GRADE)
+                .set(Tables.GRADE.GRADE_NO, Tables.GRADE.GRADE_NO + 1)
+                .execute()
+    }
+
+    fun deleteTooOldDegrees(tx: DSLContext = ctx) {
+        tx.delete(GRADE)
+                .where(GRADE.GRADE_NO.greaterThan(11))
+                .execute()
     }
 
 
