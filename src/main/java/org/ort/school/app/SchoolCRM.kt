@@ -203,21 +203,31 @@
  */
 package org.ort.school.app
 
+import com.codahale.metrics.ConsoleReporter
+import com.codahale.metrics.health.HealthCheck
+import com.codahale.metrics.jvm.FileDescriptorRatioGauge
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet
+import com.codahale.metrics.jvm.ThreadStatesGaugeSet
 import org.jooby.*
 import org.jooby.flyway.Flywaydb
 import org.jooby.handlers.CsrfHandler
 import org.jooby.hbv.Hbv
 import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
+import org.jooby.metrics.Metrics
 import org.jooby.pac4j.Pac4j
 import org.jooby.rocker.Rockerby
 import org.jooby.whoops.Whoops
+import org.jooq.DSLContext
+import org.jooq.impl.DSL
 import org.ort.school.app.routes.*
 import org.ort.school.app.service.DBAuth
 import org.pac4j.core.credentials.UsernamePasswordCredentials
 import org.pac4j.core.profile.CommonProfile
 import org.pac4j.core.profile.ProfileManager
 import org.pac4j.http.client.indirect.FormClient
+import java.util.concurrent.TimeUnit
 
 
 class SchoolCRM : Kooby({
@@ -274,6 +284,31 @@ private fun Kooby.modules() {
     use(Rockerby())
     use(Hbv())
     use(FlashScope())
+    use(
+            Metrics()
+                    .request()
+                    .threadDump()
+                    .ping()
+                    .healthCheck("db", DatabaseHealthCheck { require(DSLContext::class) })
+                    .metric("memory", MemoryUsageGaugeSet())
+                    .metric("threads", ThreadStatesGaugeSet())
+                    .metric("gc", GarbageCollectorMetricSet())
+                    .metric("fs", FileDescriptorRatioGauge())
+                    .reporter { registry ->
+                        val reporter = ConsoleReporter.forRegistry(registry).build()
+                        reporter.start(1, TimeUnit.MINUTES)
+                        return@reporter reporter
+                    }
+    )
+}
+
+class DatabaseHealthCheck(private val ctx: () -> DSLContext) : HealthCheck() {
+    override fun check() = try {
+        ctx().select(DSL.value(1)).fetch(0)
+        Result.healthy()
+    } catch (e: Exception) {
+        Result.unhealthy(e)
+    }
 }
 
 

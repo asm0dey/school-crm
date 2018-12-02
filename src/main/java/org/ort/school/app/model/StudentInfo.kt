@@ -203,6 +203,7 @@
  */
 package org.ort.school.app.model
 
+import java.time.LocalDate
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -213,5 +214,6 @@ data class StudentInfo(
         val firstname: String? = null,
         val patronymic: String? = null,
         @field:NotNull
-        val degreeNo: Int? = null
+        val degreeNo: Int? = null,
+        val birthDate: LocalDate? = null
 )

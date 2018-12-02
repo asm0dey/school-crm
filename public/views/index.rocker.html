@@ -66,7 +66,7 @@
             </div>
             <input type="hidden" value='@locals.get("csrf")' name="csrf">
             <div class="row">
-                <button class="btn waves-effect waves-light j_addchild">Добавить ребёнка
+                <button class="btn waves-effect waves-light j_addchild" type="button">Добавить ребёнка
                     <i class="material-icons right">add</i>
                 </button>
                 <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
@@ -81,11 +81,48 @@
 <script>
     let counter = 0;
     const generateChildBlock = function (num) {
-        return "<div class=\"row j_child\"> <div class=\"input-field col s3\"> <input id=\"student-lastname[" + num + "]\" type=\"text\" class=\'validate\' required name=\"student[" + num + "]lastname\"> <label for=\"student-lastname[" + num + "]\">Фамилия ученика<span style=\"color: crimson\">*</span></label> </div> <div class=\"input-field col s3\"> <input id=\"student-firstname[" + num + "]\" type=\"text\" class=\'validate\' required name=\"student[" + num + "]firstname\"> <label for=\"student-firstname[" + num + "]\">Имя ученика<span style=\"color: crimson\">*</span></label> </div> <div class=\"input-field col s3\"> <input id=\"student-patronymic[" + num + "]\" type=\"text\" class=\'validate\' name=\"student[" + num + "]patronymic\"> <label for=\"student-patronymic[" + num + "]\">Отчество ученика</label> </div> <div class=\"input-field col s2\"> <select name=\"student[" + num + "]degreeNo\" id=\"classno[" + num + "]\" class=\'validate\' required> <option value=\"no\" disabled>Выберите номер класса</option> @for(degree:degrees){<option value=\"@degree.getFirst()\">@degree.getSecond()</option>} </select> <label for=\"classno[" + num + "]\">Класс<span style=\"color: crimson\">*</span></label> </div> <div class='input-field col s1'><btn onclick='deleteNode()' class='waves-effect waves-teal btn-flat btn-large'><i class='material-icons'>delete</i> </btn></div> </div>";
+        return `<div class="row j_child">
+    <div class="input-field col s3">
+        <input id="student-lastname[${num}]" type="text" class='validate' required name="student[${num}]lastname">
+        <label for="student-lastname[${num}]">Фамилия ученика<span style="color: crimson">*</span></label>
+    </div>
+    <div class="input-field col s2">
+        <input id="student-firstname[${num}]" type="text" class='validate' required name="student[${num}]firstname">
+        <label for="student-firstname[${num}]">Имя ученика<span style="color: crimson">*</span></label>
+    </div>
+    <div class="input-field col s3">
+        <input id="student-patronymic[${num}]" type="text" class='validate' name="student[${num}]patronymic">
+        <label for="student-patronymic[${num}]">Отчество ученика</label>
+    </div>
+    <div class="input-field col s2">
+        <label for="student-birthDate[${num}]">Дата рождения</label>
+        <input type="text" class="datepicker" name="student[${num}]birthDate" id="student-birthDate[${num}]">
+    </div>
+    <div class="input-field col s1">
+        <select name="student[${num}]degreeNo" id="classno[${num}]" class='validate' required>
+            <option value="no" disabled>Выберите номер класса</option>
+            @for(degree:degrees){
+            <option value="@degree.getFirst()">@degree.getSecond()</option>
+            }
+        </select>
+        <label for="classno[${num}]">Класс<span style="color: crimson">*</span></label>
+    </div>
+    <div class='input-field col s1'> <btn onclick='deleteNode()' class='waves-effect waves-teal btn-flat btn-large'><i class='material-icons'>delete</i></btn>
+    </div>
+</div>`;
     };
     const initSelects = function () {
         const selects = document.querySelectorAll('select');
         M.FormSelect.init(selects);
+    };
+    const initPickers = function () {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {
+            autoClose: true,
+            format: 'dd/mm/yyyy',
+            firstDay: '1',
+            yearRange: 20
+        });
     };
     const addChild = function () {
         u('.j_additional').before(generateChildBlock(counter++));
@@ -95,6 +132,7 @@
                 u(node).addClass('hide')
         })
         initSelects();
+        initPickers();
     };
     const deleteNode = function () {
         u(u('.j_child').last()).remove();
@@ -119,7 +157,7 @@
         }
         }
         }
-        //@@formatter:om
+        //@@formatter:on
     });
 </script>
 </body>

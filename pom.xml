@@ -27,7 +27,7 @@
     <http-client.version>4.5.6</http-client.version>
     <!-- Startup class -->
     <application.class>org.ort.school.app.SchoolCRMKt</application.class>
-      <postgresql.version>42.2.5</postgresql.version>
+    <postgresql.version>42.2.5</postgresql.version>
   </properties>
 
   <dependencies>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
-      <version>0.4</version>
+      <version>0.4-atlassian-1</version>
     </dependency>
 
     <dependency>
@@ -101,10 +101,10 @@
       <groupId>org.jooby</groupId>
       <artifactId>jooby-csl</artifactId>
     </dependency>
-      <dependency>
-          <groupId>org.jooby</groupId>
-          <artifactId>jooby-whoops</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.jooby</groupId>
+      <artifactId>jooby-whoops</artifactId>
+    </dependency>
     <dependency>
       <groupId>javax.el</groupId>
       <artifactId>javax.el-api</artifactId>
@@ -116,18 +116,23 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jooby</groupId>
+      <artifactId>jooby-metrics</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.github.salomonbrys.kotson</groupId>
       <artifactId>kotson</artifactId>
       <version>2.5.0</version>
     </dependency>
 
-      <dependency>
-          <groupId>org.postgresql</groupId>
-          <artifactId>postgresql</artifactId>
-          <version>42.2.5</version>
-          <scope>runtime</scope>
-      </dependency>
-      <!-- REST client -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.5.jre7</version>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- REST client -->
 
     <dependency>
       <groupId>com.mashape.unirest</groupId>
@@ -161,7 +166,7 @@
       <version>2.7.0</version>
     </dependency>
 
-      <!-- tests -->
+    <!-- tests -->
 
     <dependency>
       <groupId>com.nhaarman</groupId>
@@ -232,6 +237,18 @@
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.fizzed</groupId>
+          <artifactId>rocker-maven-plugin</artifactId>
+          <configuration>
+            <discardLogicWhitespace>true</discardLogicWhitespace>
+            <optimize>true</optimize>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
     <plugins>
       <plugin>
@@ -331,14 +348,14 @@
         </configuration>
 
         <dependencies>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-                <scope>runtime</scope>
-            </dependency>
+          <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
+          </dependency>
 
-            <dependency>
+          <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
@@ -389,40 +406,26 @@
           </dependency>
         </dependencies>
       </plugin>
-        <plugin>
-            <groupId>org.jooby</groupId>
-            <artifactId>jooby-maven-plugin</artifactId>
-            <configuration>
-                <mainClass>${application.class}</mainClass>
-                <commands>
-                </commands>
-                <compiler>on</compiler>
-                <fork>false</fork>
-                <vmArgs></vmArgs>
-                <debug>true</debug>
-                <includes>
-                    <include>**/*.class</include>
-                    <include>**/*.conf</include>
-                    <include>**/*.properties</include>
-                </includes>
-                <excludes>
-                </excludes>
-                <srcExtensions>.java,.kt,.conf,.properties,.html</srcExtensions>
-            </configuration>
-        </plugin>
+      <plugin>
+        <groupId>org.jooby</groupId>
+        <artifactId>jooby-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>${application.class}</mainClass>
+          <commands></commands>
+          <compiler>on</compiler>
+          <fork>false</fork>
+          <vmArgs></vmArgs>
+          <debug>true</debug>
+          <includes>
+            <include>**/*.class</include>
+            <include>**/*.conf</include>
+            <include>**/*.properties</include>
+          </includes>
+          <excludes></excludes>
+          <srcExtensions>.java,.kt,.conf,.properties,.html</srcExtensions>
+        </configuration>
+      </plugin>
     </plugins>
-      <pluginManagement>
-          <plugins>
-              <plugin>
-                  <groupId>com.fizzed</groupId>
-                  <artifactId>rocker-maven-plugin</artifactId>
-                  <configuration>
-                      <discardLogicWhitespace>true</discardLogicWhitespace>
-                      <optimize>true</optimize>
-                  </configuration>
-              </plugin>
-          </plugins>
-      </pluginManagement>
   </build>
   <repositories>
     <repository>

@@ -214,6 +214,7 @@ import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.model.StudentInfo
 import org.ort.school.crm.jooq.model.Tables.*
 import org.ort.school.crm.jooq.model.tables.records.StudentRecord
+import java.sql.Date
 import java.util.concurrent.CompletionStage
 
 class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
@@ -322,6 +323,7 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                                 firstname = student.firstname
                                 patronymic = student.patronymic
                                 gradeId = student.degreeNo
+                                birthDate = Date.valueOf(student.birthDate)
                             }
                     rcrd.insert()
                     rcrd.id
