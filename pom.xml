@@ -23,7 +23,7 @@
     <kotlin.version>1.3.0</kotlin.version>
     <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
     <javax.el-api.version>3.0.0</javax.el-api.version>
-    <h2.version>1.4.196</h2.version>
+    <h2.version>1.4.197</h2.version>
     <http-client.version>4.5.6</http-client.version>
     <!-- Startup class -->
     <application.class>org.ort.school.app.SchoolCRMKt</application.class>
