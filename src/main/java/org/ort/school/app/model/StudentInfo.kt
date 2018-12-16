@@ -208,6 +208,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class StudentInfo(
+        val id: Long? = null,
         @field:NotBlank
         val lastname: String? = null,
         @field:NotBlank

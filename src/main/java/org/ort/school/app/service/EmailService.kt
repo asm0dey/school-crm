@@ -203,13 +203,13 @@
  */
 package org.ort.school.app.service
 
-import com.github.salomonbrys.kotson.jsonObject
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.inject.Inject
 import com.mashape.unirest.http.Unirest
 import com.typesafe.config.Config
 import org.ort.school.app.model.ParentInfo
 
-class EmailService @Inject constructor(private val config: Config) {
+class EmailService @Inject constructor(private val config: Config, private val mapper: ObjectMapper) {
     fun sendMails(degreesAndParents: Map<String, MutableList<ParentInfo>>, letterContent: String, subject: String) {
 
         degreesAndParents
@@ -229,13 +229,14 @@ class EmailService @Inject constructor(private val config: Config) {
     }
 
     private fun createParentsJson(parents: MutableList<ParentInfo>, degree: String): String {
-        return jsonObject(parents
-                .map { parent ->
-                    parent.email!! to jsonObject(
-                            "fullname" to parent.displayName,
+        val parentsInfo = parents
+                .associate {
+                    it.email!! to mapOf(
+                            "fullname" to it.displayName,
                             "degree" to degree
                     )
-                }).toString()
+                }
+        return mapper.writeValueAsString(parentsInfo)
     }
 
 }

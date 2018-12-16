@@ -2,11 +2,7 @@
 
 @args (Map<String,String> params)
 
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@views.basic.template("Вход в систему") -> {
 <div class="container">
     <div class="row">
         <form action="/callback?client_name=FormClient" method="post" class="col s6 offset-s3">
@@ -37,6 +33,4 @@
         <div class="col s4"></div>
     </div>
 </div>
-@views.partials.scripts.template()
-</body>
-</html>
+}

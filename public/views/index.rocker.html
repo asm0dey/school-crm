@@ -3,16 +3,9 @@
 @import kotlin.Pair
 @import org.pac4j.core.profile.CommonProfile
 
-@args (Map
-<String,String> errors, List
-<Pair
-<Integer, String>> degrees)
+@args (Map<String,String> errors, List<Pair<Integer, String>> degrees)
 
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@views.basic.template("Школьная CRM") -> {
 <div class="container">
     <h1>Добро пожаловать</h1>
     <p class="flow-text">Спасибо, что зашли на нашу страничку! Здесь вы можете добавить информацию о себе и ребёнке, учащемся в нашей школе в базу рассылок. Если у нас будет информация o вас вы сможете получать все наши информационные рассылки. </p>
@@ -76,7 +69,6 @@
         </form>
     </div>
 </div>
-@views.partials.scripts.template()
 <script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
 <script>
     let counter = 0;
@@ -160,5 +152,4 @@
         //@@formatter:on
     });
 </script>
-</body>
-</html>
+}

@@ -3,11 +3,7 @@
 @import kotlin.Pair
 @args (String path, List<Pair<Integer, String>> degrees)
 
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@views.basic.template("Создание письма") -> {
 <div class="container">
     <div class="row">
         <h2>Создание рассылки</h2>
@@ -42,17 +38,16 @@
     </div>
 </div>
 
-@views.partials.scripts.template()
 <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
-<script src="/webjars/summernote/0.8.10/dist/summernote-lite.js"></script>
+<script src="/webjars/summernote/0.8.10/summernote.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');
         var instances = M.FormSelect.init(selects);
         var dropdowns = document.querySelectorAll('.dropdown-trigger');
         var instances2 = M.Dropdown.init(dropdowns);
-        @with? (flash =(Map<String,String>) locals.get("flash")){
-            @if("OK".equals(flash.get("success"))){
+    @with? (flash =(Map<String,String>) locals.get("flash")){
+        @if("OK".equals(flash.get("success"))){
                 M.toast({html: "Рассылка успешно выполнена"})
             }
         }
@@ -104,5 +99,4 @@
         height: 400
     });
 </script>
-</body>
-</html>
+}

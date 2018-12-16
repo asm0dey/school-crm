@@ -4,11 +4,7 @@
 
 @args (boolean editorEnabled, UserDTO data, Map<String,Object> errors)
 
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@views.basic.template("Редактирование профиля") -> {
 <div class="container">
     <h1>Редактирование пользователя</h1>
     <div class="row">
@@ -75,11 +71,11 @@
                         @with(profile = (CommonProfile)locals.get("profile")){
                         <option value="admin"
                                 @if( profile.getRoles().contains("author")){disabled } @if("admin".equals(data.getRole())){selected}>
-                            Администратор
+                        Администратор
                         </option>
                         }
                         <option value="author" @if(!editorEnabled){disabled } @if("author".equals(data.getRole())){selected}>
-                            Редактор
+                        Редактор
                         </option>
                     </select>
                     <label for="role">Роль</label>
@@ -98,7 +94,6 @@
         </form>
     </div>
 </div>
-@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var selects = document.querySelectorAll('select');
@@ -107,5 +102,4 @@
         var instances2 = M.Dropdown.init(dropdowns);
     });
 </script>
-</body>
-</html>
+}

@@ -1,12 +1,8 @@
 @import java.util.Map
 
-@args (Map
-<String, String> errors)
+@args (Map<String, String> errors)
 
-<!DOCTYPE html>
-<html>
-@views.partials.head.template()
-<body>
+@views.basic.template("Инициализация приложения") -> {
 <section class="section">
     <div class="container">
         <div class="card">
@@ -60,6 +56,4 @@
 
     </div>
 </section>
-@views.partials.scripts.template()
-</body>
-</html>
+}
