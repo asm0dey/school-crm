@@ -2,8 +2,19 @@
 @import java.util.Collection
 @import org.ort.school.app.repo.UserDTO
 @import org.pac4j.core.profile.CommonProfile
-
-@views.basic.template("Группы") -> {
+@extrajs => {
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+        var modals = document.querySelectorAll('.modal');
+        var instances3 = M.Modal.init(modals);
+    });
+</script>
+}
+@views.basic.template("Группы", extrajs) -> {
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large waves-effect waves-light red modal-trigger pulse"
        href="#create-group"><i
@@ -32,14 +43,4 @@
         <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
     </li>
 </ul>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var selects = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(selects);
-        var dropdowns = document.querySelectorAll('.dropdown-trigger');
-        var instances2 = M.Dropdown.init(dropdowns);
-        var modals = document.querySelectorAll('.modal');
-        var instances3 = M.Modal.init(modals);
-    });
-</script>
 }

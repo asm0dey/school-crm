@@ -3,8 +3,17 @@
 @import java.util.Map
 
 @args (boolean editorEnabled, UserDTO data, Map<String,Object> errors)
-
-@views.basic.template("Редактирование профиля") -> {
+@extrajs => {
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+    });
+</script>
+}
+@views.basic.template("Редактирование профиля", extrajs) -> {
 <div class="container">
     <h1>Редактирование пользователя</h1>
     <div class="row">
@@ -94,12 +103,4 @@
         </form>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var selects = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(selects);
-        var dropdowns = document.querySelectorAll('.dropdown-trigger');
-        var instances2 = M.Dropdown.init(dropdowns);
-    });
-</script>
 }

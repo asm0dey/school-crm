@@ -1,8 +1,5 @@
 @args (int status, String reason)
-
-@views.basic.template("Ошибка") -> {
-<h1>Ошибка</h1>
-<h3>@status: @reason</h3>
+@extrajs => {
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');
@@ -12,4 +9,9 @@
 
     });
 </script>
+}
+@views.basic.template("Ошибка", extrajs) -> {
+<h1>Ошибка</h1>
+<h3>@status: @reason</h3>
+
 }
