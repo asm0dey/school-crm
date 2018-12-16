@@ -2,13 +2,18 @@
 @import java.util.Map
 
 @args (boolean editorEnabled, Map<String,String> errors)
-
-<!DOCTYPE html>
+@extrajs => {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        var instances2 = M.Dropdown.init(dropdowns);
+    });
+</script>
+}
+@views.basic.template("Создание нового пользователя", extrajs) -> {
 @with(profile = (CommonProfile) locals.get("profile")){
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
 <div class="container">
     <h1>Создание пользователя</h1>
     <div class="row">
@@ -78,15 +83,5 @@
         </form>
     </div>
 </div>
-@views.partials.scripts.template()
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var selects = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(selects);
-        var dropdowns = document.querySelectorAll('.dropdown-trigger');
-        var instances2 = M.Dropdown.init(dropdowns);
-    });
-</script>
-</body>
 }
-</html>
+}

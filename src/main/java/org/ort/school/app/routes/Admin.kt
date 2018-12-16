@@ -217,6 +217,7 @@ import org.jooby.mvc.POST
 import org.jooby.mvc.Path
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.service.DegreeService
+import org.ort.school.app.service.GroupService
 import org.ort.school.app.service.UserService
 import org.pac4j.core.profile.CommonProfile
 import views.priv.admin.degrees
@@ -228,7 +229,8 @@ import views.priv.admin.users
 class Admin @Inject constructor(
         private val userService: UserService,
         private val config: Config,
-        private val degreeService: DegreeService
+        private val degreeService: DegreeService,
+        private val groupService: GroupService
 
 ) {
     @GET
@@ -267,7 +269,12 @@ class Admin @Inject constructor(
 
     @Path("/groups")
     @GET
-    fun groups(): groups {
+    fun groups() = views.priv.admin.groups()
+
+    @Path("/groups")
+    @POST
+    fun createGroup(name: String): groups {
+        groupService.createGroup(name)
         return views.priv.admin.groups()
     }
 

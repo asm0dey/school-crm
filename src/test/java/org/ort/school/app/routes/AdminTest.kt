@@ -23,7 +23,7 @@ private val m: MockNeat
 class AdminTest {
     @Test
     fun `when user hits slash-admin he's redirected to users area`() {
-        val admin = Admin(mock(), mock(), mock()).get()
+        val admin = Admin(mock(), mock(), mock(), mock()).get()
         admin.status().get().should.be.equal(Status.MOVED_PERMANENTLY)
         admin.headers().should.contain("location" to "/priv/admin/users")
     }
@@ -33,7 +33,7 @@ class AdminTest {
         val profile = mock<CommonProfile>()
         whenever(profile.roles).thenReturn(emptySet())
         try {
-            Admin(mock(), mock(), mock()).getUsers(profile)
+            Admin(mock(), mock(), mock(), mock()).getUsers(profile)
         } catch (e: Exception) {
             e.should.be.instanceof(Err::class.java)
             (e as Err).statusCode().should.be.equal(403)
@@ -47,7 +47,7 @@ class AdminTest {
         val profile = mock<CommonProfile>()
         whenever(profile.roles).thenReturn(emptySet())
         try {
-            Admin(mock(), mock(), mock()).degrees(profile)
+            Admin(mock(), mock(), mock(), mock()).degrees(profile)
         } catch (e: Exception) {
             e.should.be.instanceof(Err::class.java)
             (e as Err).statusCode().should.be.equal(403)
@@ -63,7 +63,7 @@ class AdminTest {
         whenever(profile.roles).thenReturn(setOf("admin"))
         val userService = mock<UserService>()
         whenever(userService.listUsers()).thenReturn(users)
-        val view = Admin(userService, mock(), mock()).getUsers(profile)
+        val view = Admin(userService, mock(), mock(), mock()).getUsers(profile)
         view.users().should.equal(users)
     }
 
@@ -79,7 +79,7 @@ class AdminTest {
         whenever(config.getIntList(any())).thenReturn(allowedDegrees)
         whenever(config.getStringList(any())).thenReturn(allowedLetters)
         whenever(degreeService.listDegrees()).thenReturn(gradeList)
-        val view = Admin(mock(), config, degreeService).degrees(profile)
+        val view = Admin(mock(), config, degreeService, mock()).degrees(profile)
         view.degrees().should.equal(gradeList)
         view.allowedDegrees().should.equal(allowedDegrees)
         view.allowedLetters().should.equal(allowedLetters)
@@ -91,7 +91,7 @@ class AdminTest {
         val commonProfile = mock<CommonProfile>()
         whenever(commonProfile.roles).thenReturn(setOf("author"))
         try {
-            Admin(mock(), mock(), degreeService).createDegree(
+            Admin(mock(), mock(), degreeService, mock()).createDegree(
                     m.constructor(DegreeDTO::class.java).params(m.strings(), m.intSeq()).`val`(),
                     commonProfile
             )
@@ -109,7 +109,7 @@ class AdminTest {
         val degreeDTO = m.constructor(DegreeDTO::class.java).params(m.strings(), m.intSeq()).`val`()
         val profile = mock<CommonProfile>()
         whenever(profile.roles).thenReturn(setOf("admin"))
-        val view = Admin(mock(), mock(), degreeService).createDegree(degreeDTO, profile)
+        val view = Admin(mock(), mock(), degreeService, mock()).createDegree(degreeDTO, profile)
         verify(degreeService, times(1)).createDegree(degreeDTO)
     }
 

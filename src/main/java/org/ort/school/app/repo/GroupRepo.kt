@@ -222,6 +222,13 @@ class GroupRepo @Inject constructor(private val ctx: DSLContext) {
                 .groupBy { it.id }
 
     }
+
+    fun createGroup(name: String) {
+        ctx
+                .newRecord(GROUP)
+                .apply { this.name = name }
+                .store()
+    }
 }
 
 data class GroupInfo(

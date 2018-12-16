@@ -6,11 +6,41 @@
 @import org.ort.school.app.repo.GradeInfoDTO
 @import org.ort.school.app.repo.ParentWithChildren
 @args (List<Pair<GradeInfoDTO, List<ParentWithChildren>>> degrees, Collection<String> allowedLetters, Collection<Integer> allowedDegrees, List<Pair<Integer,String>> existingDegrees)
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@extrajs => {
+<script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+        M.FormSelect.init(selects);
+        var dropdowns = document.querySelectorAll('.dropdown-trigger');
+        M.Dropdown.init(dropdowns);
+        var modals = document.querySelectorAll('.modal');
+        M.Modal.init(modals);
+        var elems = document.querySelectorAll('.collapsible');
+        M.Collapsible.init(elems);
+        //@@formatter:off
+        @with? (flash = (Map < String, Object >) locals.get("flash")){
+        @if("ok".equals(flash.get("transfer"))){
+            M.toast({html: "Ребёнок переведён в другой класс"})
+        } else if("ok".equals(flash.get("delete"))){
+            M.toast({html: "Ребёнок отчислен"})
+        }
+        }
+        //@@formatter:on
+    });
+    let triggerMove = function (id) {
+        u(".j_move_student_" + id).each(function (node) {
+            u(node).toggleClass('hide')
+        })
+    };
+    let deleteStudent = function (form) {
+        if (confirm("Вы уверены что ученик исключён? Действие нельзя обратить")) {
+            form.submit();
+        }
+    };
+</script>
+}
+@views.basic.template("Классы", extrajs) -> {
 <div>
     <div class="row">
         <div class="col s10 offset-s1">
@@ -127,38 +157,4 @@
         </div>
     </div>
 </div>
-@views.partials.scripts.template()
-<script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var selects = document.querySelectorAll('select');
-        M.FormSelect.init(selects);
-        var dropdowns = document.querySelectorAll('.dropdown-trigger');
-        M.Dropdown.init(dropdowns);
-        var modals = document.querySelectorAll('.modal');
-        M.Modal.init(modals);
-        var elems = document.querySelectorAll('.collapsible');
-        M.Collapsible.init(elems);
-        //@@formatter:off
-        @with? (flash = (Map < String, Object >) locals.get("flash")){
-        @if("ok".equals(flash.get("transfer"))){
-            M.toast({html: "Ребёнок переведён в другой класс"})
-        } else if("ok".equals(flash.get("delete"))){
-            M.toast({html: "Ребёнок отчислен"})
-        }
-        }
-        //@@formatter:on
-    });
-    let triggerMove = function (id) {
-        u(".j_move_student_" + id).each(function (node) {
-            u(node).toggleClass('hide')
-        })
-    };
-    let deleteStudent = function (form) {
-        if (confirm("Вы уверены что ученик исключён? Действие нельзя обратить")) {
-            form.submit();
-        }
-    };
-</script>
-</body>
-</html>
+}

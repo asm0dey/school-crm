@@ -2,57 +2,17 @@
 @import java.util.Map
 @import kotlin.Pair
 @args (String path, List<Pair<Integer, String>> degrees)
-
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
-<div class="container">
-    <div class="row">
-        <h2>Создание рассылки</h2>
-        <p>Вы можете создавать рассылку как обычное письмо. Единственное, что нужно иметь ввиду — это что вместо ФИО
-            родителя надо нажимать кнопку «ФИО», а вместо номера класса надо нажимать на кнопку «№». Удачных рассылок
-            вам!</p>
-        <form action="/priv/author" class="col s12" method="post">
-            <div class="row">
-                @for((i,degree):degrees){
-                <label class="col s2">
-                    <input type="checkbox" name="d-@degree.getFirst()" id="degree-@i.index()">
-                    <span>@degree.getSecond()</span>
-                </label>
-                }
-            </div>
-            <div class="row input-field">
-                <div class="col s12">
-                    <input type="text" name="subject" id="subject" class="validate" required>
-                    <label for="subject">Тема сообщения</label>
-                </div>
-            </div>
-            <div class="row input-field">
-                <textarea required name="content" id="summernote" class="col s12 validate"></textarea>
-            </div>
-            <input type="hidden" value='@locals.get("csrf")' name="csrf">
-            <div class="row">
-                <button class="btn waves-effect waves-light" type="submit">Отправить
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-@views.partials.scripts.template()
+@extrajs => {
 <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
-<script src="/webjars/summernote/0.8.10/dist/summernote-lite.js"></script>
+<script src="/webjars/summernote/0.8.10/summernote.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');
         var instances = M.FormSelect.init(selects);
         var dropdowns = document.querySelectorAll('.dropdown-trigger');
         var instances2 = M.Dropdown.init(dropdowns);
-        @with? (flash =(Map<String,String>) locals.get("flash")){
-            @if("OK".equals(flash.get("success"))){
+    @with? (flash =(Map<String,String>) locals.get("flash")){
+        @if("OK".equals(flash.get("success"))){
                 M.toast({html: "Рассылка успешно выполнена"})
             }
         }
@@ -104,5 +64,40 @@
         height: 400
     });
 </script>
-</body>
-</html>
+}
+@views.basic.template("Создание письма", extrajs) -> {
+<div class="container">
+    <div class="row">
+        <h2>Создание рассылки</h2>
+        <p>Вы можете создавать рассылку как обычное письмо. Единственное, что нужно иметь ввиду — это что вместо ФИО
+            родителя надо нажимать кнопку «ФИО», а вместо номера класса надо нажимать на кнопку «№». Удачных рассылок
+            вам!</p>
+        <form action="/priv/author" class="col s12" method="post">
+            <div class="row">
+                @for((i,degree):degrees){
+                <label class="col s2">
+                    <input type="checkbox" name="d-@degree.getFirst()" id="degree-@i.index()">
+                    <span>@degree.getSecond()</span>
+                </label>
+                }
+            </div>
+            <div class="row input-field">
+                <div class="col s12">
+                    <input type="text" name="subject" id="subject" class="validate" required>
+                    <label for="subject">Тема сообщения</label>
+                </div>
+            </div>
+            <div class="row input-field">
+                <textarea required name="content" id="summernote" class="col s12 validate"></textarea>
+            </div>
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="submit">Отправить
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+}

@@ -3,80 +3,8 @@
 @import kotlin.Pair
 @import org.pac4j.core.profile.CommonProfile
 
-@args (Map
-<String,String> errors, List
-<Pair
-<Integer, String>> degrees)
-
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
-<div class="container">
-    <h1>Добро пожаловать</h1>
-    <p class="flow-text">Спасибо, что зашли на нашу страничку! Здесь вы можете добавить информацию о себе и ребёнке, учащемся в нашей школе в базу рассылок. Если у нас будет информация o вас вы сможете получать все наши информационные рассылки. </p>
-    <p class="flow-text">Обещаем никому не отдавать ваши данные!</p>
-    <div class="row">
-        <form action="/" class="col s12" method="post">
-            <div class="row j_parent">
-                <div class="input-field col s4">
-                    <input id="parent-lastname" type="text"
-                           class='validate @if(errors != null && errors.get("parent.lastname") != null) {invalid}'
-                           required
-                           name="parent.lastname">
-                    <label for="parent-lastname" class="label">Ваша фамилия<span style="color: crimson">*</span></label>
-                    @if (errors != null && errors.get("parent.lastname") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("parent.lastname"))'></span>
-                    }
-                </div>
-                <div class="input-field col s4">
-                    <input id="parent-firstname" type="text"
-                           class='validate @if(errors != null && errors.get("parent.firstName") != null) {invalid}'
-                           required name="parent.firstname">
-                    <label for="parent-firstname" class="label">Ваше имя<span style="color: crimson">*</span></label>
-                    @if (errors != null && errors.get("parent.firstname") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("parent.firstname"))'></span>
-                    }
-                </div>
-                <div class="input-field col s4">
-                    <input id="parent-patronymic" type="text"
-                           name="parent.patronymic"
-                           class='validate @if(errors != null && errors.get("parent.patronymic") != null) {invalid}'>
-                    <label for="parent-patronymic" class="label">Ваше отчество</label>
-                    @if (errors != null && errors.get("parent.patronymic") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("parent.patronymic"))'></span>
-                    }
-                </div>
-            </div>
-            <div class="row j_additional">
-                <div class="input-field col s6">
-                    <input type="email"
-                           class='validate @if(errors != null && errors.get("parent.email") != null) {invalid}'
-                           name="parent.email" id="email" required>
-                    <label for="email"> Ваш Email<span style="color: crimson">*</span></label>
-                    @if (errors != null && errors.get("parent.email") != null) {
-                    <span class="helper-text"
-                          data-error='@(errors.get("parent.email"))'></span>
-                    }
-                </div>
-            </div>
-            <input type="hidden" value='@locals.get("csrf")' name="csrf">
-            <div class="row">
-                <button class="btn waves-effect waves-light j_addchild" type="button">Добавить ребёнка
-                    <i class="material-icons right">add</i>
-                </button>
-                <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-@views.partials.scripts.template()
+@args (Map<String,String> errors, List<Pair<Integer, String>> degrees)
+@extrajs => {
 <script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
 <script>
     let counter = 0;
@@ -160,5 +88,70 @@
         //@@formatter:on
     });
 </script>
-</body>
-</html>
+}
+
+@views.basic.template("Школьная CRM", extrajs) -> {
+<div class="container">
+    <h1>Добро пожаловать</h1>
+    <p class="flow-text">Спасибо, что зашли на нашу страничку! Здесь вы можете добавить информацию о себе и ребёнке, учащемся в нашей школе в базу рассылок. Если у нас будет информация o вас вы сможете получать все наши информационные рассылки. </p>
+    <p class="flow-text">Обещаем никому не отдавать ваши данные!</p>
+    <div class="row">
+        <form action="/" class="col s12" method="post">
+            <div class="row j_parent">
+                <div class="input-field col s4">
+                    <input id="parent-lastname" type="text"
+                           class='validate @if(errors != null && errors.get("parent.lastname") != null) {invalid}'
+                           required
+                           name="parent.lastname">
+                    <label for="parent-lastname" class="label">Ваша фамилия<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("parent.lastname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.lastname"))'></span>
+                    }
+                </div>
+                <div class="input-field col s4">
+                    <input id="parent-firstname" type="text"
+                           class='validate @if(errors != null && errors.get("parent.firstName") != null) {invalid}'
+                           required name="parent.firstname">
+                    <label for="parent-firstname" class="label">Ваше имя<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("parent.firstname") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.firstname"))'></span>
+                    }
+                </div>
+                <div class="input-field col s4">
+                    <input id="parent-patronymic" type="text"
+                           name="parent.patronymic"
+                           class='validate @if(errors != null && errors.get("parent.patronymic") != null) {invalid}'>
+                    <label for="parent-patronymic" class="label">Ваше отчество</label>
+                    @if (errors != null && errors.get("parent.patronymic") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.patronymic"))'></span>
+                    }
+                </div>
+            </div>
+            <div class="row j_additional">
+                <div class="input-field col s6">
+                    <input type="email"
+                           class='validate @if(errors != null && errors.get("parent.email") != null) {invalid}'
+                           name="parent.email" id="email" required>
+                    <label for="email"> Ваш Email<span style="color: crimson">*</span></label>
+                    @if (errors != null && errors.get("parent.email") != null) {
+                    <span class="helper-text"
+                          data-error='@(errors.get("parent.email"))'></span>
+                    }
+                </div>
+            </div>
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+            <div class="row">
+                <button class="btn waves-effect waves-light j_addchild" type="button">Добавить ребёнка
+                    <i class="material-icons right">add</i>
+                </button>
+                <button class="btn waves-effect waves-light" type="submit">Зарегистрировать
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}

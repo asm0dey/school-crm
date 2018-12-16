@@ -1,5 +1,19 @@
 @import org.pac4j.core.profile.CommonProfile
+@args (String title, RockerContent extrajs, RockerBody content)
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@title</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="/webjars/materializecss/1.0.0/css/materialize.min.css">
 
+</head>
+<body>
 @if(locals.get("profile") != null){
 <ul id="dropdown1" class="dropdown-content">
     <li class="disabled"><a href='/priv/user/@(((CommonProfile)locals.get("profile")).getId())/edit'>Профиль</a></li>
@@ -35,3 +49,8 @@
         </ul>
     </div>
 </nav>
+@content
+<script src="/webjars/materializecss/1.0.0/js/materialize.min.js"></script>
+@extrajs
+</body>
+</html>
