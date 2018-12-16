@@ -2,7 +2,7 @@
 
 @args (Map<String,String> params)
 
-@views.basic.template("Вход в систему") -> {
+@views.basic.template("Вход в систему", RockerContent.NONE) -> {
 <div class="container">
     <div class="row">
         <form action="/callback?client_name=FormClient" method="post" class="col s6 offset-s3">
