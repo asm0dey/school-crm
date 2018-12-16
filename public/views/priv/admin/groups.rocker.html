@@ -3,15 +3,35 @@
 @import org.ort.school.app.repo.UserDTO
 @import org.pac4j.core.profile.CommonProfile
 
-@args (Collection<UserDTO> users)
-
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
-<h2>some</h2>
-@views.partials.scripts.template()
+@views.basic.template("Группы") -> {
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red modal-trigger pulse"
+       href="#create-group"><i
+            class="material-icons">add</i></a>
+</div>
+<div id="create-group" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>Создание группы</h4>
+        <form action="" method="post">
+            <input type="hidden" value='@locals.get("csrf")' name="csrf">
+            <div class="row">
+                <div class="col s5">
+                    Название группы:
+                    <div class="input-field inline">
+                        <input type="text" id="groupname" name="name">
+                        <label for="groupname">Название</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<ul class="collapsible">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+</ul>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var selects = document.querySelectorAll('select');
@@ -22,5 +42,4 @@
         var instances3 = M.Modal.init(modals);
     });
 </script>
-</body>
-</html>
+}

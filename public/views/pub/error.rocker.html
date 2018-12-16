@@ -1,13 +1,8 @@
 @args (int status, String reason)
 
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@views.basic.template("Ошибка") -> {
 <h1>Ошибка</h1>
 <h3>@status: @reason</h3>
-@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var selects = document.querySelectorAll('select');
@@ -17,5 +12,4 @@
 
     });
 </script>
-</body>
-</html>
+}

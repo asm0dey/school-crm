@@ -209,12 +209,14 @@ import com.codahale.metrics.jvm.FileDescriptorRatioGauge
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet
 import com.codahale.metrics.jvm.ThreadStatesGaugeSet
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.jooby.*
 import org.jooby.flyway.Flywaydb
 import org.jooby.handlers.CsrfHandler
 import org.jooby.hbv.Hbv
 import org.jooby.jdbc.Jdbc
 import org.jooby.jooq.jOOQ
+import org.jooby.json.Jackson
 import org.jooby.metrics.Metrics
 import org.jooby.pac4j.Pac4j
 import org.jooby.quartz.Quartz
@@ -229,9 +231,6 @@ import org.pac4j.core.credentials.UsernamePasswordCredentials
 import org.pac4j.core.profile.CommonProfile
 import org.pac4j.core.profile.ProfileManager
 import org.pac4j.http.client.indirect.FormClient
-import org.quartz.CalendarIntervalScheduleBuilder
-import org.quartz.CronScheduleBuilder
-import org.quartz.DateBuilder
 import java.util.concurrent.TimeUnit
 
 
@@ -289,6 +288,7 @@ private fun Kooby.modules() {
     use(Rockerby())
     use(Hbv())
     use(FlashScope())
+    use(Jackson(jacksonObjectMapper()))
     use(
             Metrics()
                     .request()

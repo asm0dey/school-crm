@@ -6,11 +6,8 @@
 @import org.ort.school.app.repo.GradeInfoDTO
 @import org.ort.school.app.repo.ParentWithChildren
 @args (List<Pair<GradeInfoDTO, List<ParentWithChildren>>> degrees, Collection<String> allowedLetters, Collection<Integer> allowedDegrees, List<Pair<Integer,String>> existingDegrees)
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+
+@views.basic.template("Классы") -> {
 <div>
     <div class="row">
         <div class="col s10 offset-s1">
@@ -127,7 +124,6 @@
         </div>
     </div>
 </div>
-@views.partials.scripts.template()
 <script src="/webjars/umbrella/2.7.0/umbrella.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -160,5 +156,4 @@
         }
     };
 </script>
-</body>
-</html>
+}

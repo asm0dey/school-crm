@@ -5,11 +5,7 @@
 
 @args (Collection<UserDTO> users)
 
-<!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-@views.partials.head.template()
-<body>
-@views.partials.nav.template()
+@views.basic.template("Пользователи") -> {
 <div>
     <div class="row">
         <div class="col s10 offset-s1">
@@ -68,7 +64,6 @@
         </div>
     </div>
 </div>
-@views.partials.scripts.template()
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var selects = document.querySelectorAll('select');
@@ -79,5 +74,4 @@
         var instances3 = M.Modal.init(modals);
     });
 </script>
-</body>
-</html>
+}
