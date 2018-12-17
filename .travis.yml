@@ -26,3 +26,7 @@ deploy:
     repo: asm0dey/school-crm
     tags: true
   skip_cleanup: true
+env:
+  - CODECOV_TOKEN="0773e0a9-e9a5-4f5b-829f-1f915b62d6a6"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
