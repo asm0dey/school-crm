@@ -26,6 +26,8 @@
 
 ## Настройка
 
+### Настройка приложения
+
 Базовая настройка осуществляется в файле `conf/application.conf`.
 
 ```
@@ -51,5 +53,7 @@ flash.cookie {
     name = "flash"
 }
 ```
+
+### Настройка логгирования
 
 Логгирование настраивается в `conf/logback.xml` так, как описано [тут](https://logback.qos.ch/manual/configuration.html)
