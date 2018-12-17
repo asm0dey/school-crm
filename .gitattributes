@@ -1,0 +1,2 @@
+src/main/jetresources/crm.startup filter=lfs diff=lfs merge=lfs -text
+src/main/jetresources/crm.usg filter=lfs diff=lfs merge=lfs -text
