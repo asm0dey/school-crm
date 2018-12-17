@@ -1,0 +1,9 @@
+# version format
+version: "{build}"
+
+# Operating system (build VM template)
+os: Windows Server 2012 R2
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - mvnw.cmd clean test org.pitest:pitest-maven:mutationCoverage package
