@@ -405,7 +405,7 @@
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
-        <version>1.4.7</version>
+        <version>1.4.8</version>
         <configuration>
           <mutators>
             <mutator>NEW_DEFAULTS</mutator>
