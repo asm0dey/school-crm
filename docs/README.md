@@ -54,6 +54,12 @@ flash.cookie {
 }
 ```
 
+## Первый запуск
+```
+docker-compose -f docker-compose/docker-compose.yml up -d
+mvn jooby:run
+```
+
 ### Настройка логгирования
 
 Логгирование настраивается в `conf/logback.xml` так, как описано [тут](https://logback.qos.ch/manual/configuration.html)
