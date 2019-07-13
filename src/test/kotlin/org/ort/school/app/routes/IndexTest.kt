@@ -5,10 +5,10 @@ import com.winterbe.expekt.should
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Request
 import org.jooby.Status
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.DegreeService
-import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.service.SubscribeService
 import org.ort.school.app.service.UserService
 import views.index
@@ -85,16 +85,16 @@ class IndexTest {
 
     @Test
     fun `subscribe should render index with errors in model if there are errors in DTO`() {
-        val constraintViolation = mock<ConstraintViolation<SubscribeDTO>>{
+        val constraintViolation = mock<ConstraintViolation<SubscribeDTO>> {
             on { propertyPath } doReturn PathImpl.createPathFromString("ss")
             on { message } doReturn "mess"
         }
-        val validator = mock<Validator>{
+        val validator = mock<Validator> {
             on { validate(any<SubscribeDTO>(), any()) } doReturn setOf(constraintViolation)
         }
         val req = mock<Request>()
         val index = Main(validator, mock(), mock(), mock()).subscribe(SubscribeDTO(mock(), mock()), req)
-        verify(req, times(1)).flash("ошибка 1","ss: mess")
+        verify(req, times(1)).flash("ошибка 1", "ss: mess")
     }
 
     @Test

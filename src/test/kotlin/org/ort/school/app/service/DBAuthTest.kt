@@ -4,7 +4,8 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.crm.jooq.model.tables.records.UserRecord
 import org.pac4j.core.context.Pac4jConstants
@@ -37,47 +38,49 @@ class DBAuthTest {
         credentials.userProfile.roles.should.equal(roles)
     }
 
-    @Test(expected = CredentialsException::class)
+    @Test()
     fun `null username should throw exception`() {
         val userRepo = mock<UserRepo>()
         val passwordService = mock<PasswordService>()
         val dbAuth = DBAuth(userRepo, passwordService)
         val credentials = UsernamePasswordCredentials(null, "admin", "def")
-        dbAuth.validate(credentials, mock())
+        assertThrows(CredentialsException::class.java) { dbAuth.validate(credentials, mock()) }
     }
 
-    @Test(expected = CredentialsException::class)
+    @Test()
     fun `empty username should throw exception`() {
         val userRepo = mock<UserRepo>()
         val passwordService = mock<PasswordService>()
         val dbAuth = DBAuth(userRepo, passwordService)
         val credentials = UsernamePasswordCredentials("", "admin", "def")
-        dbAuth.validate(credentials, mock())
+        assertThrows(CredentialsException::class.java) { dbAuth.validate(credentials, mock()) }
     }
-    @Test(expected = CredentialsException::class)
+
+    @Test()
     fun `invalid password shoud throw exception`() {
         val userRepo = mock<UserRepo>()
         val passwordService = PasswordService()
         val dbAuth = DBAuth(userRepo, passwordService)
         val credentials = UsernamePasswordCredentials("admin", "admin", "def")
-        dbAuth.validate(credentials, mock())
+        assertThrows(CredentialsException::class.java) { dbAuth.validate(credentials, mock()) }
     }
 
-    @Test(expected = CredentialsException::class)
+    @Test()
     fun `empty password should throw exception`() {
         val userRepo = mock<UserRepo>()
         val passwordService = mock<PasswordService>()
         val dbAuth = DBAuth(userRepo, passwordService)
         val credentials = UsernamePasswordCredentials("admin", "", "def")
-        dbAuth.validate(credentials, mock())
+        assertThrows(CredentialsException::class.java) { dbAuth.validate(credentials, mock()) }
     }
 
-    @Test(expected = CredentialsException::class)
+    @Test()
     fun `null password should throw exception`() {
         val userRepo = mock<UserRepo>()
         val passwordService = mock<PasswordService>()
         val dbAuth = DBAuth(userRepo, passwordService)
         val credentials = UsernamePasswordCredentials("admin", null, "def")
-        dbAuth.validate(credentials, mock())
+        assertThrows(CredentialsException::class.java) { dbAuth.validate(credentials, mock()) }
     }
+
 }

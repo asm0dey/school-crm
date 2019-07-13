@@ -3,7 +3,7 @@ package org.ort.school.app.validate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.winterbe.expekt.should
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.ort.school.app.repo.UserRepo
 
 class UniqueUsernameValidatorTest {

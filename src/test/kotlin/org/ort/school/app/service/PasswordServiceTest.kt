@@ -1,7 +1,8 @@
 package org.ort.school.app.service
 
 import com.winterbe.expekt.should
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import org.mindrot.jbcrypt.BCrypt
 
 class PasswordServiceTest {
@@ -25,11 +26,11 @@ class PasswordServiceTest {
         PasswordService().checkPw(pass, hashpw).should.be.`true`
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test()
     fun `non-bcrypt-encrypted pass should cause exception`() {
         val pass = "ss"
         val hashpw = "lala"
-        PasswordService().checkPw(pass, hashpw).should.be.`false`
+        Assertions.assertThrows(IllegalArgumentException::class.java) { PasswordService().checkPw(pass, hashpw) }
     }
 
     @Test

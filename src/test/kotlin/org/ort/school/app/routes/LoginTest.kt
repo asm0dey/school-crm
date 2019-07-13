@@ -5,11 +5,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
 import org.jooby.Mutant
 import org.jooby.Request
-import org.jooby.View
-import org.jooby.internal.MutantImpl
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.jupiter.api.Test
 
 class LoginTest {
 

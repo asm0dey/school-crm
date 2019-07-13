@@ -5,12 +5,12 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.GradeInfoDTO
 import org.ort.school.app.repo.GradeWithParents
 import org.ort.school.app.repo.ParentWithChildren
-import org.ort.school.app.model.DegreeDTO
 
 class DegreeServiceTest {
 

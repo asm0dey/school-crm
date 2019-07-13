@@ -3,22 +3,19 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.*
 import com.typesafe.config.Config
 import com.winterbe.expekt.should
+import io.kotlintest.shouldBe
 import net.andreinc.mockneat.MockNeat
 import org.jooby.Err
 import org.jooby.Status
-import org.junit.Assert
-import org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.repo.*
 import org.ort.school.app.service.DegreeService
 import org.ort.school.app.service.UserService
 import org.pac4j.core.profile.CommonProfile
 
-private val m: MockNeat
-    get() {
-        return MockNeat.threadLocal()
-    }
+private val m: MockNeat = MockNeat.threadLocal()
 
 class AdminTest {
     @Test
@@ -32,28 +29,16 @@ class AdminTest {
     fun `when user hits users part with no admin rights he gots 403 error`() {
         val profile = mock<CommonProfile>()
         whenever(profile.roles).thenReturn(emptySet())
-        try {
-            Admin(mock(), mock(), mock(), mock()).getUsers(profile)
-        } catch (e: Exception) {
-            e.should.be.instanceof(Err::class.java)
-            (e as Err).statusCode().should.be.equal(403)
-            return
-        }
-        Assert.fail("Error not thrown")
+        assertThrows(Err::class.java) { Admin(mock(), mock(), mock(), mock()).getUsers(profile) }
+                .statusCode() shouldBe 403
     }
 
     @Test
     fun `when user hits degrees part with no admin rights he gots 403 error`() {
         val profile = mock<CommonProfile>()
         whenever(profile.roles).thenReturn(emptySet())
-        try {
-            Admin(mock(), mock(), mock(), mock()).degrees(profile)
-        } catch (e: Exception) {
-            e.should.be.instanceof(Err::class.java)
-            (e as Err).statusCode().should.be.equal(403)
-            return
-        }
-        Assert.fail("Error not thrown")
+        assertThrows(Err::class.java) { Admin(mock(), mock(), mock(), mock()).getUsers(profile) }
+                .statusCode() shouldBe 403
     }
 
     @Test
@@ -90,17 +75,17 @@ class AdminTest {
         val degreeService = mock<DegreeService>()
         val commonProfile = mock<CommonProfile>()
         whenever(commonProfile.roles).thenReturn(setOf("author"))
-        try {
-            Admin(mock(), mock(), degreeService, mock()).createDegree(
+        assertThrows(Err::class.java) {
+            Admin(
+                    mock(),
+                    mock(),
+                    degreeService,
+                    mock()
+            ).createDegree(
                     m.constructor(DegreeDTO::class.java).params(m.strings(), m.intSeq()).`val`(),
                     commonProfile
             )
-        } catch (e: Exception) {
-            e.should.be.instanceof(Err::class.java)
-            (e as Err).statusCode().should.be.equal(403)
-            return
-        }
-        fail("Error has not been thrown")
+        }.statusCode() shouldBe 403
     }
 
     @Test

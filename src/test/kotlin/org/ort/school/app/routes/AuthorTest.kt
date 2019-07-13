@@ -4,26 +4,24 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
-import com.winterbe.expekt.should
+import io.kotlintest.shouldBe
 import org.jooby.Err
 import org.jooby.Mutant
 import org.jooby.Request
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.ort.school.app.service.AuthorService
 import org.ort.school.app.service.DegreeService
 import org.pac4j.core.profile.CommonProfile
 
 class AuthorTest {
 
-    @Test(expected = Err::class)
+    @Test()
     fun `should throw 403 if user is not author`() {
         val profile = mock<CommonProfile>()
-        try {
-            Author(mock(), mock()).index(profile)
-        } catch (e: Err) {
-            e.statusCode().should.be.equal(403)
-            throw e
-        }
+        assertThrows(Err::class.java) { Author(mock(), mock()).index(profile) }
+                .statusCode() shouldBe 403
+
     }
 
     @Test
@@ -37,7 +35,7 @@ class AuthorTest {
             on { listDegreeNames() } doReturn degrees
         }
 
-        Author(degreeService, mock()).index(profile).degrees().should.equal(degrees)
+        Author(degreeService, mock()).index(profile).degrees() shouldBe degrees
     }
 
     @Test
@@ -67,17 +65,14 @@ class AuthorTest {
         val sendLetter = Author(degreeService, authorService).sendLetter(profile, request)
         verify(authorService, times(1)).sendLetter(listOf(1, 2), "sss", "subj")
         verify(request, times(1)).flash("success", "OK")
-        sendLetter.degrees().should.equal(degrees)
+        sendLetter.degrees() shouldBe degrees
     }
 
-    @Test(expected = Err::class)
+    @Test()
     fun `can't send letter without author role`() {
-        try {
-            Author(mock(), mock()).sendLetter(mock(), mock())
-        } catch (e: Err) {
-            e.statusCode().should.be.equal(403)
-            throw e
-        }
+        assertThrows(Err::class.java) { Author(mock(), mock()).sendLetter(mock(), mock()) }
+                .statusCode() shouldBe 403
+
     }
 
 

@@ -2,9 +2,11 @@ package org.ort.school.app.routes
 
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
+import io.kotlintest.shouldBe
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Err
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.CreateUser
@@ -12,7 +14,6 @@ import org.pac4j.core.profile.CommonProfile
 import views.priv.profile.newuser
 import javax.validation.ConstraintViolation
 import javax.validation.Validator
-import kotlin.test.fail
 
 class UserSpecTest {
     @JvmField
@@ -25,13 +26,8 @@ class UserSpecTest {
     @Test
     fun `non-adin on new user page should throw 403`() {
         val profile = mock<CommonProfile>()
-        try {
-            user.newUserPage(profile)
-        } catch (e: Err) {
-            e.statusCode().should.be.equal(403)
-            return
-        }
-        fail()
+        assertThrows(Err::class.java) { user.newUserPage(profile) }
+                .statusCode() shouldBe 403
     }
 
     @Test

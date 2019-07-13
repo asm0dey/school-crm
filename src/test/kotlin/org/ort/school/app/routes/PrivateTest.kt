@@ -4,7 +4,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
 import org.jooby.Status
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.pac4j.core.profile.CommonProfile
 import java.util.*
 
@@ -18,6 +18,7 @@ class PrivateTest {
         result.status().should.be.equal(Optional.of(Status.TEMPORARY_REDIRECT))
         result.headers().should.contain("location" to "/logout")
     }
+
     @Test
     fun `when admin enters private zone he's redirected to admin zone`() {
         val profile = mock<CommonProfile>()
@@ -26,6 +27,7 @@ class PrivateTest {
         result.status().should.be.equal(Optional.of(Status.TEMPORARY_REDIRECT))
         result.headers().should.contain("location" to "/priv/admin")
     }
+
     @Test
     fun `when author enters private zone he's redirected to author zone`() {
         val profile = mock<CommonProfile>()

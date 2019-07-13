@@ -6,7 +6,7 @@ import org.jooq.TransactionalCallable
 import org.jooq.impl.DefaultConfiguration
 import org.jooq.tools.jdbc.Mock
 import org.jooq.tools.jdbc.MockConfiguration
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.model.StudentInfo
 import org.ort.school.app.model.SubscribeDTO

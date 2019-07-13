@@ -1,7 +1,7 @@
 package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.ort.school.app.model.ParentInfo
 
 class AuthorServiceTest {
