@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.ort.school</groupId>
   <artifactId>crm</artifactId>
-  <version>1.8.3</version>
+  <version>1.9.0</version>
   <prerequisites>
     <maven>3.2.5</maven>
   </prerequisites>
@@ -228,7 +228,7 @@
       <version>${spek.version}</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>fluent-hc</artifactId>
