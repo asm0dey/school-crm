@@ -474,6 +474,11 @@
             <artifactId>pitest-kotlin</artifactId>
             <version>master</version>
           </dependency>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>0.9</version>
+          </dependency>
         </dependencies>
       </plugin>
       <plugin>
