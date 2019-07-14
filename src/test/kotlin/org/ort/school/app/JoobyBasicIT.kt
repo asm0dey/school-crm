@@ -1,5 +1,6 @@
 package org.ort.school.app
 
+import com.github.kittinunf.fuel.httpGet
 import io.kotlintest.Spec
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
@@ -50,10 +51,11 @@ abstract class BasicInt : StringSpec() {
 class JoobyBasicIT : BasicInt() {
     override fun body(t: Int) {
         "on get / status should be 200" {
-            val response = Request.Get("http://localhost:$t/")
-                    .execute()
-                    .returnResponse()
-            response.statusLine.statusCode shouldBe 200
+            val response = "http://localhost:$port/"
+                    .httpGet()
+                    .response()
+                    .second
+            response.statusCode shouldBe 200
         }
     }
 
