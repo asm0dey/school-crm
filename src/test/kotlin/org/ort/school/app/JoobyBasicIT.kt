@@ -1,3 +1,4 @@
+/*
 package org.ort.school.app
 
 import com.github.kittinunf.fuel.httpGet
@@ -80,3 +81,4 @@ class JoobySecondIT : JoobyIntegrationSpec({ port ->
 })
 
 
+*/
