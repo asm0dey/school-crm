@@ -31,7 +31,7 @@
     <application.class>org.ort.school.app.SchoolCRMKt</application.class>
     <postgresql.version>42.2.6</postgresql.version>
     <junit-jupiter.version>5.5.1</junit-jupiter.version>
-    <testcontainers.version>1.11.3</testcontainers.version>
+    <testcontainers.version>1.12.0</testcontainers.version>
     <mockk.version>1.9.3</mockk.version>
   </properties>
 
@@ -305,11 +305,6 @@
       <artifactId>junit-vintage-engine</artifactId>
       <version>${junit-jupiter.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.automation-remarks</groupId>
-      <artifactId>kirk</artifactId>
-      <version>0.8.5</version>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
