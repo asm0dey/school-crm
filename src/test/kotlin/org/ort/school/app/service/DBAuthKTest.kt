@@ -1,3 +1,4 @@
+/*
 package org.ort.school.app.service
 
 import com.winterbe.expekt.should
@@ -17,4 +18,4 @@ class DBAuthKTest : ShouldSpec({
     }
     "when user not found"{
     }
-})
+})*/

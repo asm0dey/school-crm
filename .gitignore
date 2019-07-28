@@ -169,3 +169,4 @@ hs_err_pid*
 /db/
 !/db/.donotdelete
 .kotlintest
+/build/
