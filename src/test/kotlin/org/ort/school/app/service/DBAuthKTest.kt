@@ -1,4 +1,3 @@
-/*
 package org.ort.school.app.service
 
 import com.winterbe.expekt.should
@@ -12,10 +11,5 @@ import org.pac4j.core.exception.CredentialsException
 
 class DBAuthKTest : ShouldSpec({
 
-    "auth username"{
-    }
-    "auth password"{
-    }
-    "when user not found"{
-    }
-})*/
+
+})
