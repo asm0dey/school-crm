@@ -213,7 +213,7 @@
     <dependency>
       <groupId>net.andreinc.mockneat</groupId>
       <artifactId>mockneat</artifactId>
-      <version>0.3.6</version>
+      <version>0.3.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>
