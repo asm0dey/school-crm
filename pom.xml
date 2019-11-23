@@ -263,7 +263,7 @@
     <dependency>
       <groupId>io.kotlintest</groupId>
       <artifactId>kotlintest-runner-junit5</artifactId>
-      <version>3.3.2</version>
+      <version>3.4.2</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -312,6 +312,18 @@
       <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.automation-remarks</groupId>
+      <artifactId>kirk</artifactId>
+      <version>0.8.5</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>com.sangupta</groupId>
+          <artifactId>murmur</artifactId>
+          <version>1.0.0</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 
   <build>
@@ -326,8 +338,14 @@
               <phase>pre-integration-test</phase>
               <goals>
                 <goal>build</goal>
+                <goal>tag</goal>
               </goals>
+              <configuration>
+                <image>crm</image>
+                <newName>crm</newName>
+              </configuration>
             </execution>
+<!--
             <execution>
               <id>destroy</id>
               <phase>post-integration-test</phase>
@@ -335,6 +353,7 @@
                 <goal>removeImage</goal>
               </goals>
             </execution>
+-->
           </executions>
         </plugin>
       </plugins>
