@@ -29,7 +29,7 @@
     <maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
     <!-- Startup class -->
     <application.class>org.ort.school.app.SchoolCRMKt</application.class>
-    <postgresql.version>42.2.6</postgresql.version>
+    <postgresql.version>42.2.9</postgresql.version>
     <junit-jupiter.version>5.5.0</junit-jupiter.version>
     <testcontainers.version>1.11.4</testcontainers.version>
   </properties>
