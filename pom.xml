@@ -18,7 +18,7 @@
   <properties>
     <boringssl.version>2.0.7.Final</boringssl.version>
     <jooby.version>1.6.2</jooby.version>
-    <jooq.version>3.11.11</jooq.version>
+    <jooq.version>3.13.0</jooq.version>
     <spek.version>1.2.1</spek.version>
     <kotlin.version>1.3.41</kotlin.version>
     <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
