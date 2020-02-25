@@ -2,7 +2,6 @@ addons:
   postgresql: "9.4"
 language: java
 jdk:
-- oraclejdk8
 - openjdk11
 install: mvn -B -V package -Dmaven.test.skip=true
 script:
