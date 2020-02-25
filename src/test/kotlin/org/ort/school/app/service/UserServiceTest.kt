@@ -5,8 +5,8 @@ import com.winterbe.expekt.should
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.repo.UserDTO
 import org.ort.school.app.repo.UserRepo
-import kotlin.test.BeforeTest
-import kotlin.test.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class UserServiceTest {
 
@@ -14,7 +14,7 @@ class UserServiceTest {
 
     private lateinit var userService: UserService
 
-    @BeforeTest
+    @BeforeEach
     fun setup() {
         userRepo = mock()
         userService = UserService(userRepo, PasswordService())

@@ -1,21 +1,25 @@
 package org.ort.school.app
 
 import com.github.kittinunf.fuel.httpGet
-import com.winterbe.expekt.should
 import io.kotlintest.Spec
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.BehaviorSpec
 import org.testcontainers.containers.PostgreSQLContainer
 import java.net.ServerSocket
 
-class KPostgreSQLContainer : PostgreSQLContainer<KPostgreSQLContainer>()
-
-
 abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Unit = {}) : BehaviorSpec() {
-    private val postgres = KPostgreSQLContainer().apply { start() }
-    val httpPort = ServerSocket(0).use { it.localPort }
-    private val httpsPort = ServerSocket(0).use { it.localPort }
+
+    class KPostgreSQLContainer : PostgreSQLContainer<KPostgreSQLContainer>()
+
+    private val httpPort = randomPort()
+    private val httpsPort = randomPort()
     private val app = SchoolCRM()
+
+    companion object {
+        private fun randomPort() = ServerSocket(0).use { it.localPort }
+        @JvmStatic
+        private val postgres = KPostgreSQLContainer().also { it.start() }
+    }
 
     override fun beforeSpec(spec: Spec) {
         super.beforeSpec(spec)
@@ -35,7 +39,7 @@ abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Un
     }
 
     init {
-        body(httpPort)
+        this.body(httpPort)
     }
 }
 
@@ -45,8 +49,10 @@ class JoobyFirstIT : JoobyIntegrationSpec({ port ->
             val response = "http://localhost:$port/"
                     .httpGet()
                     .response()
-            then("status should be 200") {
-                response.second.statusCode shouldBe 201
+                    .second
+
+            then("I get status 200") {
+                response.statusCode shouldBe 200
             }
         }
     }

@@ -203,8 +203,9 @@
  */
 package org.ort.school.app.model
 
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
+import org.hibernate.validator.constraints.Email
+import org.hibernate.validator.constraints.NotBlank
+
 
 data class ParentInfo(
         @get:NotBlank

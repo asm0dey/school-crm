@@ -203,8 +203,8 @@
  */
 package org.ort.school.app.model
 
+import org.hibernate.validator.constraints.NotBlank
 import java.time.LocalDate
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class StudentInfo(

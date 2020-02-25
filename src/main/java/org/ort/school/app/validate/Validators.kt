@@ -230,4 +230,6 @@ class UniqueUsernameValidator @Inject constructor(private val userRepo: UserRepo
     override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
         return value == null || userRepo.countUsersBy(value) == 0L
     }
+
+    override fun initialize(p0: UniqueUsername?) = Unit
 }
