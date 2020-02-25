@@ -4,11 +4,11 @@ import com.nhaarman.mockito_kotlin.*
 import com.typesafe.config.Config
 import com.winterbe.expekt.should
 import io.kotlintest.shouldBe
+import io.kotlintest.specs.AnnotationSpec
 import net.andreinc.mockneat.MockNeat
 import org.jooby.Err
 import org.jooby.Status
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.repo.*
 import org.ort.school.app.service.DegreeService
@@ -17,7 +17,7 @@ import org.pac4j.core.profile.CommonProfile
 
 private val m: MockNeat = MockNeat.threadLocal()
 
-class AdminTest {
+class AdminTest : AnnotationSpec(){
     @Test
     fun `when user hits slash-admin he's redirected to users area`() {
         val admin = Admin(mock(), mock(), mock(), mock()).get()

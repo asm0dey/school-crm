@@ -23,7 +23,7 @@ class DBAuthKTest : ShouldSpec(
                         every { password } returns ""
                     }
                     shouldThrow<CredentialsException> { auth.validate(UsernamePasswordCredentials(null, null, null), mockk()) }
-                            .message shouldBe  "Username and password cannot be blank 1"
+                            .message shouldBe  "Username and password cannot be blank"
                 }
 
             }

@@ -3,10 +3,10 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
 import io.kotlintest.shouldBe
+import io.kotlintest.specs.AnnotationSpec
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Err
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.UserService
 import org.ort.school.app.validate.CreateUser
@@ -15,7 +15,7 @@ import views.priv.profile.newuser
 import javax.validation.ConstraintViolation
 import javax.validation.Validator
 
-class UserSpecTest {
+class UserSpecTest : AnnotationSpec() {
     @JvmField
     val validator = mock<Validator>()
     @JvmField

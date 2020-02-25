@@ -207,7 +207,6 @@ import org.mindrot.jbcrypt.BCrypt
 
 class PasswordService {
     fun encryptPassword(plainTextPw: String, rounds: Int = 10): String {
-        require(plainTextPw.length >= 4)
         return BCrypt.hashpw(plainTextPw, BCrypt.gensalt(rounds))
     }
 

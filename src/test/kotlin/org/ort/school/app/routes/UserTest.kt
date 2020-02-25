@@ -3,13 +3,13 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
+import io.kotlintest.specs.AnnotationSpec
 import org.jooby.Mutant
 import org.jooby.Request
 import org.jooby.Status
-import org.junit.jupiter.api.Test
 import org.pac4j.core.profile.CommonProfile
 
-class UserTest {
+class UserTest :AnnotationSpec(){
 
     @Test
     fun defaultUserArea() {

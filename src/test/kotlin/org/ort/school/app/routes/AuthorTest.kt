@@ -5,18 +5,18 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import io.kotlintest.shouldBe
+import io.kotlintest.specs.AnnotationSpec
 import org.jooby.Err
 import org.jooby.Mutant
 import org.jooby.Request
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
 import org.ort.school.app.service.AuthorService
 import org.ort.school.app.service.DegreeService
 import org.pac4j.core.profile.CommonProfile
 
-class AuthorTest {
+class AuthorTest : AnnotationSpec() {
 
-    @Test()
+    @Test
     fun `should throw 403 if user is not author`() {
         val profile = mock<CommonProfile>()
         assertThrows(Err::class.java) { Author(mock(), mock()).index(profile) }
@@ -68,7 +68,7 @@ class AuthorTest {
         sendLetter.degrees() shouldBe degrees
     }
 
-    @Test()
+    @Test
     fun `can't send letter without author role`() {
         assertThrows(Err::class.java) { Author(mock(), mock()).sendLetter(mock(), mock()) }
                 .statusCode() shouldBe 403

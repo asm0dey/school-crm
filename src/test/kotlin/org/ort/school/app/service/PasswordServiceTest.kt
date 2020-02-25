@@ -1,11 +1,11 @@
 package org.ort.school.app.service
 
 import com.winterbe.expekt.should
+import io.kotlintest.specs.AnnotationSpec
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import org.mindrot.jbcrypt.BCrypt
 
-class PasswordServiceTest {
+class PasswordServiceTest : AnnotationSpec() {
 
     @Test
     fun encryptPassword() {

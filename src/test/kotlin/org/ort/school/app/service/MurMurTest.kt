@@ -20,9 +20,6 @@ class MurMurTest : ShouldSpec({
                     row("longstring")) {
                 MurMur2Hash.evaluate(it) shouldBe Murmur2.hash(it.toByteArray(), it.length, 0)
             }
-            assertAll(Gen.wideString()) { input: String ->
-                MurMur2Hash.evaluate(input) shouldBe Murmur2.hash(input.toByteArray(), input.length, 0)
-            }
         }
     }
 })

@@ -1,10 +1,10 @@
 package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
-import org.junit.jupiter.api.Test
+import io.kotlintest.specs.AnnotationSpec
 import org.ort.school.app.model.ParentInfo
 
-class AuthorServiceTest {
+class AuthorServiceTest : AnnotationSpec() {
     @Test
     fun sendLetterTest() {
         val degreeService = mock<DegreeService>()

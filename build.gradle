@@ -61,6 +61,8 @@ dependencies {
     testImplementation "com.github.kittinunf.fuel:fuel:2.2.1"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testImplementation "io.kotlintest:kotlintest-plugins-pitest:3.4.2"
+    testImplementation "com.sangupta:murmur:1.0.0"
+    testImplementation "io.mockk:mockk:1.9.3"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
 }
 
@@ -110,6 +112,7 @@ pitest {
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
     testPlugin = "KotlinTest"
+    avoidCallsTo = ["kotlin.jvm.internal"]
 }
 compileKotlin {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -128,3 +131,4 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+build.dependsOn 'pitest'
