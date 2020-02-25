@@ -30,7 +30,7 @@ dependencies {
     implementation "org.jooby:jooby-hbv:$joobyVersion"
     implementation "org.jooq:jooq-codegen:3.13.0"
     implementation "org.jooq:jooq:3.13.0"
-    implementation "org.mindrot:jbcrypt:0.4"
+    implementation "org.mindrot:jbcrypt:0.4-atlassian-1"
     implementation "org.jooby:jooby-assets:$joobyVersion"
     implementation "org.jooby:jooby-csl:$joobyVersion"
     implementation "org.jooby:jooby-whoops:$joobyVersion"
