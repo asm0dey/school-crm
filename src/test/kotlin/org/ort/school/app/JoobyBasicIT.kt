@@ -6,21 +6,20 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.BehaviorSpec
 import org.testcontainers.containers.PostgreSQLContainer
 import java.net.ServerSocket
-
-class KPostgreSQLContainer : PostgreSQLContainer<KPostgreSQLContainer>()
+import java.net.URI
 
 abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Unit = {}) : BehaviorSpec() {
 
-    private val httpPort = ServerSocket(0).use { it.localPort }
-    private val httpsPort = ServerSocket(0).use { it.localPort }
+    class KPostgreSQLContainer : PostgreSQLContainer<KPostgreSQLContainer>()
+
+    private val httpPort = randomPort()
+    private val httpsPort = randomPort()
     private val app = SchoolCRM()
 
     companion object {
+        private fun randomPort() = ServerSocket(0).use { it.localPort }
         @JvmStatic
-        private val postgres: KPostgreSQLContainer = KPostgreSQLContainer()
-        init {
-            postgres.start()
-        }
+        private val postgres = KPostgreSQLContainer().also { it.start() }
     }
 
     override fun beforeSpec(spec: Spec) {
@@ -29,7 +28,7 @@ abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Un
                 "server.join=false",
                 "application.port=$httpPort",
                 "application.securePort=$httpsPort",
-                "db.url=${postgres.jdbcUrl}",
+                "db.url=${postgres.jdbcUrl.replace(Regex("\\?.*"), "")}",
                 "db.user=${postgres.username}",
                 "db.password=${postgres.password}"
         )
@@ -46,23 +45,6 @@ abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Un
 }
 
 class JoobyFirstIT : JoobyIntegrationSpec({ port ->
-    given("application started") {
-        `when`("I request /") {
-            val response = "http://localhost:$port/"
-                    .httpGet()
-                    .response()
-                    .second
-
-            then("I get status 200") {
-                response.statusCode shouldBe 200
-            }
-
-        }
-    }
-
-})
-
-class JoobySecondIT : JoobyIntegrationSpec({ port ->
     given("application started") {
         `when`("I request /") {
             val response = "http://localhost:$port/"

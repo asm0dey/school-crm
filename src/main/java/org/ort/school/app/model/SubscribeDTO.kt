@@ -203,8 +203,8 @@
  */
 package org.ort.school.app.model
 
+import org.hibernate.validator.constraints.NotEmpty
 import javax.validation.Valid
-import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 data class SubscribeDTO(
