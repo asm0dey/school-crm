@@ -49,7 +49,7 @@ dependencies {
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1"
     implementation "com.automation-remarks:kirk:0.8.5"
     runtimeOnly "com.h2database:h2:1.4.200"
-    runtimeOnly "org.postgresql:postgresql:42.2.10.jre7"
+    runtimeOnly "org.postgresql:postgresql:42.2.10"
     testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
     testImplementation "org.mockito:mockito-core:3.3.0"
     testImplementation "com.winterbe:expekt:0.5.0"
