@@ -57,7 +57,7 @@ dependencies {
     testImplementation "org.apache.httpcomponents:fluent-hc:4.5.12"
     testImplementation "org.testcontainers:postgresql:1.14.0"
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.4.2"
-    testImplementation "org.testcontainers:selenium:1.14.0"
+    testImplementation "org.testcontainers:selenium:1.14.3"
     testImplementation "com.github.kittinunf.fuel:fuel:2.2.1"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testImplementation "io.kotlintest:kotlintest-plugins-pitest:3.4.2"
