@@ -28,7 +28,7 @@ dependencies {
     implementation "org.jooby:jooby-jooq:$joobyVersion"
     implementation "org.jooby:jooby-flyway:$joobyVersion"
     implementation "org.jooby:jooby-hbv:$joobyVersion"
-    implementation "org.jooq:jooq-codegen:3.13.1"
+    implementation "org.jooq:jooq-codegen:3.14.0"
     implementation "org.jooq:jooq:3.13.1"
     implementation "org.mindrot:jbcrypt:0.4"
     implementation "org.jooby:jooby-assets:$joobyVersion"
