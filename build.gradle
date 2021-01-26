@@ -46,7 +46,7 @@ dependencies {
     implementation "org.webjars.bower:umbrella:2.7.0"
     implementation "javax.annotation:javax.annotation-api:1.3.2"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.3"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1"
     implementation "com.automation-remarks:kirk:0.8.5"
     runtimeOnly "com.h2database:h2:1.4.200"
     runtimeOnly "org.postgresql:postgresql:42.2.10.jre7"
