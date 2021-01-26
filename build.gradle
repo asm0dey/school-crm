@@ -4,7 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'application'
     id "com.fizzed.rocker" version "1.2.3"
-    id 'info.solidsoft.pitest' version '1.4.9'
+    id 'info.solidsoft.pitest' version '1.5.2'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'jacoco'
 }
