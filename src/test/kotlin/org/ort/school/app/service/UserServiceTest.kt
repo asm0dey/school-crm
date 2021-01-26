@@ -2,13 +2,12 @@ package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
+import io.kotlintest.specs.AnnotationSpec
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.repo.UserDTO
 import org.ort.school.app.repo.UserRepo
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 
-class UserServiceTest {
+class UserServiceTest :AnnotationSpec(){
 
     private lateinit var userRepo: UserRepo
 

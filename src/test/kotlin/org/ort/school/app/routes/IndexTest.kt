@@ -2,10 +2,10 @@ package org.ort.school.app.routes
 
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
+import io.kotlintest.specs.AnnotationSpec
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Request
 import org.jooby.Status
-import org.junit.jupiter.api.Test
 import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.service.DegreeService
@@ -17,7 +17,7 @@ import javax.validation.ConstraintViolation
 import javax.validation.Validator
 
 
-class IndexTest {
+class IndexTest : AnnotationSpec() {
     @Test
     fun `when there are no users index should redirect to init`() {
         val userService = mock<UserService>()

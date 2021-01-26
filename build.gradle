@@ -66,6 +66,8 @@ dependencies {
     testImplementation "com.github.kittinunf.fuel:fuel:2.3.1"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation "io.kotlintest:kotlintest-plugins-pitest:3.4.2"
+    testImplementation "com.sangupta:murmur:1.0.0"
+    testImplementation "io.mockk:mockk:1.9.3"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
@@ -115,6 +117,7 @@ pitest {
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
     testPlugin = "KotlinTest"
+    avoidCallsTo = ["kotlin.jvm.internal"]
 }
 compileKotlin {
     dependsOn generateRockerTemplateSource
@@ -136,3 +139,4 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
+build.dependsOn 'pitest'

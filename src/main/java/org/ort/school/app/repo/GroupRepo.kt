@@ -205,6 +205,7 @@ package org.ort.school.app.repo
 
 import com.google.inject.Inject
 import org.jooq.DSLContext
+import org.jooq.impl.DSL
 import org.jooq.impl.DSL.*
 import org.ort.school.crm.jooq.model.Tables.*
 

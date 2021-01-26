@@ -5,14 +5,14 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
-import org.junit.jupiter.api.Test
+import io.kotlintest.specs.AnnotationSpec
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.repo.DegreeRepo
 import org.ort.school.app.repo.GradeInfoDTO
 import org.ort.school.app.repo.GradeWithParents
 import org.ort.school.app.repo.ParentWithChildren
 
-class DegreeServiceTest {
+class DegreeServiceTest :AnnotationSpec(){
 
     @Test
     fun listDegrees() {

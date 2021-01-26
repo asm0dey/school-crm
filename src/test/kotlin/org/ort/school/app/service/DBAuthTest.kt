@@ -4,15 +4,15 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
+import io.kotlintest.specs.AnnotationSpec
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.crm.jooq.model.tables.records.UserRecord
 import org.pac4j.core.context.Pac4jConstants
 import org.pac4j.core.credentials.UsernamePasswordCredentials
 import org.pac4j.core.exception.CredentialsException
 
-class DBAuthTest {
+class DBAuthTest : AnnotationSpec() {
 
     private val foundUser = UserRecord(0L, "admin", "admin", "admin", "admin", "admin", "admin")
 

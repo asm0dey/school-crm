@@ -1,18 +1,18 @@
 package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
+import io.kotlintest.specs.AnnotationSpec
 import org.jooq.DSLContext
 import org.jooq.TransactionalCallable
 import org.jooq.impl.DefaultConfiguration
 import org.jooq.tools.jdbc.Mock
 import org.jooq.tools.jdbc.MockConfiguration
-import org.junit.jupiter.api.Test
 import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.model.StudentInfo
 import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.repo.DegreeRepo
 
-class SubscribeServiceTest {
+class SubscribeServiceTest :AnnotationSpec(){
 
     @Test
     fun subscribe() {

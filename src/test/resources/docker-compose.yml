@@ -1,0 +1,21 @@
+version: '2'
+services:
+  crm:
+    image: crm
+    links:
+      - postgres
+    environment:
+      EXTRA_APP_ARGS: "db.url=jdbc:postgresql://postgres:5432/postgres db.user=postgres db.password=postgres"
+  postgres:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+  chrome:
+    image: selenium/standalone-chrome
+    volumes:
+      - "/dev/shm:/dev/shm"
+    ports:
+      - "4444"
+    links:
+      - crm
+

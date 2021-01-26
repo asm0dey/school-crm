@@ -27,7 +27,7 @@ abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Un
                 "server.join=false",
                 "application.port=$httpPort",
                 "application.securePort=$httpsPort",
-                "db.url=${postgres.jdbcUrl.replace(Regex("\\?.*"), "")}",
+                "db.url=${postgres.jdbcUrl.replace("\\?.*".toRegex(), "")}",
                 "db.user=${postgres.username}",
                 "db.password=${postgres.password}"
         )
@@ -54,10 +54,7 @@ class JoobyFirstIT : JoobyIntegrationSpec({ port ->
             then("I get status 200") {
                 response.statusCode shouldBe 200
             }
-
         }
     }
 
 })
-
-
