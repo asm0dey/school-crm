@@ -5,7 +5,7 @@ plugins {
     id 'application'
     id "com.fizzed.rocker" version "1.2.3"
     id 'info.solidsoft.pitest' version '1.4.9'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'jacoco'
 }
 ext {
