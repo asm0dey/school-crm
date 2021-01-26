@@ -205,8 +205,7 @@ package org.ort.school.app.repo
 
 import com.google.inject.Inject
 import org.jooq.DSLContext
-import org.jooq.impl.DSL.coalesce
-import org.jooq.impl.DSL.concat
+import org.jooq.impl.DSL.*
 import org.ort.school.app.model.StudentInfo
 import org.ort.school.crm.jooq.model.Tables.STUDENT
 import org.jooq.impl.DSL.`val` as value
@@ -217,7 +216,7 @@ class StudentRepo @Inject constructor(private val ctx: DSLContext) {
         val patronymic = coalesce(STUDENT.PATRONYMIC, "")
         val firstname = STUDENT.FIRSTNAME
         val lastname = STUDENT.LASTNAME
-        val fullName = concat(lastname, space, firstname, space, patronymic).trim()
+        val fullName = trim(concat(lastname, space, firstname, space, patronymic))
         return ctx
                 .selectFrom(STUDENT)
                 .where(fullName.containsIgnoreCase(filter))

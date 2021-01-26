@@ -210,7 +210,7 @@ import org.ort.school.crm.jooq.model.Tables.*
 
 class GroupRepo @Inject constructor(private val ctx: DSLContext) {
     fun listGroupsWithChildren(): Map<Long, List<GroupInfo>> {
-        val fullName = concat(STUDENT.LASTNAME, value(" "), STUDENT.FIRSTNAME, value(" "), coalesce(STUDENT.PATRONYMIC, "")).trim()
+        val fullName = trim(concat(STUDENT.LASTNAME, value(" "), STUDENT.FIRSTNAME, value(" "), coalesce(STUDENT.PATRONYMIC, "")))
         val gradeName = concat(GRADE.GRADE_NO, GRADE.GRADE_LETTER)
         return ctx
                 .select(GROUP.ID, GROUP.NAME, STUDENT.ID, fullName, gradeName)

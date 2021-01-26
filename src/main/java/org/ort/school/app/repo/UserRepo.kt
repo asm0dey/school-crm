@@ -208,8 +208,8 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.mindrot.jbcrypt.BCrypt
 import org.ort.school.app.model.UserInfoDTO
-import org.ort.school.crm.jooq.model.Tables
 import org.ort.school.crm.jooq.model.Tables.*
+import org.ort.school.crm.jooq.model.tables.records.UserRecord
 
 class UserRepo @Inject constructor(private val ctx: DSLContext) {
 
@@ -219,9 +219,9 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
             .innerJoin(USER).on(USER_ROLE.USER_ID.eq(USER.ID))
             .innerJoin(ROLE).on(ROLE.NAME.eq(USER_ROLE.ROLE))
             .where(ROLE.NAME.eq("admin"))
-            .fetchOne(0, Int::class.java) > 0
+            .fetchOne(0, Int::class.java)!! > 0
 
-    fun listUsers() = ctx
+    fun listUsers(): List<UserDTO> = ctx
             .select(USER.USERNAME, USER.FIRSTNAME, USER.LASTNAME, USER.PATRONYMIC, USER_ROLE.ROLE, USER.EMAIL)
             .from(USER, USER_ROLE)
             .where(
@@ -242,7 +242,7 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                         USER_ROLE.ROLE.eq(ROLE.NAME),
                         ROLE.NAME.eq("admin")
                 )
-                .fetchOne(0, Int::class.java)
+                .fetchOne(0, Int::class.java)!!
     }
 
     fun updateUser(username: String, userInfoDTO: UserInfoDTO) {
@@ -290,23 +290,23 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                             USER.ID.eq(USER_ROLE.USER_ID),
                             USER.USERNAME.eq(username)
                     )
-                    .fetchOneInto(UserDTO::class.java)
+                    .fetchOneInto(UserDTO::class.java)!!
                     .copy(password = null)
 
     fun rolesBy(username: String) = ctx
-            .select(Tables.ROLE.NAME)
-            .from(Tables.USER, Tables.USER_ROLE, Tables.ROLE)
+            .select(ROLE.NAME)
+            .from(USER, USER_ROLE, ROLE)
             .where(
-                    Tables.USER.ID.eq(Tables.USER_ROLE.USER_ID),
-                    Tables.ROLE.NAME.eq(Tables.USER_ROLE.ROLE),
-                    Tables.USER.USERNAME.eq(username)
+                    USER.ID.eq(USER_ROLE.USER_ID),
+                    ROLE.NAME.eq(USER_ROLE.ROLE),
+                    USER.USERNAME.eq(username)
             )
-            .fetch(Tables.ROLE.NAME)
+            .fetch(ROLE.NAME)
             .toSet()
 
-    fun userRecordBy(username: String) = ctx
-            .selectFrom(Tables.USER)
-            .where(Tables.USER.USERNAME.eq(username))
+    fun userRecordBy(username: String): UserRecord? = ctx
+            .selectFrom(USER)
+            .where(USER.USERNAME.eq(username))
             .fetchOptional().orElse(null)
 
 
@@ -314,7 +314,7 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
             .selectCount()
             .from(USER)
             .where(USER.USERNAME.eq(username))
-            .fetchOneInto(Long::class.java)
+            .fetchOneInto(Long::class.java)!!
 
     fun createUser(userInfo: UserInfoDTO) {
         ctx.transactionResult { configuration ->
@@ -328,12 +328,12 @@ class UserRepo @Inject constructor(private val ctx: DSLContext) {
                     .fetchOne()
             tx
                     .insertInto(USER_ROLE, USER_ROLE.USER_ID, USER_ROLE.ROLE)
-                    .values(userRecord.id, userInfo.role)
+                    .values(userRecord!!.id, userInfo.role)
                     .execute()
         }
     }
 
-    fun deleteUser(username: String) =
+    fun deleteUser(username: String): Int =
             ctx.transactionResult { configuration ->
                 val tx = DSL.using(configuration)
                 val userId = tx

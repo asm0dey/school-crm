@@ -216,7 +216,7 @@ class SubscribeService @Inject constructor(private val ctx: DSLContext, private 
             info
                     .student
                     ?.map { degreeRepo.saveStudent(it, tx) to it.degreeNo }
-                    ?.forEach { degreeRepo.createParent(info.parent!!, it.first, it.second!!, tx) }
+                    ?.forEach { degreeRepo.createParent(info.parent!!, it.first, tx) }
         }
     }
 }

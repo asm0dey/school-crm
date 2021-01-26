@@ -36,6 +36,6 @@ class SubscribeServiceTest {
         val subscribeService = SubscribeService(ctx, degreeRepo)
         subscribeService.subscribe(subscribeDTO)
 
-        verify(degreeRepo, times(1)).createParent(eq(parent), eq(777), eq(degreeNo), any())
+        verify(degreeRepo, times(1)).createParent(eq(parent), eq(777), any())
     }
 }

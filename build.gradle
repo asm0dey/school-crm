@@ -1,15 +1,16 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
     id 'application'
     id 'info.solidsoft.pitest' version '1.5.2'
     id "com.fizzed.rocker" version "1.3.0"
     id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id "com.github.ben-manes.versions" version "0.36.0"
     id 'jacoco'
 }
 ext {
-    joobyVersion = "1.6.7"
+    joobyVersion = "1.6.8"
 }
 
 
@@ -22,14 +23,16 @@ repositories {
 
 dependencies {
     implementation "org.jooby:jooby-undertow:$joobyVersion"
-    implementation "org.jooby:jooby-lang-kotlin:$joobyVersion"
+    implementation("org.jooby:jooby-lang-kotlin:$joobyVersion") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.jooby:jooby-pac4j2:$joobyVersion"
     implementation "org.jooby:jooby-jooq:$joobyVersion"
     implementation "org.jooby:jooby-flyway:$joobyVersion"
     implementation "org.jooby:jooby-hbv:$joobyVersion"
-    implementation "org.jooq:jooq-codegen:3.13.1"
-    implementation "org.jooq:jooq:3.13.1"
+    implementation "org.jooq:jooq-codegen:3.14.4"
+    implementation "org.jooq:jooq:3.14.4"
     implementation "org.mindrot:jbcrypt:0.4"
     implementation "org.jooby:jooby-assets:$joobyVersion"
     implementation "org.jooby:jooby-csl:$joobyVersion"
@@ -47,21 +50,23 @@ dependencies {
     implementation "javax.annotation:javax.annotation-api:1.3.2"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1"
-    implementation "com.automation-remarks:kirk:0.8.5"
+    implementation("com.automation-remarks:kirk:0.8.5") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
     runtimeOnly "com.h2database:h2:1.4.200"
-    runtimeOnly "org.postgresql:postgresql:42.2.10.jre7"
+    runtimeOnly "org.postgresql:postgresql:42.2.18"
     testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
-    testImplementation "org.mockito:mockito-core:3.3.3"
+    testImplementation "org.mockito:mockito-core:3.7.7"
     testImplementation "com.winterbe:expekt:0.5.0"
-    testImplementation "net.andreinc.mockneat:mockneat:0.3.9"
-    testImplementation "org.apache.httpcomponents:fluent-hc:4.5.12"
+    testImplementation "net.andreinc.mockneat:mockneat:0.4.2"
+    testImplementation "org.apache.httpcomponents:fluent-hc:4.5.13"
     testImplementation "org.testcontainers:postgresql:1.15.1"
     testImplementation "io.kotlintest:kotlintest-runner-junit5:3.4.2"
     testImplementation "org.testcontainers:selenium:1.15.1"
-    testImplementation "com.github.kittinunf.fuel:fuel:2.2.1"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation "com.github.kittinunf.fuel:fuel:2.3.1"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation "io.kotlintest:kotlintest-plugins-pitest:3.4.2"
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
 group = 'org.ort.school'
@@ -112,9 +117,12 @@ pitest {
     testPlugin = "KotlinTest"
 }
 compileKotlin {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
     dependsOn generateRockerTemplateSource
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }

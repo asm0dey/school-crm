@@ -6,7 +6,6 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.BehaviorSpec
 import org.testcontainers.containers.PostgreSQLContainer
 import java.net.ServerSocket
-import java.net.URI
 
 abstract class JoobyIntegrationSpec(body: JoobyIntegrationSpec.(port: Int) -> Unit = {}) : BehaviorSpec() {
 

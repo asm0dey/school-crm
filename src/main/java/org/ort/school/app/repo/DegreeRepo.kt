@@ -211,7 +211,6 @@ import org.jooq.impl.DSL.concat
 import org.ort.school.app.model.DegreeDTO
 import org.ort.school.app.model.ParentInfo
 import org.ort.school.app.model.StudentInfo
-import org.ort.school.crm.jooq.model.Tables
 import org.ort.school.crm.jooq.model.Tables.*
 import java.sql.Date
 
@@ -237,12 +236,10 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                 .leftJoin(PARENT).on(PARENT_STUDENT.PARENT_ID.eq(PARENT.ID))
                 .orderBy(GRADE.GRADE_NO.asc(), GRADE.GRADE_LETTER.asc())
                 .fetch()
-                .asSequence()
                 .groupBy { GradeInfoDTO(it[GRADE.ID], it[fullGradeName]) }
                 .mapValues {
                     it
                             .value
-                            .asSequence()
                             .groupBy { parentInfo(it) }
                             .mapValues {
                                 it
@@ -290,7 +287,7 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                             .values(degree.degreeNo, degree.degreeLetter)
                             .returning(GRADE.ID)
                             .fetchOne()
-                            .id
+                            ?.id
 
                 }
     }
@@ -329,16 +326,7 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                 }
     }
 
-    fun studentBy(student: StudentInfo, tx: DSLContext = ctx, degreeNo: Int): Long {
-        return tx.selectFrom(STUDENT).where(
-                STUDENT.LASTNAME.eq(student.lastname),
-                STUDENT.PATRONYMIC.eq(student.patronymic),
-                STUDENT.FIRSTNAME.eq(student.firstname),
-                STUDENT.GRADE_ID.eq(degreeNo)
-        ).fetchOne(STUDENT.ID)
-    }
-
-    fun createParent(parent: ParentInfo, studentId: Long, degreeNo: Int, tx: DSLContext = ctx) {
+    fun createParent(parent: ParentInfo, studentId: Long, tx: DSLContext = ctx) {
         val parentId = tx
                 .selectFrom(PARENT)
                 .where(PARENT.EMAIL.eq(parent.email), PARENT.LASTNAME.eq(parent.lastname), PARENT.PATRONYMIC.eq(parent.patronymic))
@@ -349,7 +337,7 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                             .onConflictDoNothing()
                             .returning(PARENT.ID)
                             .fetchOne()
-                            .id
+                            ?.id
                 }
 
         tx
@@ -368,7 +356,7 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
                         PARENT_STUDENT.STUDENT_ID.eq(STUDENT.ID),
                         PARENT_STUDENT.PARENT_ID.eq(PARENT.ID),
                         GRADE.ID.`in`(degreeIds))
-                .fetchGroups { it -> it[concat] }
+                .fetchGroups { it[concat] }
                 .mapValues { (_, value) ->
                     value.map {
                         ParentInfo(
@@ -407,8 +395,8 @@ class DegreeRepo @Inject constructor(private val ctx: DSLContext) {
     }
 
     fun moveDegreesForward(tx: DSLContext = ctx) {
-        tx.update(Tables.GRADE)
-                .set(Tables.GRADE.GRADE_NO, Tables.GRADE.GRADE_NO + 1)
+        tx.update(GRADE)
+                .set(GRADE.GRADE_NO, GRADE.GRADE_NO + 1)
                 .execute()
     }
 

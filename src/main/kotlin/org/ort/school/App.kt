@@ -10,6 +10,6 @@ class App {
         }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     println(App().greeting)
 }
