@@ -20,18 +20,17 @@ class PasswordServiceKTest : ShouldSpec({
         }
     }
     context("check password return true when password matches hash") {
+        val service = PasswordService()
         forAll(
             "Yahveh",
             "testPass",
             "comlexpass",
             "you won't ever crack it you bastard"
         ) { pw ->
-            val service = PasswordService()
             val hashed = service.encryptPassword(pw)
             service.checkPw(pw, hashed) shouldBe true
         }
         should("return false when password is wrong") {
-            val service = PasswordService()
             val pass = "potentially wrong"
             val hashed = service.encryptPassword("wrong!!!")
             service.checkPw(pass, hashed) shouldBe false

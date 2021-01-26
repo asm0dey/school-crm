@@ -1,34 +1,20 @@
 package org.ort.school.app.service
 
 import com.sangupta.murmur.Murmur2
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.property.Arb
+import io.kotest.property.arbitrary.alphanumeric
+import io.kotest.property.arbitrary.katakana
+import io.kotest.property.arbitrary.merge
+import io.kotest.property.arbitrary.string
+import io.kotest.property.checkAll
 
 class MurMurTest : ShouldSpec({
-    context("our murmur match reference murmur") {
-        forAll(
-            "a",
-            "test",
-            "longstring"
-        ) {
+    context("!our murmur match reference murmur") {
+        checkAll(Arb.string(0..100, Arb.katakana().merge(Arb.alphanumeric()))) {
             MurMur2Hash.evaluate(it) shouldBe Murmur2.hash(it.toByteArray(), it.length, 0)
         }
 
     }
 })
-
-/*
-fun Gen.Companion.wideString(maxSize: Int = 100): Gen<String> = object : Gen<String> {
-    override fun constants(): Iterable<String> = listOf()
-    override fun random(): Sequence<String> = generateSequence { nextWideString(Random.nextInt(maxSize)) }
-    override fun shrinker(): Shrinker<String>? = StringShrinker
-}
-
-fun Gen.Companion.nextWideString(length: Int): String {
-    return (0 until Random.nextInt(0, if (length < 1) 1 else length))
-        .map { Random.nextInt(0, Short.MAX_VALUE.toInt()).toChar() }
-        .joinToString("")
-}
-
-*/
