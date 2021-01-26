@@ -1,7 +1,7 @@
 package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.jooq.DSLContext
 import org.jooq.TransactionalCallable
 import org.jooq.impl.DefaultConfiguration
@@ -12,7 +12,7 @@ import org.ort.school.app.model.StudentInfo
 import org.ort.school.app.model.SubscribeDTO
 import org.ort.school.app.repo.DegreeRepo
 
-class SubscribeServiceTest :AnnotationSpec(){
+class SubscribeServiceTest : AnnotationSpec(){
 
     @Test
     fun subscribe() {

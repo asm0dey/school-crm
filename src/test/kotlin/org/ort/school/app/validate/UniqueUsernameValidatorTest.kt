@@ -3,10 +3,10 @@ package org.ort.school.app.validate
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.ort.school.app.repo.UserRepo
 
-class UniqueUsernameValidatorTest :AnnotationSpec(){
+class UniqueUsernameValidatorTest : AnnotationSpec() {
 
     @Test
     fun `username not null and not exists`() {

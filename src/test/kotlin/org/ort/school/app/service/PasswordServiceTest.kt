@@ -1,7 +1,7 @@
 package org.ort.school.app.service
 
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.junit.jupiter.api.Assertions
 import org.mindrot.jbcrypt.BCrypt
 

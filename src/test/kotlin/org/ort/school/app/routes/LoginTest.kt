@@ -3,11 +3,11 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.jooby.Mutant
 import org.jooby.Request
 
-class LoginTest :AnnotationSpec(){
+class LoginTest : AnnotationSpec(){
 
     @Test
     fun login() {

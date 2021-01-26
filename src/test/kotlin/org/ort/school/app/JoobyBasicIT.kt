@@ -1,9 +1,9 @@
 package org.ort.school.app
 
 import com.github.kittinunf.fuel.httpGet
-import io.kotlintest.Spec
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.BehaviorSpec
+import io.kotest.core.spec.Spec
+import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 import org.testcontainers.containers.PostgreSQLContainer
 import java.net.ServerSocket
 

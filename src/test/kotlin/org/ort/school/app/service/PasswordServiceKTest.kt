@@ -1,14 +1,13 @@
 package org.ort.school.app.service
 
-import io.kotlintest.data.forall
-import io.kotlintest.matchers.string.shouldStartWith
-import io.kotlintest.shouldBe
-import io.kotlintest.shouldNotBe
-import io.kotlintest.specs.ShouldSpec
-import io.kotlintest.tables.row
+import io.kotest.core.datatest.forAll
+import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldStartWith
 
-class PasswordServiceKTest: ShouldSpec({
-    "password hash"{
+class PasswordServiceKTest : ShouldSpec({
+    context("password hash") {
         should("not be equal to password itself") {
             val pass = "somePass"
             PasswordService().encryptPassword(pass) shouldNotBe pass
@@ -20,18 +19,16 @@ class PasswordServiceKTest: ShouldSpec({
             PasswordService().encryptPassword("somePass", 12) shouldStartWith "\$2a\$12"
         }
     }
-    "check password"{
-        should("return true when password matches hash") {
-            forall(
-                    row("Yahveh"),
-                    row("testPass"),
-                    row("comlexpass"),
-                    row("you won't ever crack it you bastard")
-            ) { pw ->
-                val service = PasswordService()
-                val hashed = service.encryptPassword(pw)
-                service.checkPw(pw, hashed) shouldBe true
-            }
+    context("check password return true when password matches hash") {
+        forAll(
+            "Yahveh",
+            "testPass",
+            "comlexpass",
+            "you won't ever crack it you bastard"
+        ) { pw ->
+            val service = PasswordService()
+            val hashed = service.encryptPassword(pw)
+            service.checkPw(pw, hashed) shouldBe true
         }
         should("return false when password is wrong") {
             val service = PasswordService()

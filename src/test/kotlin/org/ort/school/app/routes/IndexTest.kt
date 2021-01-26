@@ -2,7 +2,7 @@ package org.ort.school.app.routes
 
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.hibernate.validator.internal.engine.path.PathImpl
 import org.jooby.Request
 import org.jooby.Status

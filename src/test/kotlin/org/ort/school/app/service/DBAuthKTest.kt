@@ -1,8 +1,8 @@
 package org.ort.school.app.service
 
 import com.winterbe.expekt.should
-import io.kotlintest.shouldThrow
-import io.kotlintest.specs.ShouldSpec
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.style.ShouldSpec
 import io.mockk.every
 import io.mockk.mockk
 import org.ort.school.app.repo.UserRepo
@@ -12,14 +12,14 @@ import org.pac4j.core.credentials.UsernamePasswordCredentials
 import org.pac4j.core.exception.CredentialsException
 
 class DBAuthKTest : ShouldSpec({
-    "with null/empty username or password"{
+    context("with null/empty username or password"){
         should("throw exception on null password") {
             shouldThrow<CredentialsException> {
                 DBAuth(mockk(), mockk()).validate(UsernamePasswordCredentials(null, null, "def"), mockk())
             }
         }
     }
-    "with valid credentials"{
+    context("with valid credentials"){
         should("modify profile") {
             val foundUser = UserRecord(10L, "admin", "admin", "admin", "admin", "admin", "admin")
             val roles = setOf("some", "another")
@@ -35,12 +35,12 @@ class DBAuthKTest : ShouldSpec({
             dbAuth.validate(credentials, mockk())
             credentials.userProfile.id.should.equal("admin")
             credentials.userProfile.attributes.should
-                    .contain(Pac4jConstants.USERNAME to "admin")
-                    .contain("email" to "admin")
-                    .contain("first_name" to "admin")
-                    .contain("family_name" to "admin")
-                    .contain("display_name" to "admin admin admin")
-                    .contain("patronymic" to "admin")
+                .contain(Pac4jConstants.USERNAME to "admin")
+                .contain("email" to "admin")
+                .contain("first_name" to "admin")
+                .contain("family_name" to "admin")
+                .contain("display_name" to "admin admin admin")
+                .contain("patronymic" to "admin")
             credentials.userProfile.roles.should.equal(roles)
         }
     }

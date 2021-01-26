@@ -1,7 +1,7 @@
 package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.ort.school.app.model.ParentInfo
 
 class AuthorServiceTest : AnnotationSpec() {

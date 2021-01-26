@@ -4,7 +4,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.ort.school.app.repo.UserRepo
 import org.ort.school.crm.jooq.model.tables.records.UserRecord

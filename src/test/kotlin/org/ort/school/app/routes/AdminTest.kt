@@ -3,8 +3,8 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.*
 import com.typesafe.config.Config
 import com.winterbe.expekt.should
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.shouldBe
 import net.andreinc.mockneat.MockNeat
 import org.jooby.Err
 import org.jooby.Status

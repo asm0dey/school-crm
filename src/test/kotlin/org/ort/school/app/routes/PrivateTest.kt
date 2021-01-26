@@ -3,12 +3,12 @@ package org.ort.school.app.routes
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.jooby.Status
 import org.pac4j.core.profile.CommonProfile
 import java.util.*
 
-class PrivateTest :AnnotationSpec(){
+class PrivateTest : AnnotationSpec(){
 
     @Test
     fun `when user with no roles enters private zone he's redirected to logout`() {

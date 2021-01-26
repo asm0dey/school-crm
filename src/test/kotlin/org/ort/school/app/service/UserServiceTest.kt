@@ -2,12 +2,12 @@ package org.ort.school.app.service
 
 import com.nhaarman.mockito_kotlin.*
 import com.winterbe.expekt.should
-import io.kotlintest.specs.AnnotationSpec
+import io.kotest.core.spec.style.AnnotationSpec
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.repo.UserDTO
 import org.ort.school.app.repo.UserRepo
 
-class UserServiceTest :AnnotationSpec(){
+class UserServiceTest : AnnotationSpec() {
 
     private lateinit var userRepo: UserRepo
 
