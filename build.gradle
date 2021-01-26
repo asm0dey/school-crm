@@ -9,7 +9,7 @@ plugins {
     id 'jacoco'
 }
 ext {
-    joobyVersion = "1.6.6"
+    joobyVersion = "1.6.7"
 }
 
 
