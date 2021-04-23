@@ -55,7 +55,7 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin'
     }
     runtimeOnly "com.h2database:h2:1.4.200"
-    runtimeOnly "org.postgresql:postgresql:42.2.18"
+    runtimeOnly "org.postgresql:postgresql:42.2.20"
     testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
     testImplementation "org.mockito:mockito-core:3.7.7"
     testImplementation "com.winterbe:expekt:0.5.0"
