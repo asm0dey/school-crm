@@ -1,8 +1,12 @@
 package org.ort.school.app.service
 
-import com.nhaarman.mockito_kotlin.*
+import ch.tutteli.atrium.api.infix.en_GB.*
+import ch.tutteli.atrium.api.verbs.expect
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
 import io.kotest.core.spec.style.AnnotationSpec
+import io.mockk.*
 import org.ort.school.app.model.UserInfoDTO
 import org.ort.school.app.repo.UserDTO
 import org.ort.school.app.repo.UserRepo
@@ -15,30 +19,37 @@ class UserServiceTest : AnnotationSpec() {
 
     @BeforeEach
     fun setup() {
-        userRepo = mock()
+        userRepo = mockk()
         userService = UserService(userRepo, PasswordService())
     }
 
+
     @Test
-    fun createUser() {
+    fun createUserNew() {
         val userInfo = UserInfoDTO("ad", "ad", "ad", "ad", "ad", "ad", "ad", "ad")
+        every { userRepo.createUser(any()) } just Runs
         userService.createUser(userInfo)
-        verify(userRepo, times(1)).createUser(check {
-            it.lastname.should.equal("ad")
-            it.firstname.should.equal("ad")
-            it.patronymic.should.equal("ad")
-            it.password.should.startWith("$2a$10")
-            it.passwordConfirm.should.be.`null`
-            it.role.should.equal("ad")
-            it.username.should.equal("ad")
-            it.email.should.equal("ad")
-        })
+        verify(exactly = 1) {
+            userRepo.createUser(withArg {
+                expect(it) {
+                    feature { f(it::lastname) } toBe "ad"
+                    feature { f(it::firstname) } toBe "ad"
+                    feature { f(it::patronymic) } toBe "ad"
+                    feature { f(it::password) } notToBeNull o startsWith "$2a$10"
+                    feature { f(it::passwordConfirm) } toBe null
+                    feature { f(it::role) } toBe "ad"
+                    feature { f(it::username) } toBe "ad"
+                    feature { f(it::email) } toBe "ad"
+                }
+            })
+        }
+        confirmVerified(userRepo)
     }
 
     @Test
     fun hasUsers() {
-        whenever(userRepo.hasUsers()).thenReturn(true)
-        userService.hasUsers().should.be.`true`
+        every { userRepo.hasUsers() } returns true
+        expect(userService.hasUsers()) toBe true
     }
 
     @Test
@@ -49,14 +60,14 @@ class UserServiceTest : AnnotationSpec() {
 
     @Test
     fun userBy() {
-        val mock = mock<UserDTO>()
-        whenever(userRepo.userBy("asm0dey")).thenReturn(mock)
-        userService.userBy("asm0dey").should.equal(mock)
+        val mock = mockk<UserDTO>()
+        every { userRepo.userBy("asm0dey") } returns mock
+        expect(userService.userBy("asm0dey")) toBe mock
     }
 
     @Test
     fun countAdmins() {
-        whenever(userRepo.countAdmins()).thenReturn(Int.MAX_VALUE - 17)
+        every { userRepo.countAdmins() } returns Int.MAX_VALUE - 17
         userService.countAdmins().should.equal(Int.MAX_VALUE - 17)
     }
 
@@ -64,7 +75,8 @@ class UserServiceTest : AnnotationSpec() {
     fun updateUser() {
         val userInfo = UserInfoDTO("ad", "ad", "ad", "ad", "ad", "ad", "ad", "ad")
         userService.updateUser("as", userInfo)
-        verify(userRepo, times(1)).updateUser("as", userInfo)
+        verify(exactly = 1) { userRepo.updateUser("as", userInfo) }
+        confirmVerified(userRepo)
     }
 
     @Test
@@ -96,7 +108,7 @@ class UserServiceTest : AnnotationSpec() {
 
     @Test
     fun deleteUser() {
-        whenever(userRepo.deleteUser("as")).thenReturn(1)
+        every { userRepo.deleteUser("as") } returns 1
         userService.deleteUser("as").should.equal(1)
     }
 
