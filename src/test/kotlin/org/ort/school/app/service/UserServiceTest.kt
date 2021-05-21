@@ -3,7 +3,6 @@ package org.ort.school.app.service
 import ch.tutteli.atrium.api.infix.en_GB.*
 import ch.tutteli.atrium.api.verbs.expect
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import com.winterbe.expekt.should
 import io.kotest.core.spec.style.AnnotationSpec
 import io.mockk.*
@@ -54,7 +53,7 @@ class UserServiceTest : AnnotationSpec() {
 
     @Test
     fun hasUsers2() {
-        whenever(userRepo.hasUsers()).thenReturn(false)
+        every { userRepo.hasUsers() } returns false
         userService.hasUsers().should.be.`false`
     }
 
@@ -74,6 +73,7 @@ class UserServiceTest : AnnotationSpec() {
     @Test
     fun updateUser() {
         val userInfo = UserInfoDTO("ad", "ad", "ad", "ad", "ad", "ad", "ad", "ad")
+        every { userRepo.updateUser("as", userInfo) } just Runs
         userService.updateUser("as", userInfo)
         verify(exactly = 1) { userRepo.updateUser("as", userInfo) }
         confirmVerified(userRepo)
@@ -82,27 +82,27 @@ class UserServiceTest : AnnotationSpec() {
     @Test
     fun listUsers() {
         val userDTO = mock<UserDTO>()
-        whenever(userRepo.listUsers()).thenReturn(listOf(userDTO))
+        every { userRepo.listUsers() } returns listOf(userDTO)
         userService.listUsers().should.elements(userDTO)
     }
 
     @Test
     fun `user is deletable if it's not admin`() {
-        whenever(userRepo.rolesBy("as")).thenReturn(setOf("another"))
+        every { userRepo.rolesBy("as") } returns setOf("another")
         userService.mayDeleteUser("as").should.be.`true`
     }
 
     @Test
     fun `user is deletable if there are more then one admin`() {
-        whenever(userRepo.rolesBy("as")).thenReturn(setOf("another", "admin"))
-        whenever(userRepo.countAdmins()).thenReturn(2)
+        every { userRepo.rolesBy("as") } returns setOf("another", "admin")
+        every { userRepo.countAdmins() } returns 2
         userService.mayDeleteUser("as").should.be.`true`
     }
 
     @Test
     fun `user is not deletable if he is last admin standing`() {
-        whenever(userRepo.rolesBy("as")).thenReturn(setOf("another", "admin"))
-        whenever(userRepo.countAdmins()).thenReturn(1)
+        every { userRepo.rolesBy("as") } returns setOf("another", "admin")
+        every { userRepo.countAdmins() } returns 1
         userService.mayDeleteUser("as").should.be.`false`
     }
 
@@ -114,7 +114,7 @@ class UserServiceTest : AnnotationSpec() {
 
     @Test
     fun `don't delete user`() {
-        whenever(userRepo.deleteUser("as")).thenReturn(0)
+        every { userRepo.deleteUser("as") } returns 0
         userService.deleteUser("as").should.equal(0)
     }
 }
