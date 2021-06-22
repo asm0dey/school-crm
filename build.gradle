@@ -56,7 +56,7 @@ dependencies {
     runtimeOnly "com.h2database:h2:1.4.200"
     runtimeOnly "org.postgresql:postgresql:42.2.20"
     testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
-    testImplementation "org.mockito:mockito-core:3.10.0"
+    testImplementation "org.mockito:mockito-core:3.11.2"
     testImplementation "com.winterbe:expekt:0.5.0"
     testImplementation "net.andreinc:mockneat:0.4.7"
     testImplementation "org.apache.httpcomponents:fluent-hc:4.5.13"
