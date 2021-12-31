@@ -6,7 +6,7 @@ plugins {
     id 'info.solidsoft.pitest' version '1.6.0'
     id "nu.studer.rocker" version "3.0.2"
     id 'com.github.johnrengelman.shadow' version '7.0.0'
-    id "com.github.ben-manes.versions" version "0.38.0"
+    id "com.github.ben-manes.versions" version "0.40.0"
     id 'jacoco'
 }
 ext {
